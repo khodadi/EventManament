@@ -1,0 +1,19 @@
+server:
+  port: 8761 # port where the server will be running
+
+spring:
+  profiles:
+    active: developer
+#    active: operation
+#    active: test
+eureka:
+  client:
+    register-with-eureka: false # So we don't register the server itself
+    fetch-registry: false # Don't cache its registry information locally
+  server:
+    max-threads-for-peer-replication: 0 # Total number of HTTP connections allowed to peer
+    #eureka nodes for replication. Default is 1000.
+    wait-time-in-ms-when-sync-empty: 5 # After 5 MS server starts is available for requests, given time for
+    # all others services to get themselves registered - 5 MS only for dev mode
+    # in average, each service takes 30 seconds to get registered (3 health requests)
+    enableSelfPreservation: false # check client is up or down or killed
