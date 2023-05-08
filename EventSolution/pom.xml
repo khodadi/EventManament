@@ -2,9 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.example</groupId>
     <artifactId>EventSolution</artifactId>
@@ -22,18 +19,16 @@
         <spring-cloud-gateway-config-client>2.2.5.RELEASE</spring-cloud-gateway-config-client>
         <spring-cloud-netflix-hystrix>2.2.5.RELEASE</spring-cloud-netflix-hystrix>
         <spring-cloud-starter-gateway>2.2.5.RELEASE</spring-cloud-starter-gateway>
-        <spring-cloud-eureka-version>1.4.0.RELEASE</spring-cloud-eureka-version>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <google.code.gson>2.9.0</google.code.gson>
     </properties>
 
     <modules>
         <module>Eureka</module>
-        <module>Authentication</module>
-        <module>EventManagment</module>
         <module>APIGateway</module>
+        <module>EventManagment</module>
+        <module>Authentication</module>
     </modules>
-
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -53,6 +48,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 
     <dependencies>
 
@@ -79,11 +75,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spting.boot.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -93,6 +91,7 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -112,7 +111,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
 
 
 </project>

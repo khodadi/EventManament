@@ -1,11 +1,8 @@
-package security;
+package com.security;
 
 /**
- * @Creator 5/7/2023
- * @Project IntelliJ IDEA
- * @Author k.khodadi
- **/
-
+ * @author m.shahrestanaki @createDate 10/31/2022
+ */
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

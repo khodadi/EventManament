@@ -1,5 +1,5 @@
 server:
-  port: 8091
+  port: 8092
 spring:
   datasource:
     url: jdbc:oracle:thin:@172.24.66.69:1521/PDB_DWH
@@ -36,18 +36,3 @@ eureka:
 base_type:
   users: users
 
-#---------- active directory config
-ldap:
-  job:
-    username: job.ldap
-    reader:
-      enabled: false
-      valid_ip:  172.16.11.16
-      schedule: "1 * * * * *"
-
-  config:
-    server-address: ldap://ldap.shaparak.com
-    search-dn: ou=HQ staff,DC=shaparak,DC=local
-    domain-name: shaparak.com
-    username: IntPortal@shaparak.com
-    password: Sh@Parak--2023
