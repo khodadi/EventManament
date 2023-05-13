@@ -19,15 +19,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //@EnableZuulProxy
 @Slf4j
 @SpringBootApplication
-/*for develop mode - don't delete*/
-@EnableDiscoveryClient
-@EnableCircuitBreaker
-/*^^^^^^^^^^^^^^^*/
-//@EnableRedisRepositories(basePackages = "")
-@EnableScheduling
 public class AppAuthentication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(AppAuthentication.class, args);
     }
-
 }

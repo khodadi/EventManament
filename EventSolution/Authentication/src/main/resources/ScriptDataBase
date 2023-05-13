@@ -1,0 +1,98 @@
+CREATE TABLESPACE env_data
+   DATAFILE 'env_data.dbf'
+   SIZE 512m
+   AUTOEXTEND On ;;
+
+
+   CREATE TABLESPACE env_index
+   DATAFILE 'env_index.dbf'
+   SIZE 100m
+   AUTOEXTEND On ;
+
+   CREATE TEMPORARY TABLESPACE env_temp
+   TEMPFILE 'env_temp.dbf'
+   SIZE 500m
+   autoextend on
+   next 100m
+   maxsize unlimited;
+
+   create user ENV_USER
+  default tablespace ENV_DATA
+  temporary tablespace ENV_TEMP
+  profile DEFAULT
+  password expire;
+
+
+GRANT CREATE SESSION to ENV_USER;
+GRANT CREATE VIEW,CREATE TABLE, CREATE PROCEDURE, CREATE SEQUENCE, CREATE TRIGGER to ENV_USER;
+GRANT ALTER ANY TABLE to ENV_USER;
+GRANT ALTER ANY PROCEDURE to ENV_USER;
+GRANT ALTER ANY TRIGGER to ENV_USER;
+GRANT DELETE ANY TABLE to ENV_USER;
+GRANT DROP ANY PROCEDURE to ENV_USER;
+GRANT DROP ANY TRIGGER to ENV_USER;
+GRANT DROP ANY VIEW to ENV_USER;
+GRANT UNLIMITED TABLESPACE TO ENV_USER;
+
+
+
+-- Create table
+create table ENV_USERS
+(
+  user_id             NUMBER(10) not null,
+  first_name          VARCHAR2(100) not null,
+  last_name           VARCHAR2(100) not null,
+  cellphone           VARCHAR2(13) not null,
+  password            VARCHAR2(20) not null,
+  email               VARCHAR2(100),
+  unsuccessfull_try   NUMBER(2) default 0 not null,
+  user_type           NUMBER(1) default 0 not null,
+  deactivation_reason NUMBER(1),
+  creation_date       DATE default sysdate not null,
+  creator_user_id     NUMBER(10) not null,
+  last_update         DATE,
+  updater_user_id     NUMBER(10),
+  last_login          DATE,
+  last_login_ip       NUMBER(15),
+  current_login_ip    NUMBER(15),
+  current_login       DATE
+)
+tablespace ENV_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints
+alter table ENV_USERS
+  add constraint PK_USER primary key (USER_ID)
+  using index
+  tablespace ENV_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ENV_USERS
+  add constraint UK_USER unique (CELLPHONE)
+  using index
+  tablespace ENV_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table ENV_USERS
+  add constraint FK_CREATOR_USER_ENV_USERS foreign key (CREATOR_USER_ID)
+  references ENV_USERS (USER_ID);
+alter table ENV_USERS
+  add constraint FK_UPDATOR_USER_ENV_USERS foreign key (UPDATER_USER_ID)
+  references ENV_USERS (USER_ID);
+
+create sequence SEQ_ENV_USER
+minvalue 1000
+maxvalue 9999999999999999
+start with 1000
+increment by 1
+cache 20
+order;

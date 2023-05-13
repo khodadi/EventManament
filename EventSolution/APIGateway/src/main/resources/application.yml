@@ -31,7 +31,6 @@ spring:
             - Path=/eventmanagment/** # how we will map the url to the target service
         #----------------------------------------
 
-
   #cloud.gateway.globalcors.corsConfigurations.[/**].allowedOrigins=*
   #spring.cloud.gateway.globalcors.corsConfigurations.[/**].allowedMethods=GET,POST,PUT,OPTIONS
   #spring.cloud.gateway.globalcors.corsConfigurations.[/**].allowCredentials=true
