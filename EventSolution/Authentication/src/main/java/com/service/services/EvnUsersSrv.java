@@ -23,13 +23,13 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     private IUserRepo userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        EnvUsers user = userRepo.findByUsername(username);
+    public UserDetails loadUserByUsername(String cellphone) throws UsernameNotFoundException {
+        EnvUsers user = userRepo.findByCellPhone(cellphone);
         if(user == null){
             log.error("The User do not find in database");
             throw new UsernameNotFoundException("The User do not find in database");
         }else{
-            log.info("The User find in database : {}",username);
+            log.info("The User find in database : {}",cellphone);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
