@@ -1,21 +1,23 @@
 package com.service.dto;
 
 import com.basedata.UserType;
+import com.dao.entity.EnvUsers;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-@Builder
 @Setter
 @Getter
-public class EnvUserDto {
+public class EnvUserDto extends EnvUserSaveDto{
+    public EnvUserDto(EnvUsers ent){
+        super(ent);
+        this.setUserId(ent.getUserId());
+        this.setUserType(ent.getUserType());
+    }
+
     private Long userId;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String cellPhone;
     private UserType userType;
 }

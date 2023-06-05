@@ -3,6 +3,7 @@ package com.api.controller;
 import com.api.form.OutputAPIForm;
 import com.basedata.CodeException;
 import com.service.dto.EnvUserDto;
+import com.service.dto.EnvUserSaveDto;
 import com.service.services.IEvnUsersSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,8 @@ import java.net.URI;
 public class ManipulateUser {
     @Autowired
     private IEvnUsersSrv iEvnUsersSrv;
-
     @PostMapping("/save")
-    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody EnvUserDto user){
+    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody EnvUserSaveDto user){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         try{
@@ -37,5 +37,4 @@ public class ManipulateUser {
         }
         return ResponseEntity.created(uri).body(retVal);
     }
-
 }

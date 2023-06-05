@@ -24,14 +24,14 @@ spring:
       max-file-size: 2MB
       max-request-size: 2MB
   #----------- redis config
-  redis:
-    host: "172.24.66.76"
-    port: 6380
+#  redis:
+#    host: "172.24.66.76"
+#    port: 6380
 #----------- eureka developer config
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka # discovery service loc
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka # discovery service loc
 
 base_type:
   users: users
