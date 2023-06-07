@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml" />-->
+    <property name="DEVELOPER_HOME" value="e:/log" />
+    <property name="OPERATION_HOME" value="/home/hasin/microServices-project/log" />
+    <property name="TEST_HOME" value="/home/hasin/microServices-project/log" />
+    <!--for developer-user-->
+    <springProfile name="developer">
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{yyyy-MM-dd  HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg %n</pattern>
+            </encoder>
+        </appender>
+        <root level="debug">
+            <appender-ref ref="console" />
+        </root>
+    </springProfile>
+
+    <!--for operation-user-->
+    <springProfile name="operation">
+        <!-- Simple file output -->
+        <appender name="OPERATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder>
+                <pattern>%d{yyyy-MM-dd  HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            </encoder>
+            <file>${OPERATION_HOME}/Notification_OPERATION.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${OPERATION_HOME}/Notification-back/Notification_OPERATION-date-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>20GB</totalSizeCap>
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+        </appender>
+        <root level="debug">
+            <appender-ref ref="OPERATION_FILE" />
+        </root>
+    </springProfile>
+
+    <!--for security-user-->
+    <springProfile name="test">
+        <!-- Simple file output -->
+        <appender name="TEST_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder>
+                <pattern>%d{yyyy-MM-dd  HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            </encoder>
+            <file>${TEST_HOME}/Notification_test.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${TEST_HOME}/Notification-back/Notification_TEST-date-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>2GB</totalSizeCap>
+                <maxHistory>5</maxHistory>
+            </rollingPolicy>
+        </appender>
+        <root level="debug">
+            <appender-ref ref="TEST_FILE" />
+        </root>
+    </springProfile>
+
+</configuration>

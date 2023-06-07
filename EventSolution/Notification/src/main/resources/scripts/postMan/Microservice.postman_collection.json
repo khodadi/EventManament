@@ -1,0 +1,780 @@
+{
+	"info": {
+		"_postman_id": "8c58dadd-cdbe-49ea-8e18-3c11af51957d",
+		"name": "Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AuthJWT",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData= JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.access_token);\r",
+									"postman.setEnvironmentVariable(\"refresh_token\",jsonData.refresh_token);\r",
+									"pm.test(\"status Code is 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Access Token isn't null\",function(){\r",
+									"    pm.expect(jsonData.access_token).not.equal(null) || pm.expect(jsonData.access_token).not.equal(\"\");\r",
+									"});\r",
+									"pm.test(\"Refresh Token isn't null\",function(){\r",
+									"    pm.expect(jsonData.refresh_token).not.equal(null) || pm.expect(jsonData.refresh_token).not.equal(\"\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "!QAZxsw2",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "khodadi",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "captchaId",
+									"value": "{{captchaId}}",
+									"type": "default"
+								},
+								{
+									"key": "answer",
+									"value": "{{captcha}}",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{microNameAuth}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{microNameAuth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCaptcha",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData= JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"captchaId\",jsonData.captchaId);\r",
+									"postman.setEnvironmentVariable(\"captcha\",jsonData.answer);\r",
+									"\r",
+									"pm.test(\"status Code is 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"image isn't null\",function(){\r",
+									"    var jsonData= JSON.parse(responseBody);\r",
+									"    pm.expect(jsonData.image).not.equal(null) || pm.expect(jsonData.image).not.equal(\"\");\r",
+									"});\r",
+									"pm.test(\"captchaId isn't null\",function(){\r",
+									"    var jsonData= JSON.parse(responseBody);\r",
+									"    pm.expect(jsonData.captchaId).not.equal(null) || pm.expect(jsonData.captchaId).not.equal(\"\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/{{microNameAuth}}/{{version}}/user/getCaptcha",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{microNameAuth}}",
+								"{{version}}",
+								"user",
+								"getCaptcha"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "BaseDataController",
+					"item": [
+						{
+							"name": "baseDataLoad",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData= JSON.parse(responseBody);\r",
+											"pm.test(\"status Code is 200\",function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Message isn't null\",function(){\r",
+											"     pm.expect(jsonData.message).not.equal(null) || pm.expect(jsonData.message).not.equal(\"\");\r",
+											"});\r",
+											"pm.test(\"Data isn't null\",function(){\r",
+											"     pm.expect(jsonData.data).not.equal(null) || pm.expect(jsonData.data).not.equal(\"\");\r",
+											"});\r",
+											"pm.test(\"Check Error\",function(){\r",
+											"    if(!jsonData.success){\r",
+											"        pm.expect(jsonData.errors.length).not.equal(0);             \r",
+											"    }    \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/{{microNameNotification}}/{{version}}/baseData/load",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"baseData",
+										"load"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DashboardController",
+					"item": [
+						{
+							"name": "searchBaseOnDate",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n     \"scheduleChoiceEnum\": 0 ,\r\n     \"startDateSend\" :null ,  \r\n     \"endDateSend\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/{{microNameNotification}}/{{version}}/dashboard/load",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"dashboard",
+										"load"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "RequestMasterController",
+					"item": [
+						{
+							"name": "loadData",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData= JSON.parse(responseBody);\r",
+											"pm.test(\"status Code is 200\",function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Message isn't null\",function(){\r",
+											"     pm.expect(jsonData.message).not.equal(null) || pm.expect(jsonData.message).not.equal(\"\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"requestMasterId\":{{requestId}},\r\n    \"serviceType\":{{serviceType}},\r\n    \"startDateSend\":null,\r\n    \"endDateSend\": null,\r\n    \"size\":10,\r\n    \"page\":0 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/request/load",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"request",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loadData Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData= JSON.parse(responseBody);\r",
+											"pm.test(\"status Code is 200\",function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Message isn't null\",function(){\r",
+											"     pm.expect(jsonData.message).not.equal(null) || pm.expect(jsonData.message).not.equal(\"\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"requestMasterId\":{{requestId}},\r\n    \"serviceType\":{{serviceType}},\r\n    \"startDateSend\":null,\r\n    \"endDateSend\": null,\r\n    \"size\":10,\r\n    \"page\":0 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/request/load",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"request",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setEnvironmentVariable(\"title\",pm.iterationData.get(\"TITLE\"));\r",
+											"postman.setEnvironmentVariable(\"body\",pm.iterationData.get(\"BODY\"));\r",
+											"postman.setEnvironmentVariable(\"appType\",pm.iterationData.get(\"APPTYPE\")); \r",
+											"postman.setEnvironmentVariable(\"cateCode\",pm.iterationData.get(\"CATEGORYCODE\")); \r",
+											"postman.setEnvironmentVariable(\"pspCode\",pm.iterationData.get(\"PSPCODE\")); \r",
+											"postman.setEnvironmentVariable(\"provinceId\",pm.iterationData.get(\"PROVINCEID\")); \r",
+											"postman.setEnvironmentVariable(\"terminalTypeCodeMms\",pm.iterationData.get(\"TERMINALTYPECODEMMS\")); \r",
+											"postman.setEnvironmentVariable(\"terminalNumber\",pm.iterationData.get(\"TERMINALNUMBER\")); \r",
+											"postman.setEnvironmentVariable(\"merchantTypeCodeMms\",pm.iterationData.get(\"MERCHANTTYPECODEMMS\")); \r",
+											"postman.setEnvironmentVariable(\"merchantTypeCodeMms\",pm.iterationData.get(\"MERCHANTTYPECODEMMS\")); \r",
+											"postman.setEnvironmentVariable(\"nationalCode\",pm.iterationData.get(\"NATIONALCODE\")); \r",
+											"postman.setEnvironmentVariable(\"startDateEnd\",pm.iterationData.get(\"STARTDATESEND\"));\r",
+											"postman.setEnvironmentVariable(\"startTimeEnd\",pm.iterationData.get(\"STARTTIMESEND\")); \r",
+											"postman.setEnvironmentVariable(\"endDateEnd\",pm.iterationData.get(\"ENDDATESEND\")); \r",
+											"postman.setEnvironmentVariable(\"EntTimeEnd\",pm.iterationData.get(\"ENDTIMESEND\")); \r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('APPTYPE')) === 'string' ) {\r",
+											"//    postman.setEnvironmentVariable(\"appType\",pm.iterationData.get(\"APPTYPE\")); \r",
+											"// }else{\r",
+											"//     postman.setEnvironmentVariable(\"appType\",'null');\r",
+											"// }\r",
+											"// console.log( typeof(pm.iterationData.get('CATEGORYCODE')) );\r",
+											"// if ( typeof(pm.iterationData.get('CATEGORYCODE')) === 'string' ) {\r",
+											"//    postman.setEnvironmentVariable(\"cateCode\",pm.iterationData.get(\"CATEGORYCODE\")); \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"cateCode\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('PSPCODE')) === 'number' ) {\r",
+											"//    postman.setEnvironmentVariable(\"pspCode\",pm.iterationData.get(\"PSPCODE\")); \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"pspCode\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('PROVINCEID')) === 'number' ) {\r",
+											"//     postman.setEnvironmentVariable(\"provinceId\",pm.iterationData.get(\"PROVINCEID\")); \r",
+											"// }else{\r",
+											"//     postman.setEnvironmentVariable(\"provinceId\",'null');\r",
+											"// }\r",
+											"// if ( typeof(pm.iterationData.get('TERMINALTYPECODEMMS')) === 'number' ) {   \r",
+											"//     postman.setEnvironmentVariable(\"terminalTypeCodeMms\",pm.iterationData.get(\"TERMINALTYPECODEMMS\")); \r",
+											"// }else{\r",
+											"//     postman.setEnvironmentVariable(\"terminalTypeCodeMms\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('TERMINALNUMBER')) === 'number' ) {\r",
+											"//    postman.setEnvironmentVariable(\"terminalNumber\",pm.iterationData.get(\"TERMINALNUMBER\")); \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"terminalNumber\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('MERCHANTTYPECODEMMS')) === 'number' ) {\r",
+											"//    postman.setEnvironmentVariable(\"merchantTypeCodeMms\",pm.iterationData.get(\"MERCHANTTYPECODEMMS\")); \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"merchantTypeCodeMms\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('MERCHANTTYPECODEMMS')) === 'number' ) {\r",
+											"//    postman.setEnvironmentVariable(\"merchantTypeCodeMms\",pm.iterationData.get(\"MERCHANTTYPECODEMMS\")); \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"merchantTypeCodeMms\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('NATIONALCODE')) === 'number' ) {\r",
+											"//     postman.setEnvironmentVariable(\"nationalCode\",pm.iterationData.get(\"NATIONALCODE\")); \r",
+											"   \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"nationalCode\",'null');\r",
+											"// }\r",
+											"// if ( typeof(pm.iterationData.get('STARTDATESEND')) === 'null' ) {\r",
+											"//     postman.setEnvironmentVariable(\"startDateEnd\",pm.iterationData.get(\"STARTDATESEND\")); \r",
+											"   \r",
+											"// }else{\r",
+											"//     postman.setEnvironmentVariable(\"startDateEnd\",'null');\r",
+											"\r",
+											"// }\r",
+											"\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('STARTTIMESEND')) === 'number' ) {\r",
+											"   \r",
+											"//    postman.setEnvironmentVariable(\"startTimeEnd\",pm.iterationData.get(\"STARTTIMESEND\")); \r",
+											"// }else{\r",
+											"//     postman.setEnvironmentVariable(\"startTimeEnd\",'null');\r",
+											"// }\r",
+											"\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('ENDDATESEND')) === 'number' ) {\r",
+											"//     postman.setEnvironmentVariable(\"endDateEnd\",pm.iterationData.get(\"ENDDATESEND\")); \r",
+											"// }else{\r",
+											"//     postman.setEnvironmentVariable(\"endDateEnd\",'null');\r",
+											"// }\r",
+											"\r",
+											"// if ( typeof(pm.iterationData.get('ENDTIMESEND')) === 'number' ) {\r",
+											"//     postman.setEnvironmentVariable(\"EntTimeEnd\",pm.iterationData.get(\"ENDTIMESEND\")); \r",
+											"// }else{\r",
+											"//    postman.setEnvironmentVariable(\"EntTimeEnd\",'null');\r",
+											"// }\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData= JSON.parse(responseBody);\r",
+											"pm.test(\"status Code is 200\",function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Message isn't null\",function(){\r",
+											"     pm.expect(jsonData.message).not.equal(null) || pm.expect(jsonData.message).not.equal(\"\");\r",
+											"});\r",
+											"pm.test(\"Data isn't null\",function(){\r",
+											"     pm.expect(jsonData.data).not.equal(null) || pm.expect(jsonData.data).not.equal(\"\");\r",
+											"});\r",
+											"pm.test(\"Check Error\",function(){\r",
+											"    if(!jsonData.success){\r",
+											"        pm.expect(jsonData.errors.length).not.equal(0);             \r",
+											"    }    \r",
+											"});\r",
+											"if(pm.response.to.have.status(200) && jsonData.success &&  pm.expect(jsonData.data).not.equal(null)){\r",
+											"    console.log(jsonData.data.requestMasterId);\r",
+											"    postman.setEnvironmentVariable(\"requestId\",jsonData.data.requestMasterId); \r",
+											"}\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"serviceType\": {{serviceType}},\r\n  \"title\": \"{{title}}\",  \r\n  \"body\": \"{{body}}\",\r\n  \"appType\": {{appType}},\r\n  \"categoryCode\": {{cateCode}},\r\n  \"pspCode\": \"{{pspCode}}\",\r\n  \"provinceId\": {{provinceId}},\r\n  \"terminalTypeCodeMMS\":{{terminalTypeCodeMms}},\r\n  \"merchantTypeCodeMMS\": {{merchantTypeCodeMms}},\r\n  \"terminalNumber\":\"{{terminalNumber}}\",\r\n  \"residencyTypeCodeMMS\": {{residencyTypeCodeMms}},\r\n  \"nationalCode\": \"{{nationalCode}}\",\r\n  \"startDateSend\": {{startDateEnd}},\r\n  \"startTimeSend\": {{startTimeEnd}},\r\n  \"endDateSend\": {{endDateEnd}},\r\n  \"endTimeSend\": {{EntTimeEnd}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/request/save",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"request",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData= JSON.parse(responseBody);\r",
+											"pm.test(\"status Code is 200\",function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Message isn't null\",function(){\r",
+											"     pm.expect(jsonData.message).not.equal(null) || pm.expect(jsonData.message).not.equal(\"\");\r",
+											"});\r",
+											"pm.test(\"Data isn't null\",function(){\r",
+											"     pm.expect(jsonData.data).not.equal(null) || pm.expect(jsonData.data).not.equal(\"\");\r",
+											"});\r",
+											"pm.test(\"Check Error\",function(){\r",
+											"    if(!jsonData.success){\r",
+											"        pm.expect(jsonData.errors.length).not.equal(0);             \r",
+											"    }    \r",
+											"});\r",
+											"if(pm.response.to.have.status(200) && jsonData.success &&  pm.expect(jsonData.data).not.equal(null)){\r",
+											"    console.log(jsonData.data.requestMasterId);\r",
+											"    postman.setEnvironmentVariable(\"requestId\",jsonData.data.requestMasterId); \r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"serviceType\": 2,\r\n  \"title\": \"DSDFSDAASSDFSFS\",  \r\n  \"body\": \"ADSDFSDAASSDFSFSDFSADFDFASDFASDFSD\",\r\n  \"appType\": 1,\r\n  \"categoryCode\": 7299,\r\n  \"pspCode\": \"581672061\",\r\n  \"provinceId\": null,\r\n  \"terminalTypeCodeMMS\":0,\r\n  \"merchantTypeCodeMMS\": 0,\r\n  \"terminalNumber\":\"10687465\",\r\n  \"residencyTypeCodeMMS\": 0,\r\n  \"nationalCode\": \"\",\r\n  \"startDateSend\": 1681120000000,\r\n  \"startTimeSend\": 1617530000000,\r\n  \"endDateSend\": 1681990000000,\r\n  \"endTimeSend\": 1617520000000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/request/save",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"request",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"requestMasterId\":1144,\r\n   \"title\": \"title\",\r\n  \"serviceType\": \"SMS\",\r\n  \"body\": \"this is a test...\",\r\n  \"appType\": \"PWA\",\r\n  \"businessCategory\": null,\r\n  \"psp\": 581672111,\r\n  \"province\": null,\r\n  \"terminalType\":null,\r\n  \"merchantType\": null,\r\n  \"terminalNumber\":\"\",\r\n  \"residencyType\": null,\r\n  \"nationalCode\": \"5210103137\",\r\n  \"startDateSend\": \"1671541200000\",\r\n  \"startTimeSend\": \"1671541200000\",\r\n  \"endDateSend\": \"1671544800000\",\r\n  \"endTimeSend\": \"1671544800000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/request/update",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"request",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1144",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/request/delete",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"request",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SettingController",
+					"item": [
+						{
+							"name": "getActiveStatus",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/setting/load",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"setting",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changeData",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"activeSms\":\"true\",\r\n    \"activeNotification\":\"true\",\r\n    \"activeEmail\":\"true\",\r\n    \"activeAlarm\":\"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}} /{{microNameNotification}}/{{version}}/setting/update",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"{{microNameNotification}}",
+										"{{version}}",
+										"setting",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

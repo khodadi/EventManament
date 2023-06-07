@@ -1,0 +1,159 @@
+{
+	"id": "6100393f-42e2-4188-9f3d-e5278c6d857e",
+	"name": "Local Server",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:8090",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "microNameAuth",
+			"value": "authentication/api",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "microNameNotification",
+			"value": "notification/api",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "version",
+			"value": "v1",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "captchaId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "captcha",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "serviceType",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "title",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "body",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "appType",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "cateCode",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "pspCode",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "provinceId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "terminalTypeCodeMms",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "terminalNumber",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "residencyTypeCodeMms",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "merchantTypeCodeMms",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "nationalCode",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "startDateEnd",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "startTimeEnd",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "endDateEnd",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "EntTimeEnd",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "requestId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2023-04-04T11:06:45.603Z",
+	"_postman_exported_using": "Postman/9.31.0"
+}

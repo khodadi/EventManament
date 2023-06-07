@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "1758760d-0757-4b95-a085-b558334ffdc0",
+		"name": "Notification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "access",
+			"item": [
+				{
+					"name": "دریافت اطلاعات کاربر از سامانه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl_Gateway}}/{{microNameNotification}}/v1/user/getUserInfo",
+							"host": [
+								"{{baseUrl_Gateway}}"
+							],
+							"path": [
+								"{{microNameNotification}}",
+								"v1",
+								"user",
+								"getUserInfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "setting",
+			"item": [
+				{
+					"name": "setting/load",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MicroService_Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8092/notification/api/v1/setting/load",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"setting",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setting/update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MicroService_Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"activeSms\": false,\r\n        \"activeNotification\": true,\r\n        \"activeEmail\": true,\r\n        \"activeAlarm\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8092/notification/api/v1/setting/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"setting",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setting/getData",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8089/notification/api/v1/setting/getData",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"setting",
+								"getData"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "baseData",
+			"item": [
+				{
+					"name": "baseData/load",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MicroService_Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8092/notification/api/v1/baseData/load?type=PSP",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"baseData",
+								"load"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "PSP"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "requestMaster",
+			"item": [
+				{
+					"name": "notification/save",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MicroService_Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"fake_data\",\r\n  \"serviceType\": \"EMAIL\",\r\n  \"body\": \"fake_data\",\r\n  \"appType\": \"IOS\",\r\n  \"businessCategory\": 53,\r\n  \"psp\": 6,\r\n  \"province\": 2,\r\n  \"terminalType\": 1,\r\n  \"merchantType\": 84,\r\n  \"terminalNumber\": 12341234,\r\n  \"residencyType\": 1,\r\n  \"nationalCode\": 2345234523,\r\n  \"startDateSend\": 1458368144000,\r\n  \"startTimeSend\": 15,\r\n  \"endDateSend\": 1458368144000,\r\n  \"endTimeSend\": 24\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8089/notification/api/v1/notification/save",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"notification",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification/update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJraG9kYWRpIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGhlbnRpY2F0aW9uL2FwaS9sb2dpbiIsInBlcm1pc3Npb24iOltdLCJleHAiOjE2Njk2Mzk5Mjh9.9gGZq-8rYgtGlMjRAC2njwxePzxXCHcpLa_pp_EPO5k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"requestMasterId\": 130,\r\n  \"title\": \"fake_data\",\r\n  \"serviceType\": \"EMAIL\",\r\n  \"body\": \"fake_data-update2\",\r\n  \"appType\": \"ANDROID\",\r\n  \"businessCategory\": 53,\r\n  \"psp\": 6,\r\n  \"province\": 2,\r\n  \"terminalType\": 1,\r\n  \"merchantType\": 84,\r\n  \"terminalNumber\": 12341234,\r\n  \"residencyType\": 1,\r\n  \"nationalCode\": 2345234523,\r\n  \"startDateSend\": 1458368144000,\r\n  \"startTimeSend\": 15,\r\n  \"endDateSend\": 1458368144000,\r\n  \"endTimeSend\": 24\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8089/notification/api/v1/notification/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"notification",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification/loadData",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MicroService_Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"page\": 0,\r\n  \"size\": 10,\r\n  \"sort\": \"serviceType asc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8092/notification/api/v1/notification/loadData",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"notification",
+								"loadData"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"item": [
+				{
+					"name": "لود داشبورد",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MicroService_Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scheduleChoiceEnum\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8092/notification/api/v1/dashboard/load",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"notification",
+								"api",
+								"v1",
+								"dashboard",
+								"load"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

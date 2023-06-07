@@ -1,0 +1,62 @@
+server:
+  port: 8092
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@172.24.66.69:1521/PDB_DWH
+    username: notif_user
+#    password: lzMvOGKiVwouC+suZBnzr1qFlAZuQiB84rEl3bqJHfRB/4mJ5tsTD+yEt7G4Sw4m5TnSzMesobvUe2Qaozz1vRj8WHW9edVP+nJV7lxMNqVYKDwOgOTM/INRCsFZeak4xi+QpZIr5H1sUvrTpr+L2KJiIG/6gC9fRzLwDk2QzvC0XT+VOSoFAFRmkdOxvxj1SRPCydmhTKgQieaEH0gh8tX8Z6+YxIM6tYyGH09uFBT2tuSEetiVhY8d+NmATxeQIgbnmFsvujcLuo/apfu1JOvbHNbp86cJ29M86i5Qdv4K2dCqqNov7ZClIwuiVlLp1g1v3DKoviHo4k30Ln0dpQ==
+    password: notif123
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle10gDialect
+        format_sql: true
+#----------- redis config
+  redis:
+    host: "172.24.66.76"
+    port: 6380
+#----------- eureka developer config
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka # discovery service loc
+#----------- job config
+job:
+  request:
+    reader: " 0 0 0/1 * * * "
+
+  sender:
+    listSize: 10
+
+  max:
+    try-count: 10
+
+#----------- authentication api url
+authentication:
+  baseurl: http://AUTHENTICATION-SERVICE/authentication/api/v1/
+  path:
+    getuser: user/getIdsByFilter
+    getuserById: user/findNamesByIds
+    getUserName: user/getUsers
+    getPermissionByApp: user/getPermissionByApp?appName=
+
+#----------- faragir api url
+faragir:
+  baseurl: http://localhost:8077/faragir/api/v1
+  path:
+
+
+faragir-bi:
+  baseurl: http://localhost:8080/api/srv/
+  path:
+    saveNotif: notification/insert
+    updateNotif: notification/update
+    loadNotif: notification/load
+
+#---------- encrypted dataBase password config
+dataBase:
+  password:
+    encrypted: flase
+    keyAndPathLocation: "classpath:keys/db-notification-privatekey.txt"
+    #keyAndPathLocation: "file:e:/keys/db-notification-privatekey.txt"
