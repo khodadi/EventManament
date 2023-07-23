@@ -91,6 +91,7 @@ create sequence env_auth.seq_white_users
     cycle;
 
 
+
 create table env_auth.request_join_users
 (
     request_join_users_id bigint not null
