@@ -1,107 +1,113 @@
-CREATE TABLESPACE env_data
-   DATAFILE 'env_data.dbf'
-   SIZE 512m
-   AUTOEXTEND On ;;
+CREATE USER env_user WITH PASSWORD '123456';
 
+CREATE TABLESPACE tbl_space_env LOCATION 'G:\postgres\tbl_space_env';
 
-   CREATE TABLESPACE env_index
-   DATAFILE 'env_index.dbf'
-   SIZE 100m
-   AUTOEXTEND On ;
+CREATE DATABASE env_db OWNER env_user TABLESPACE tbl_space_env;
 
-   CREATE TEMPORARY TABLESPACE env_temp
-   TEMPFILE 'env_temp.dbf'
-   SIZE 500m
-   autoextend on
-   next 100m
-   maxsize unlimited;
+CREATE SCHEMA env_auth;
+CREATE SCHEMA env_data;
 
-   create user ENV_USER
-  default tablespace ENV_DATA
-  temporary tablespace ENV_TEMP
-  profile DEFAULT
-  password expire;
+CREATE USER env_auth_user WITH PASSWORD '123456';
+CREATE USER env_data_user WITH PASSWORD '123456';
 
+GRANT SELECT, UPDATE ON ALL TABLES IN SCHEMA env_auth TO env_auth_user;
 
-GRANT CREATE SESSION to ENV_USER;
-GRANT CREATE VIEW,CREATE TABLE, CREATE PROCEDURE, CREATE SEQUENCE, CREATE TRIGGER to ENV_USER;
-GRANT ALTER ANY TABLE to ENV_USER;
-GRANT ALTER ANY PROCEDURE to ENV_USER;
-GRANT ALTER ANY TRIGGER to ENV_USER;
-GRANT DELETE ANY TABLE to ENV_USER;
-GRANT DROP ANY PROCEDURE to ENV_USER;
-GRANT DROP ANY TRIGGER to ENV_USER;
-GRANT DROP ANY VIEW to ENV_USER;
-GRANT UNLIMITED TABLESPACE TO ENV_USER;
+GRANT SELECT, UPDATE ON ALL TABLES IN SCHEMA env_data TO env_data_user;
 
--- Create table
-create table ENV_USERS
+create table env_auth.env_users
 (
-  user_id             NUMBER(10) not null,
-  first_name          VARCHAR2(100),
-  last_name           VARCHAR2(100),
-  cellphone           VARCHAR2(13),
-  password            VARCHAR2(20) not null,
-  email               VARCHAR2(100),
-  unsuccessful_try    NUMBER(2) default 0 not null,
-  user_type           NUMBER(1) default 0 not null,
-  deactivation_reason NUMBER(1),
-  creation_date       DATE default sysdate not null,
-  creator_user_id     NUMBER(10),
-  last_update         DATE,
-  updater_user_id     NUMBER(10),
-  last_login          DATE,
-  last_login_ip       NUMBER(15),
-  current_login_ip    NUMBER(15),
-  current_login       DATE,
-  user_name           VARCHAR2(20) not null
-)
-tablespace ENV_DATA
-  pctfree 10
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
--- Create/Recreate primary, unique and foreign key constraints
-alter table ENV_USERS
-  add constraint PK_USER primary key (USER_ID)
-  using index
-  tablespace ENV_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
-alter table ENV_USERS
-  add constraint UK_USERNAME unique (USER_NAME)
-  using index
-  tablespace ENV_DATA
-  pctfree 10
-  initrans 2
-  maxtrans 255
-  storage
-  (
-    initial 64K
-    next 1M
-    minextents 1
-    maxextents unlimited
-  );
+    user_id bigint not null
+        constraint env_users_pk
+            primary key,
+    first_name varchar(100),
+    last_name varchar(100),
+    cellphone varchar(13),
+    password varchar(20) not null,
+    email varchar(100),
+    unsuccessful_try integer default 0 not null,
+    user_type integer default 0 not null,
+    deactivation_reason integer,
+    creation_date date not null,
+    creator_user_id bigint,
+    last_update date,
+    updater_user_id bigint,
+    last_login date,
+    last_login_ip bigint,
+    current_login_ip bigint,
+    current_login date,
+    user_name varchar(20) not null
+);
+
+alter table env_auth.env_users owner to env_user;
 
 
-create sequence SEQ_ENV_USER
-minvalue 1000
-maxvalue 9999999999999999
-start with 1000
-increment by 1
-cache 20
-order;
+-- auto-generated definition
+create sequence seq_env_user
+    minvalue 1000
+    maxvalue 999999999999
+    cache 20
+    cycle;
+
+alter sequence seq_env_user owner to env_user;
+
+
+create table env_auth.block_users
+(
+    block_users_id bigint not null
+        constraint block_users_pk
+            primary key,
+    user_id bigint,
+    creation_date date not null,
+    creator_user_id bigint,
+    last_update date,
+    updater_user_id bigint
+);
+
+
+create sequence env_auth.seq_block_users
+    minvalue 1000
+    maxvalue 99999999999999
+    cache 20
+    cycle;
+
+
+create table env_auth.white_users
+(
+    white_users_id bigint not null
+        constraint white_users_pk
+            primary key,
+    user_id bigint,
+    creation_date date not null,
+    creator_user_id bigint,
+    last_update date,
+    updater_user_id bigint
+);
+
+
+create sequence env_auth.seq_white_users
+    minvalue 1000
+    maxvalue 99999999999999
+    cache 20
+    cycle;
+
+
+create table env_auth.request_join_users
+(
+    request_join_users_id bigint not null
+        constraint request_join_users_pk
+            primary key,
+    from_user_id bigint,
+    to_user_id bigint,
+    occasion_id bigint,
+    status_request int ,
+    creation_date date not null,
+    creator_user_id bigint,
+    last_update date,
+    updater_user_id bigint
+);
+
+create sequence env_auth.seq_request_join_users
+    minvalue 1000
+    maxvalue 99999999999999
+    cache 20
+    cycle;
