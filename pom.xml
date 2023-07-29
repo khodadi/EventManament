@@ -9,8 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <name>EventManament</name>
     <description>EventManament</description>
+
     <properties>
-        <java.version>8</java.version>
+        <java.version>11</java.version>
         <spting.boot.maven.plugin.version>2.3.12.RELEASE</spting.boot.maven.plugin.version>
         <spting.boot.version>2.3.12.RELEASE</spting.boot.version>
         <spring.fox.swagger>3.0.0</spring.fox.swagger>
@@ -55,7 +56,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.11</version>
+            <version>1.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -70,6 +71,11 @@
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -111,6 +117,7 @@
             </plugins>
         </pluginManagement>
     </build>
+
 
 
 </project>

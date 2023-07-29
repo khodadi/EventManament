@@ -13,8 +13,6 @@ public enum CodeException {
     INVALID_LANGUAGE(8),
     INVALID_USERNAME(9);
 
-
-
     private int codeException;
     CodeException(int code) {
         this.codeException = code;

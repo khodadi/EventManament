@@ -7,13 +7,12 @@ import com.dao.repository.IUserRepo;
 import com.service.dto.EnvUserDto;
 import com.service.dto.EnvUserSaveDto;
 import com.utility.StringUtility;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -24,22 +23,25 @@ import java.util.Collection;
 @Slf4j
 public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     private final IUserRepo userRepo;
-    public EvnUsersSrv(IUserRepo userRepo) {
+    private final PasswordEncoder passwordEncoder;
+    public EvnUsersSrv(IUserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String cellphone) throws UsernameNotFoundException {
-        EnvUsers user = userRepo.findByCellPhone(cellphone);
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        EnvUsers user = userRepo.findByUserName(userName);
         if(user == null){
             log.error("The User do not find in database");
             throw new UsernameNotFoundException("The User do not find in database");
         }else{
-            log.info("The User find in database : {}",cellphone);
+            log.info("The User find in database : {}",userName);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
-        return new org.springframework.security.core.userdetails.User(user.getCellPhone(),user.getPassword(),authorities);
+        UserDetails retVal =new org.springframework.security.core.userdetails.User(user.getUserName()+":"+user.getUserId(),user.getPassword(),authorities);
+        return retVal;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         if(retVal.isSuccess()){
             try{
                 EnvUsers user = new EnvUsers(dto);
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
                 user = userRepo.save(user);
                 retVal.setData(new EnvUserDto(user));
             }catch (Exception e){

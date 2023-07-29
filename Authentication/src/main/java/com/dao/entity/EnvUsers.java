@@ -12,16 +12,17 @@ import org.springframework.util.unit.DataUnit;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity(name = "ENV_USERS")
+@Entity
+@Table(name = "ENV_USERS",schema = "ENV_AUTH")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnvUsers extends ABaseEntity {
     public EnvUsers(EnvUserSaveDto dto){
-        this.setPassword(dto.getPassword());
         this.setFirstName(dto.getFirstName());
         this.setLastName(dto.getLastName());
         this.setUserName(dto.getUserName());
+        this.setCellPhone(dto.getMobileNumber());
         this.setUserType(UserType.ordinary);
         this.setUnsuccessfulTries(0);
         this.setCreationDate(new Timestamp(System.currentTimeMillis()));
@@ -31,9 +32,9 @@ public class EnvUsers extends ABaseEntity {
     @Id
     @Column(name = "USER_ID")
     @GeneratedValue(generator = "SEQ_ENV_USER", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "SEQ_ENV_USER", allocationSize = 1, sequenceName = "SEQ_ENV_USER")
+    @SequenceGenerator(name = "SEQ_ENV_USER", allocationSize = 1, sequenceName = "SEQ_ENV_USER",schema = "ENV_AUTH")
     private Long userId;
-    @Column(name = "PASSWORD",length = 20)
+    @Column(name = "PASSWORD",length = 200)
     private String password;
     @Column(name = "FIRST_NAME",length = 100)
     private String firstName;

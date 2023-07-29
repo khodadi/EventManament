@@ -372,3 +372,14 @@ create sequence env_data.seq_occasion_cost
     maxvalue 999999999999
     cache 20
     cycle;
+
+
+
+alter table env_auth.env_users
+    alter column last_login_ip type varchar(15) using last_login_ip::varchar(15);
+
+alter table env_auth.env_users
+    alter column current_login_ip type varchar(15) using current_login_ip::varchar(15);
+
+alter table env_auth.env_users
+    alter column password type varchar(200) using password::varchar(200);

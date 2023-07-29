@@ -16,9 +16,13 @@ public class EnvUserSaveDto {
         this.setFirstName(ent.getFirstName());
         this.setLastName(ent.getLastName());
         this.setUserName(ent.getUserName());
+        this.setMobileNumber(ent.getCellPhone());
+        this.setMail(ent.getEmail());
     }
     private String firstName;
     private String lastName;
+    private String mobileNumber;
+    private String mail;
     private String userName;
     private String password;
 }

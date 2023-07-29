@@ -11,7 +11,7 @@ public class StringUtility extends StringUtils {
     public static OutputAPIForm checkString(String str,boolean isNull, int minLength,int maxLength,boolean enLang){
         OutputAPIForm retVal = checkString(str,isNull);
         retVal = retVal.isSuccess()?checkString(str,minLength,maxLength):retVal;
-        retVal = retVal.isSuccess()?checkString(str,enLang):retVal;
+        retVal = retVal.isSuccess()?checkLangString(str,enLang):retVal;
         return retVal;
     }
 
@@ -38,7 +38,7 @@ public class StringUtility extends StringUtils {
     public static OutputAPIForm checkLangString(String str,boolean enLang){
         OutputAPIForm retVal = new OutputAPIForm<>();
         String strTemp = (str == null ?"":str.trim());
-        if(enLang && strTemp.matches(enMatcher)){
+        if(enLang && !strTemp.matches(enMatcher)){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.INVALID_LANGUAGE);
         }
