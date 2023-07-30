@@ -29,4 +29,36 @@ public enum CodeException {
         }
         this.codeException = codeException;
     }
+
+//    @Override
+//    public String toString() {
+//        String retVal = "Undefine";
+//        switch (codeException){
+//            case 1:
+//                retVal = "system_exception";
+//                break;
+//            case 2:
+//                retVal = "UNDEFINED";
+//                break;
+//            case 3:
+//                retVal = "invalid_mail";
+//                break;
+//            case 4:
+//                retVal = "invalid_mail";
+//                break;
+//            case 5:
+//                retVal = "invalid_mail";
+//                break;
+//            case 6:
+//                retVal = "invalid_mail";
+//                break;
+//            case 7:
+//                retVal = "invalid_mail";
+//                break;
+//            case 8:
+//                retVal = "invalid_mail";
+//                break;
+//        }
+//        return retVal;
+//    }
 }

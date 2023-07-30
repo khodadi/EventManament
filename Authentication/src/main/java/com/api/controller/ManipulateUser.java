@@ -5,6 +5,7 @@ import com.basedata.CodeException;
 import com.service.dto.EnvUserDto;
 import com.service.dto.EnvUserSaveDto;
 import com.service.services.IEvnUsersSrv;
+import com.service.services.IMessageBundleSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.net.URI;
 public class ManipulateUser {
     @Autowired
     private IEvnUsersSrv iEvnUsersSrv;
+    @Autowired
+    private IMessageBundleSrv messageBundleSrv;
     @PostMapping("/save")
     public ResponseEntity<OutputAPIForm> saveUser(@RequestBody EnvUserSaveDto user){
         OutputAPIForm retVal = new OutputAPIForm();
@@ -35,6 +38,7 @@ public class ManipulateUser {
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
         }
+        messageBundleSrv.createMsg(retVal);
         return ResponseEntity.created(uri).body(retVal);
     }
 }

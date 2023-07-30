@@ -4,6 +4,7 @@ import com.api.form.OutputAPIForm;
 import com.basedata.CodeException;
 import com.dao.entity.EnvUsers;
 import com.dao.repository.IUserRepo;
+import com.security.UserSecurity;
 import com.service.dto.EnvUserDto;
 import com.service.dto.EnvUserSaveDto;
 import com.utility.StringUtility;
@@ -40,7 +41,7 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
-        UserDetails retVal =new org.springframework.security.core.userdetails.User(user.getUserName()+":"+user.getUserId(),user.getPassword(),authorities);
+        UserDetails retVal = new UserSecurity(user.getUserName(),user.getPassword(),true,true,true,true,authorities,new EnvUserDto(user));
         return retVal;
     }
 

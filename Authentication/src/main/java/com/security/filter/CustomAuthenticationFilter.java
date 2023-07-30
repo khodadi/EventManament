@@ -2,6 +2,7 @@ package com.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.security.UserSecurity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,16 +51,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        User user = (User)authentication.getPrincipal();
+        UserSecurity user = (UserSecurity)authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("Secret".getBytes());
         String access_token = JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getEnvUser().getUserId().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (EXPIRE_TOKEN)))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("role",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
         String refresh_token = JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getEnvUser().getUserId().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (EXPIRE_REFRESH_TOKEN)))
                 .withIssuer(request.getRequestURL().toString())
 //                .withClaim("role",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
