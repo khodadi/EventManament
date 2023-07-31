@@ -31,3 +31,5 @@ cors:
   allowed-origins:
     - http://localhost:3000
     - http://localhost:3001
+token:
+  number_token: 3

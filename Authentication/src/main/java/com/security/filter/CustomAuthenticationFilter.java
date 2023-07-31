@@ -1,6 +1,7 @@
 package com.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.dao.repository.IEnvUserTokenRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.UserSecurity;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     public static Long EXPIRE_TOKEN = 3 * 60 * 60 * 1000L;
     public static Long EXPIRE_REFRESH_TOKEN =6 * 60 * 60 * 1000L;
     private AuthenticationManager authenticationManager;
+    private IEnvUserTokenRepo envUserTokenRepo;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public CustomAuthenticationFilter(IEnvUserTokenRepo envUserTokenRepo,AuthenticationManager authenticationManager) {
+        this.envUserTokenRepo = envUserTokenRepo;
         this.authenticationManager = authenticationManager;
     }
 
@@ -70,6 +73,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token",access_token);
         tokens.put("refresh_token",refresh_token);
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),tokens);
     }

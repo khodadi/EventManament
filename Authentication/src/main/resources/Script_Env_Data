@@ -383,3 +383,23 @@ alter table env_auth.env_users
 
 alter table env_auth.env_users
     alter column password type varchar(200) using password::varchar(200);
+
+create table env_auth.env_user_token
+(
+    user_id           bigint       not null,
+    token             varchar(500) not null,
+    datatime_expire   timestamp    not null,
+    creation_date     timestamp    not null,
+    env_user_token_id bigint       not null
+        constraint env_user_token_pk
+            primary key
+);
+
+
+create sequence env_auth.seq_env_users_token
+	minvalue 1000
+	maxvalue 99999999999999999
+	cache 20
+	cycle;
+
+
