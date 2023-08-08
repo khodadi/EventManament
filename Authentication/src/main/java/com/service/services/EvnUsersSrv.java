@@ -3,6 +3,8 @@ package com.service.services;
 import com.api.form.OutputAPIForm;
 import com.basedata.CodeException;
 import com.dao.entity.EnvUsers;
+import com.dao.entity.EnvUsersToken;
+import com.dao.repository.IEnvUserTokenRepo;
 import com.dao.repository.IUserRepo;
 import com.security.UserSecurity;
 import com.service.dto.EnvUserDto;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -25,9 +29,12 @@ import java.util.Collection;
 public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     private final IUserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
-    public EvnUsersSrv(IUserRepo userRepo, PasswordEncoder passwordEncoder) {
+    private final IEnvUserTokenRepo envUserTokenRepo;
+
+    public EvnUsersSrv(IUserRepo userRepo, PasswordEncoder passwordEncoder, IEnvUserTokenRepo envUserTokenRepo) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
+        this.envUserTokenRepo = envUserTokenRepo;
     }
 
     @Override
@@ -79,5 +86,16 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
             retVal.getErrors().add(CodeException.UNDEFINED);
         }
         return retVal;
+    }
+
+    public void saveToken(UserSecurity user, Map<String,String> tokens){
+        List<EnvUsersToken> envUsersTokens = envUserTokenRepo.getAllByUserId(user.getEnvUser().getUserId());
+        if(envUsersTokens != null && envUsersTokens.size() > 3){
+            for(int i=3 ;i < envUsersTokens.size();i++){
+                envUserTokenRepo.deleteAllByEnvUsersTokenId(envUsersTokens.get(i).getEnvUsersTokenId());
+            }
+        }
+        EnvUsersToken envUsersToken = new EnvUsersToken(user,tokens);
+        envUserTokenRepo.save(envUsersToken);
     }
 }

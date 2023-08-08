@@ -1,6 +1,7 @@
 package com.security;
 
 
+import com.dao.repository.IEnvUserTokenRepo;
 import com.security.filter.CustomAuthenticationFilter;
 import com.security.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
+    private final IEnvUserTokenRepo envUserTokenRepo;
+
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -37,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(envUserTokenRepo,authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
