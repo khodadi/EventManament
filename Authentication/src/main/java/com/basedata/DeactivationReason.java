@@ -7,11 +7,7 @@ public enum DeactivationReason {
     MaxUnsuccessfulLoginRetriesReached(0),
     TemporarilyDeactivatedForSecurityReasons(1),
     DeactivatedByUser(2);
-
-
     private int deactivationReasonCode;
-
-
     @JsonValue
     public int getDeactivationReasonCode() {
         return deactivationReasonCode;
