@@ -1,14 +1,14 @@
 package com.utility;
 
-import com.api.form.OutputAPIForm;
 import com.basedata.CodeException;
+import com.from.OutputAPIForm;
 import org.springframework.util.StringUtils;
 
 public class StringUtility extends StringUtils {
 
     public static final String enMatcher = "[a-zA-Z]+";
 
-    public static OutputAPIForm checkString(String str,boolean isNull, int minLength,int maxLength,boolean enLang){
+    public static OutputAPIForm checkString(String str, boolean isNull, int minLength, int maxLength, boolean enLang){
         OutputAPIForm retVal = checkString(str,isNull);
         retVal = retVal.isSuccess()?checkString(str,minLength,maxLength):retVal;
         retVal = retVal.isSuccess()?checkLangString(str,enLang):retVal;

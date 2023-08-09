@@ -53,6 +53,22 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     }
 
     @Override
+    public OutputAPIForm<UserDetails> loadUserByToken(String token) throws UsernameNotFoundException {
+        OutputAPIForm<UserDetails> retVal = new OutputAPIForm<>();
+        EnvUsers user = new EnvUsers();
+        if(user == null){
+            log.error("The User do not find in database");
+            throw new UsernameNotFoundException("The User do not find in database");
+        }else{
+            log.info("The User find in database : {}",token);
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
+        retVal.setData(new UserSecurity(user.getUserName(),user.getPassword(),true,true,true,true,authorities,new EnvUserDto(user)));
+        return retVal;
+    }
+
+    @Override
     public OutputAPIForm<EnvUserDto> insertUser(EnvUserSaveDto dto) {
         OutputAPIForm<EnvUserDto> retVal = validationUser(dto);
         if(retVal.isSuccess()){

@@ -1,39 +1,44 @@
 package com.api.controller;
 
+import com.api.form.OutputAPIForm;
 import com.basedata.CodeException;
-import com.from.OutputAPIForm;
-import com.service.dto.OccasionDto;
+import com.dao.repository.IEnvUserTokenRepo;
+import com.security.UserSecurity;
+import com.service.dto.EnvUserSaveDto;
+import com.service.services.IEvnUsersSrv;
 import com.service.services.IMessageBundleSrv;
-import com.service.services.IOccasionSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+/**
+ * @Creator 8/9/2023
+ * @Project IntelliJ IDEA
+ * @Author k.khodadi
+ **/
+
 @RestController
-@RequestMapping("/api/v1/occasion")
+@RequestMapping("/api/v1/token")
 @RequiredArgsConstructor
 @Slf4j
-public class OccasionController {
+public class TokenController {
 
     @Autowired
-    private IOccasionSrv occasionSrv;
+    private IEvnUsersSrv evnUsersSrv;
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
 
-    @PostMapping("/save")
-    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody OccasionDto occasion){
-        OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
+    @PostMapping("/user")
+    public ResponseEntity<OutputAPIForm<UserSecurity>> getUserByToken(@RequestParam(required = true) String token){
+        OutputAPIForm<UserSecurity> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/token/user").toUriString());
         try{
-            retVal = occasionSrv.saveOccasion(occasion);
+            evnUsersSrv.loadUserByToken(token);
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);

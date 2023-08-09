@@ -9,8 +9,7 @@ public enum CodeException {
     DATA_BASE_EXCEPTION(7),
     INVALID_LANGUAGE(8),
     INVALIDATE_DATETIME(9),
-    EXPIRED_TOKEN(10);
-
+    ACCESS_DENIED(10);
     private int codeException;
     CodeException(int code) {
         this.codeException = code;

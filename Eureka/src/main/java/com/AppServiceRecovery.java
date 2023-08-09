@@ -10,13 +10,11 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * @Author k.khodadi
  **/
 
-
 @EnableEurekaServer
 @SpringBootApplication
 public class AppServiceRecovery {
     public static void main(String[] args) {
         SpringApplication.run(AppServiceRecovery.class, args);
     }
-
 }
 
