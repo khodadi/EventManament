@@ -1,6 +1,6 @@
 package com.api.controller;
 
-import com.api.form.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.basedata.CodeException;
 import com.dao.repository.IEnvUserTokenRepo;
 import com.security.UserSecurity;
@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,11 +35,11 @@ public class TokenController {
     private IMessageBundleSrv messageBundleSrv;
 
     @PostMapping("/user")
-    public ResponseEntity<OutputAPIForm<UserSecurity>> getUserByToken(@RequestParam(required = true) String token){
-        OutputAPIForm<UserSecurity> retVal = new OutputAPIForm();
+    public ResponseEntity<OutputAPIForm<UserDetails>> getUserByToken(@RequestParam(required = true) String token){
+        OutputAPIForm<UserDetails> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/token/user").toUriString());
         try{
-            evnUsersSrv.loadUserByToken(token);
+            retVal = evnUsersSrv.loadUserByToken(token);
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);

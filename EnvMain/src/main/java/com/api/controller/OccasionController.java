@@ -1,7 +1,7 @@
 package com.api.controller;
 
 import com.basedata.CodeException;
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.service.dto.OccasionDto;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IOccasionSrv;

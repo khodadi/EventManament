@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.utility.CallWSRest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.basedata.exceptions;
 
 import com.basedata.CodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

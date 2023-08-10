@@ -1,4 +1,4 @@
-package com.api.form;
+package com.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

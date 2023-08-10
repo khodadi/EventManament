@@ -2,7 +2,7 @@ package com.utility;
 
 import com.basedata.CodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.result.Output;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 
 import java.util.Locale;
 

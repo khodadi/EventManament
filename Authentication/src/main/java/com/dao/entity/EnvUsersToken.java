@@ -20,7 +20,7 @@ import java.util.Map;
  **/
 
 @Entity
-@Table(name = "ENV_USERS_TOKEN",schema = "ENV_AUTH")
+@Table(name = "ENV_USER_TOKEN",schema = "ENV_AUTH")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class EnvUsersToken {
     }
 
     @Id
-    @Column(name = "ENV_USERS_TOKEN_ID")
+    @Column(name = "ENV_USER_TOKEN_ID")
     @GeneratedValue(generator = "SEQ_ENV_USERS_TOKEN", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "SEQ_ENV_USERS_TOKEN", allocationSize = 1, sequenceName = "SEQ_ENV_USERS_TOKEN",schema = "ENV_AUTH")
     private Long envUsersTokenId;

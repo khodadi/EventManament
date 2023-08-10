@@ -2,7 +2,7 @@ package com.utility;
 
 import com.basedata.CodeException;
 import com.basedata.OccasionLengthTypeEnum;
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.service.dto.BaseOccasionDto;
 
 import java.sql.Timestamp;

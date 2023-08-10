@@ -1,6 +1,6 @@
 package com.api.controller;
 
-import com.api.form.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.basedata.CodeException;
 import com.service.dto.EnvUserDto;
 import com.service.dto.EnvUserSaveDto;

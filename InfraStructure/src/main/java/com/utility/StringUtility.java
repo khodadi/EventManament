@@ -1,7 +1,7 @@
 package com.utility;
 
 import com.basedata.CodeException;
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import org.springframework.util.StringUtils;
 
 public class StringUtility extends StringUtils {

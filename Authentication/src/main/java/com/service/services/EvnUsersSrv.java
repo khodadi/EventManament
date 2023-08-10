@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.api.form.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.basedata.CodeException;
 import com.dao.entity.EnvUsers;
 import com.dao.entity.EnvUsersToken;
@@ -55,16 +55,23 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     @Override
     public OutputAPIForm<UserDetails> loadUserByToken(String token) throws UsernameNotFoundException {
         OutputAPIForm<UserDetails> retVal = new OutputAPIForm<>();
-        EnvUsers user = new EnvUsers();
-        if(user == null){
-            log.error("The User do not find in database");
-            throw new UsernameNotFoundException("The User do not find in database");
-        }else{
-            log.info("The User find in database : {}",token);
+        try{
+            EnvUsersToken userToken = envUserTokenRepo.getByToken(token);
+            if(userToken != null){
+                EnvUsers user = userRepo.getOne(userToken.getUserId());
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
+                retVal.setData(new UserSecurity(user.getUserName(),"NULL",true,true,true,true,authorities,new EnvUserDto(user)));
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.INVALID_TOKEN);
+                log.error("The User do not find in database");
+                throw new UsernameNotFoundException("The User do not find in database");
+            }
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.INVALID_TOKEN);
         }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
-        retVal.setData(new UserSecurity(user.getUserName(),user.getPassword(),true,true,true,true,authorities,new EnvUserDto(user)));
         return retVal;
     }
 
@@ -104,14 +111,25 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         return retVal;
     }
 
-    public void saveToken(UserSecurity user, Map<String,String> tokens){
-        List<EnvUsersToken> envUsersTokens = envUserTokenRepo.getAllByUserId(user.getEnvUser().getUserId());
-        if(envUsersTokens != null && envUsersTokens.size() > 3){
-            for(int i=3 ;i < envUsersTokens.size();i++){
-                envUserTokenRepo.deleteAllByEnvUsersTokenId(envUsersTokens.get(i).getEnvUsersTokenId());
+    public OutputAPIForm saveToken(UserSecurity user, Map<String,String> tokens){
+        OutputAPIForm retVal = new OutputAPIForm();
+        try{
+            List<EnvUsersToken> envUsersTokens = envUserTokenRepo.getAllByUserId(user.getEnvUser().getUserId());
+            if(envUsersTokens != null && envUsersTokens.size() > 3){
+                for(int i=3 ;i < envUsersTokens.size();i++){
+                    envUserTokenRepo.deleteAllByEnvUsersTokenId(envUsersTokens.get(i).getEnvUsersTokenId());
+                }
             }
+            EnvUsersToken envUsersToken = new EnvUsersToken(user,tokens);
+            envUserTokenRepo.save(envUsersToken);
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+            e.printStackTrace();
+            log.error(e.getMessage());
         }
-        EnvUsersToken envUsersToken = new EnvUsersToken(user,tokens);
-        envUserTokenRepo.save(envUsersToken);
+        return retVal;
     }
+
+
 }

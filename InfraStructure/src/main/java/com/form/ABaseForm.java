@@ -1,8 +1,10 @@
-package com.api.form;
-import com.basedata.CodeException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.form;
 
-import lombok.*;
+import com.basedata.CodeException;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 

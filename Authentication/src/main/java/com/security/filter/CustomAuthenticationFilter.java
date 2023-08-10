@@ -2,6 +2,8 @@ package com.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.dao.repository.IEnvUserTokenRepo;
+import com.form.OutputAPIForm;
+import com.service.services.IEvnUsersSrv;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.UserSecurity;
 import lombok.extern.slf4j.Slf4j;
@@ -31,11 +33,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     public static Long EXPIRE_TOKEN = 3 * 60 * 60 * 1000L;
     public static Long EXPIRE_REFRESH_TOKEN =6 * 60 * 60 * 1000L;
     private AuthenticationManager authenticationManager;
-    private IEnvUserTokenRepo envUserTokenRepo;
 
-    public CustomAuthenticationFilter(IEnvUserTokenRepo envUserTokenRepo,AuthenticationManager authenticationManager) {
-        this.envUserTokenRepo = envUserTokenRepo;
+    private IEvnUsersSrv evnUsersSrv;
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager,
+                                      IEvnUsersSrv evnUsersSrv) {
+
         this.authenticationManager = authenticationManager;
+        this.evnUsersSrv = evnUsersSrv;
     }
 
     @Override
@@ -46,8 +51,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         final String[] values = credentials.split(":", 2);
         String username = values[0];
         String password = values[1];
-        log.info("Username is {}",username);
-        log.info("Password is {}" ,password);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -73,8 +76,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token",access_token);
         tokens.put("refresh_token",refresh_token);
-
+        OutputAPIForm outputAPIForm = evnUsersSrv.saveToken(user,tokens);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+        if(outputAPIForm.isSuccess()){
+            new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+        }else{
+            new ObjectMapper().writeValue(response.getOutputStream(), "Problem in Write Token");
+        }
     }
 }

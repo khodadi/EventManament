@@ -1,11 +1,10 @@
 package com.utility;
 
-import com.shaparak.infra.dto.Output;
-import com.shaparak.infra.exception.CodeException;
-import com.shaparak.infra.utils.jalalicalendar.DateConverter;
-import com.shaparak.infra.utils.jalalicalendar.JalaliCalendar;
-import com.shaparak.infra.utils.jalalicalendar.JalaliDate;
-import org.joda.time.DateTimeComparator;
+import com.basedata.CodeException;
+import com.form.OutputAPIForm;
+import com.utility.jalalicalendar.DateConverter;
+import com.utility.jalalicalendar.JalaliCalendar;
+import com.utility.jalalicalendar.JalaliDate;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -731,52 +730,15 @@ public final class DateUtils {
         return retVal;
     }
 
-    public static Output checkDate(Timestamp date, int numberDate){
-        Output output = new Output();
+    public static OutputAPIForm checkDate(Timestamp date, int numberDate){
+        OutputAPIForm output = new OutputAPIForm();
         if(date == null || date.before(addDays(getCurrentDate(),-numberDate)) ){
-            output.setIsSuccessful(false);
-            output.getErrors().add(CodeException.START_DATE);
+            output.setSuccess(false);
         }
         return output;
     }
 
-    public static boolean isDateBetweenTheTwo(Timestamp firstDate , Timestamp secondDate){
-        boolean result;
-        DateTimeComparator dateTimeComparator = DateTimeComparator.getDateOnlyInstance();
 
-        Date oneDate = new Date(firstDate.getTime());
-        Date twoDate = new Date(secondDate.getTime());
-        Date systemDate = new Date(getCurrentDate().getTime());
-
-        int systemVsOneDate = dateTimeComparator.compare(systemDate, oneDate);
-        int systemVsTwoDate = dateTimeComparator.compare(systemDate, twoDate);
-        // if currentDateVsInputDate = 0 both dates are equal
-        // if currentDateVsInputDate < 0 currentDate is before InputDate
-        // if currentDateVsInputDate > 0 currentDate is after InputDate
-
-        result = systemVsOneDate >= 0 && systemVsTwoDate <= 0;
-        // if true -> current date after first date and before second date
-        return result;
-    }
-
-    public static boolean isTimeBetweenTheTwo(Timestamp firstTime , Timestamp secondTime){
-        boolean result;
-        DateTimeComparator dateTimeComparator = DateTimeComparator.getTimeOnlyInstance();
-
-        Date oneTime = new Date(firstTime.getTime());
-        Date twoTime = new Date(secondTime.getTime());
-        Date systemTime = new Date(getCurrentDate().getTime());
-
-        int systemVsOneTime = dateTimeComparator.compare(systemTime, oneTime);
-        int systemVsTwoTime = dateTimeComparator.compare(systemTime, twoTime);
-        // if currentTimeVsInputTime = 0 both times are equal
-        // if currentTimeVsInputTime < 0 currentTime is before InputTime
-        // if currentTimeVsInputTime > 0 currentTime is after InputTime
-
-        result = systemVsOneTime >= 0 && systemVsTwoTime <= 0;
-        // if true -> current time after first time and before second time
-        return result;
-    }
 
     public static boolean towDatesVsCurrentDate(Timestamp startDate ,Timestamp endDate ,boolean afterCurrentDate){
         boolean result = true;
@@ -799,27 +761,27 @@ public final class DateUtils {
     }
 
 
-    public static boolean isDateTimeBetweenTheTwo(Timestamp startDate, Timestamp endDate, Timestamp startTime, Timestamp endTime){
-        boolean result;
-        DateTimeComparator dateTimeComparator = DateTimeComparator.getInstance();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(getYearDate(startDate),Integer.parseInt(getMonthDate(startDate)) -1,Integer.parseInt(getDayDate(startDate)), Integer.parseInt(getHourDate(startTime)), Integer.parseInt(getMonthDate(startTime)));
-        Date oneDate = calendar.getTime();
-        calendar.set(getYearDate(endDate),Integer.parseInt(getMonthDate(endDate)) -1,Integer.parseInt(getDayDate(endDate)), Integer.parseInt(getHourDate(endTime)), Integer.parseInt(getMonthDate(endTime)));
-        Date twoDate = calendar.getTime();
-        Date systemDate = new Date(getCurrentDate().getTime());
-
-        int systemVsOneDate = dateTimeComparator.compare(systemDate, oneDate);
-        int systemVsTwoDate = dateTimeComparator.compare(systemDate, twoDate);
-        // if currentDateVsInputDate = 0 both dates are equal
-        // if currentDateVsInputDate < 0 currentDate is before InputDate
-        // if currentDateVsInputDate > 0 currentDate is after InputDate
-
-        result = systemVsOneDate >= 0 && systemVsTwoDate <= 0;
-        // if true -> current date after first date and before second date
-
-        return result;
-    }
+//    public static boolean isDateTimeBetweenTheTwo(Timestamp startDate, Timestamp endDate, Timestamp startTime, Timestamp endTime){
+//        boolean result;
+//        DateTimeComparator dateTimeComparator = DateTimeComparator.getInstance();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(getYearDate(startDate),Integer.parseInt(getMonthDate(startDate)) -1,Integer.parseInt(getDayDate(startDate)), Integer.parseInt(getHourDate(startTime)), Integer.parseInt(getMonthDate(startTime)));
+//        Date oneDate = calendar.getTime();
+//        calendar.set(getYearDate(endDate),Integer.parseInt(getMonthDate(endDate)) -1,Integer.parseInt(getDayDate(endDate)), Integer.parseInt(getHourDate(endTime)), Integer.parseInt(getMonthDate(endTime)));
+//        Date twoDate = calendar.getTime();
+//        Date systemDate = new Date(getCurrentDate().getTime());
+//
+//        int systemVsOneDate = dateTimeComparator.compare(systemDate, oneDate);
+//        int systemVsTwoDate = dateTimeComparator.compare(systemDate, twoDate);
+//        // if currentDateVsInputDate = 0 both dates are equal
+//        // if currentDateVsInputDate < 0 currentDate is before InputDate
+//        // if currentDateVsInputDate > 0 currentDate is after InputDate
+//
+//        result = systemVsOneDate >= 0 && systemVsTwoDate <= 0;
+//        // if true -> current date after first date and before second date
+//
+//        return result;
+//    }
 
     public static boolean validateDateAndTime(Timestamp startDate, Timestamp endDate) {
         Calendar calendarStart = Calendar.getInstance();
