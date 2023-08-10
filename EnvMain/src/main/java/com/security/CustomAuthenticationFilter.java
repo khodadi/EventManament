@@ -1,7 +1,7 @@
 package com.security;
 
 import com.basedata.CodeException;
-import com.from.OutputAPIForm;
+import com.form.OutputAPIForm;
 import com.service.services.IUserGeneralSrv;
 import com.utility.InfraSecurityUtils;
 import lombok.extern.slf4j.Slf4j;
