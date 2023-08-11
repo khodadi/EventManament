@@ -47,16 +47,67 @@
 					"response": []
 				},
 				{
+					"name": "getUserByToken",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/authentication/api/v1/token/user?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDQwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4wLjUwOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkxNzA5NzI3fQ.Gcgntpml-NR5vQUNvUCS7l7iomNBIjQPPx4ixXi35f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"authentication",
+								"api",
+								"v1",
+								"token",
+								"user"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDQwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4wLjUwOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkxNzA5NzI3fQ.Gcgntpml-NR5vQUNvUCS7l7iomNBIjQPPx4ixXi35f8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "add user",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDQwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4wLjUwOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkwNzYxNDc5fQ.DdVxlQTHr8yYL0Gz1Yc9BU1HQp0SDXvsMAO6lImjVnE",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\":\"کیومرث\",\r\n    \"lastName\":\"خدادی\",\r\n    \"userName\":\"khodadi\",\r\n    \"mobileNumber\":\"09196891064\",\r\n    \"password\":\"123456\",\r\n    \"mail\":\"\"\r\n}",
+							"raw": "{\r\n    \"firstName\":\"افسانه\",\r\n    \"lastName\":\"خداشناس\",\r\n    \"userName\":\"khodashenas\",\r\n    \"mobileNumber\":\"09126144071\",\r\n    \"password\":\"123456\",\r\n    \"mail\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -77,6 +128,41 @@
 								"user",
 								"save"
 							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "AddOccasion",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDQwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4wLjUwOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkxNzUxMjIyfQ.fLJkvD4yYZpvNVZx0jDAD7kpdFd5Bffemn8zRwyK6Qw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"occasionName\":\"Yazd\",\r\n    \"occasionTypeId\":1,\r\n    \"OccasionLengthType\":0,\r\n    \"startDate\": 1691827549000,\r\n    \"endDate\":1692173149000,\r\n    \"sharable\":true,\r\n    \"latitude\":35.75130,\r\n    \"longitude\":51.39977\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						}
 					},
 					"response": []

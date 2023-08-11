@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.result.Output;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,15 @@ public class InfraSecurityUtils {
         }
     }
 
+    public static Long getCurrentUser(){
+        Long retVal = -1L;
+        try{
+            retVal = new Long(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        }catch (Exception e){
+            retVal = -1L;
+        }
+        return retVal;
+    }
 
     public static int getHttpCode(List<? extends CodeException> codeException){
         int result = 200;

@@ -2,6 +2,7 @@ package com.api.controller;
 
 import com.basedata.CodeException;
 import com.form.OutputAPIForm;
+import com.service.dto.BaseOccasionDto;
 import com.service.dto.OccasionDto;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IOccasionSrv;
@@ -29,7 +30,7 @@ public class OccasionController {
     private IMessageBundleSrv messageBundleSrv;
 
     @PostMapping("/save")
-    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody OccasionDto occasion){
+    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody BaseOccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
         try{

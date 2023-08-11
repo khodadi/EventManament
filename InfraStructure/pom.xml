@@ -9,6 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
+    </dependencies>
     <artifactId>InfraStructure</artifactId>
     <groupId>com.event.infra</groupId>
     <version>1.0.0</version>

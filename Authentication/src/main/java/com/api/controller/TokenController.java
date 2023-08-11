@@ -46,6 +46,6 @@ public class TokenController {
             retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
         }
         messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.created(uri).body(retVal);
+        return ResponseEntity.ok().body(retVal);
     }
 }

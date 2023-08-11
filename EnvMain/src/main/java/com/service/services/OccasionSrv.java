@@ -46,7 +46,7 @@ public class OccasionSrv implements IOccasionSrv{
 
     public OutputAPIForm validateBaseOccasionDto(BaseOccasionDto dto){
         OutputAPIForm retVal = Utility.checkNull(dto);
-        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionName(),false,5,50,false):retVal;
+        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionName(),false,1,50,false):retVal;
         retVal = retVal.isSuccess() ? Utility.checkMandatoryBaseOccasion(dto):retVal;
         retVal = retVal.isSuccess() ? Utility.checkPic(dto.getPic(),true):retVal;
         retVal = retVal.isSuccess() ? Utility.checkOccasionDateTime(dto.getOccasionLengthType(),dto.getStartDate(),dto.getEndDate()):retVal;

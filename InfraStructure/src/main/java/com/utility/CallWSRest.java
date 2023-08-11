@@ -38,8 +38,8 @@ public class CallWSRest {
         return headers;
     }
 
-    public static OutputAPIForm<Object> post(String url, String auth, @NotNull Object input, Class clazz) {
-        return sendRequest(createRestTemplate(),url, HttpMethod.POST, createRequest(createBasicAuthHeaders(auth), input),clazz);
+    public static <T> OutputAPIForm<T> post(String url, String auth, @NotNull Object input, Class clazz) {
+        return sendGeneralRequest(createRestTemplate(),url, HttpMethod.POST, createRequest(createBasicAuthHeaders(auth), input),clazz);
     }
 
     private static HttpEntity createRequest(HttpHeaders header, Object input) {
@@ -52,6 +52,7 @@ public class CallWSRest {
         }
     }
 
+
     private static OutputAPIForm<Object> sendRequest(RestTemplate restTemplate, String url, HttpMethod type, HttpEntity request, Class clazz) {
         log.info("WebConnect class start - url: " + url);
         OutputAPIForm<Object> retVal = new OutputAPIForm();
@@ -63,6 +64,27 @@ public class CallWSRest {
             if (response.getStatusCode().equals(HttpStatus.OK)) {
                 retVal.setSuccess(true);
                 retVal.setData(response.getBody());
+            } else {
+                retVal.setSuccess(false);
+            }
+        } catch (Exception e) {
+            log.error("WebConnect catch Error - url: " + url);
+            log.error(e.getMessage());
+            e.printStackTrace();
+            retVal.setSuccess(false);
+        }
+        return retVal;
+    }
+    private static   OutputAPIForm  sendGeneralRequest(RestTemplate restTemplate, String url, HttpMethod type, HttpEntity request, Class clazz) {
+        log.info("WebConnect class start - url: " + url);
+        OutputAPIForm retVal = new OutputAPIForm();
+        try {
+            Timestamp st = DateUtils.getCurrentDate();
+            ResponseEntity response = restTemplate.exchange(url, type, request, clazz);
+            Timestamp et = DateUtils.getCurrentDate();
+            log.info("Response url - " + url + " : " , DateUtils.diffTwoTimestamp(et, st));
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
+                retVal = (OutputAPIForm) response.getBody();
             } else {
                 retVal.setSuccess(false);
             }

@@ -10,5 +10,5 @@ import com.form.OutputAPIForm;
 
 
 public interface IUserGeneralSrv {
-    OutputAPIForm<Object> getUserToken(String token);
+    <T> OutputAPIForm<T> getUserToken(String token);
 }

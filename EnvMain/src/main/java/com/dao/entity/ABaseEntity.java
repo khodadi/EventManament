@@ -1,5 +1,7 @@
 package com.dao.entity;
 
+import com.utility.DateUtils;
+import com.utility.InfraSecurityUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,11 @@ import java.sql.Timestamp;
 @Getter
 @MappedSuperclass
 public class ABaseEntity {
+
+    public ABaseEntity(){
+        this.creationDate = DateUtils.getCurrentDate();
+        this.creatorUserId= InfraSecurityUtils.getCurrentUser();
+    }
 
     @Column(name = "CREATION_DATE", nullable = true, insertable = true, updatable = true, precision = 0)
     private Timestamp creationDate;
