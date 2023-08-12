@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 @Transactional
 @Slf4j
 public class OccasionSrv implements IOccasionSrv{
+
     private final IOccasionRepo occasionRepo;
     private final IPicRepo picRepo;
 
