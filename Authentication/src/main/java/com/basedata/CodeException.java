@@ -11,7 +11,6 @@ public enum CodeException {
     MANDATORY_FIELD(6),
     DATA_BASE_EXCEPTION(7),
     INVALID_LANGUAGE(8),
-
     INVALID_USERNAME(9),
     INVALID_TOKEN(10);
 

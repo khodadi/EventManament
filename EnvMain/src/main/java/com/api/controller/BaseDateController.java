@@ -35,7 +35,6 @@ public class BaseDateController {
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
 
-
     @PostMapping("/list")
     public ResponseEntity<OutputAPIForm> saveUser(@RequestBody OccasionTypeDto occasionType){
         OutputAPIForm<ArrayList<OccasionTypeDto>> retVal = new OutputAPIForm();
@@ -50,5 +49,4 @@ public class BaseDateController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.created(uri).body(retVal);
     }
-
 }
