@@ -16,4 +16,5 @@ import java.util.ArrayList;
 public interface IOccasionBaseSrv {
 
     OutputAPIForm<ArrayList<OccasionTypeDto>> getAllOccasionTypes();
+    OutputAPIForm saveOccasionType(OccasionTypeDto dto);
 }

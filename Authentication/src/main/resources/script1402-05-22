@@ -1,0 +1,2 @@
+alter table env_data.occasion_type
+    add occasion_type_name_fa varchar(100) ;

@@ -13,7 +13,7 @@ import javax.persistence.*;
  **/
 
 @Entity
-@Table(name = "Occasion",schema = "ENV_DATA")
+@Table(name = "Occasion_type",schema = "ENV_DATA")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +25,8 @@ public class OccasionType extends ABaseEntity{
     private Long occasionTypeId;
     @Column(name = "OCCASION_TYPE_NAME")
     private String occasionTypeName;
+    @Column(name = "OCCASION_TYPE_NAME_FA")
+    private String occasionTypeNameFa;
     @Column(name = "PIC_ID")
     private Long picId;
     @OneToOne

@@ -4,6 +4,8 @@ import com.basedata.CodeException;
 import com.basedata.OccasionLengthTypeEnum;
 import com.form.OutputAPIForm;
 import com.service.dto.BaseOccasionDto;
+import com.service.dto.OccasionTypeDto;
+import com.service.services.OccasionBaseSrv;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -19,6 +21,12 @@ public class Utility {
         retVal = retVal.isSuccess()? checkNull(dto.getPic()):retVal;
         retVal = retVal.isSuccess()? checkNull(dto.getLatitude()):retVal;
         retVal = retVal.isSuccess()? checkNull(dto.getLongitude()):retVal;
+        return retVal;
+    }
+
+    public static OutputAPIForm checkMandatoryOccasionTypeDto(OccasionTypeDto dto){
+        OutputAPIForm retVal = StringUtility.checkString(dto.getOccasionTypeName(),false);
+        retVal = retVal.isSuccess()? checkNull(dto.getPic()):retVal;
         return retVal;
     }
     public static OutputAPIForm checkPic(byte[] pic, boolean isNull){

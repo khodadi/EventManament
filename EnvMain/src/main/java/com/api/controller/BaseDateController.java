@@ -36,7 +36,7 @@ public class BaseDateController {
     private IMessageBundleSrv messageBundleSrv;
 
     @PostMapping("/list")
-    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody OccasionTypeDto occasionType){
+    public ResponseEntity<OutputAPIForm> listOfOccasionType(){
         OutputAPIForm<ArrayList<OccasionTypeDto>> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
         try{
@@ -47,6 +47,19 @@ public class BaseDateController {
             retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
         }
         messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.created(uri).body(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+    @PostMapping("/save")
+    public ResponseEntity<OutputAPIForm> saveOccasionType(@RequestBody OccasionTypeDto occasionTypeDto){
+        OutputAPIForm retVal = new OutputAPIForm();
+        try{
+            retVal = occasionBaseSrv.saveOccasionType(occasionTypeDto);
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
     }
 }
