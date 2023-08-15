@@ -52,6 +52,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 "/swagger-ui/**"
         ).permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/save").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasionType/list").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/eventmanagment/api/v1/occasionType/length").hasRole("ordinary");
         http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedException(messageBundleSrv));
 
         http.authorizeRequests().anyRequest().authenticated();

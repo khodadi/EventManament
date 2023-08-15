@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * @Creator 8/12/2023
@@ -32,4 +34,7 @@ public class OccasionType extends ABaseEntity{
     @OneToOne
     @JoinColumn(name = "pic_Id",insertable = false ,updatable=false)
     private Pic pic;
+
+    @OneToMany(mappedBy = "occasionTypeId")
+    private Set<OccasionComponent> occasionComponents;
 }

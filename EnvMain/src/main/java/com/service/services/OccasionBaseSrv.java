@@ -1,14 +1,17 @@
 package com.service.services;
 
 import com.basedata.CodeException;
+import com.basedata.OccasionLengthTypeEnum;
 import com.dao.entity.OccasionType;
 import com.dao.entity.Pic;
 import com.dao.repository.IOccasionTypeRepo;
 
 import com.dao.repository.IPicRepo;
 import com.form.OutputAPIForm;
+import com.service.dto.BaseData;
 import com.service.dto.OccasionTypeDto;
 import com.utility.StringUtility;
+import com.utility.GeneralUtility;
 import com.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +44,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
             if(retVal.isSuccess()){
                 Pic pic = new Pic(dto.getPic(), dto.getOccasionTypeName());
                 picRepo.save(pic);
-                OccasionType ent = new OccasionType(null,dto.getOccasionTypeName(),dto.getOccasionTypeNameFa(),pic.getPicId(),pic);
+                OccasionType ent = new OccasionType(null,dto.getOccasionTypeName(),dto.getOccasionTypeNameFa(),pic.getPicId(),pic,null);
                 occasionTypeRepo.save(ent);
             }
         }catch (Exception e){
@@ -87,4 +90,15 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
 
     }
 
+    public OutputAPIForm<ArrayList<BaseData>> getBaseData(){
+        OutputAPIForm<ArrayList<BaseData>> retVal = new OutputAPIForm<>();
+        retVal.setData(new ArrayList<>());
+        try{
+            retVal.getData().add(OccasionLengthTypeEnum.getLovOccasionType());
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.UNDEFINED);
+        }
+        return retVal;
+    }
 }

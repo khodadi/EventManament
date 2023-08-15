@@ -24,8 +24,5 @@ public class AppAPIGateway extends SpringBootServletInitializer {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
-
-
 }

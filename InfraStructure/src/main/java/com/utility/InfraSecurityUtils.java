@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Utilities;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class InfraSecurityUtils {
             if(codeException != null) {
                 retval.setSuccess(false);
                 retval.getErrors().add(codeException);
+                GeneralUtility.getMessageSrv().createMsg(retval);
             }
             if (returnHttpStatus){
                 response.setStatus(getHttpCode(retval.getErrors()));

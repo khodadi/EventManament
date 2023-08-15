@@ -44,13 +44,10 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 String token = authorizationHeader.substring("Bearer ".length());
                 //--------------- validate token itself
                 OutputAPIForm<UserSecurity> obj = userGeneralSrv.getUserToken(token);
-                if(Objects.nonNull(obj)){
+                if(Objects.nonNull(obj) && obj.isSuccess()){
                     log.info("*********** token found : " + obj.getData().toString());
-                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
                     log.info("*********** token is valid!");
-//                    (UserSecurity)obj.getData()forEach(item->{
-//                        authorities.add(new SimpleGrantedAuthority(item));
-//                    });
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(obj.getData().getEnvUser().getUserId(), null, obj.getData().getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }else{

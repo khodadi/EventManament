@@ -2,6 +2,7 @@ package com.service.services;
 
 
 import com.form.OutputAPIForm;
+import com.service.dto.BaseData;
 import com.service.dto.OccasionTypeDto;
 
 import java.util.ArrayList;
@@ -17,4 +18,5 @@ public interface IOccasionBaseSrv {
 
     OutputAPIForm<ArrayList<OccasionTypeDto>> getAllOccasionTypes();
     OutputAPIForm saveOccasionType(OccasionTypeDto dto);
+    OutputAPIForm<ArrayList<BaseData>> getBaseData();
 }

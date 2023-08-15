@@ -4,6 +4,8 @@ import com.dao.entity.Occasion;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -14,8 +16,9 @@ public class OccasionDto extends BaseOccasionDto{
     private Timestamp lastUpdate;
     private Long occasionId;
     private Long picId;
+    private ArrayList<ComponentEventDto> tabs;
 
-    public OccasionDto(Occasion ent){
+    public OccasionDto(Occasion ent,ArrayList<ComponentEventDto> tabs){
         super(ent.getOccasionName(),
                 ent.getOccasionTypeId(),
                 ent.getOccasionLengthType(),
@@ -29,5 +32,6 @@ public class OccasionDto extends BaseOccasionDto{
         this.setLastUpdate(ent.getLastUpdate());
         this.setOccasionId(ent.getOccasionId());
         this.setPicId(ent.getPicId());
+        this.setTabs(tabs);
     }
 }

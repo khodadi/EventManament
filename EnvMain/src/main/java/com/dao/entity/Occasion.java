@@ -25,6 +25,9 @@ public class Occasion extends ABaseEntity{
     private Long occasionId;
     @Column(name = "OCCASION_TYPE_ID")
     private Long occasionTypeId;
+    @OneToOne
+    @JoinColumn(name = "OCCASION_TYPE_ID",insertable = false ,updatable=false)
+    private OccasionType occasionType;
     @Column(name = "OCCASION_NAME")
     private String occasionName;
     @Column(name = "OCCASION_LENGTH_TYPE")
@@ -46,6 +49,7 @@ public class Occasion extends ABaseEntity{
     public Occasion(BaseOccasionDto dto,Long picId){
         this(null,
                 dto.getOccasionTypeId(),
+                null,
                 dto.getOccasionName(),
                 dto.getOccasionLengthType(),
                 dto.getStartDate(),
