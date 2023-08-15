@@ -21,9 +21,9 @@ public class ComponentEventDto implements Comparable<ComponentEventDto> {
         int retVal = 0;
         try{
             if(componentEventDto.getOrder() > this.getOrder()){
-                retVal = 1;
-            }else{
                 retVal = -1;
+            }else{
+                retVal = 1;
             }
         }catch (Exception e){
             log.error(e.getMessage());
