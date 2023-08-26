@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+
 @Slf4j
 @Setter
 @Getter
@@ -15,6 +17,13 @@ public class ComponentEventDto implements Comparable<ComponentEventDto> {
     private String componentName;
     private String componentNameFa;
     private int order;
+    private ArrayList<ItineraryDto> Itineraries;
+
+    public ComponentEventDto(String componentName, String componentNameFa, int order) {
+        this.componentName = componentName;
+        this.componentNameFa = componentNameFa;
+        this.order = order;
+    }
 
     @Override
     public int compareTo(ComponentEventDto componentEventDto) {

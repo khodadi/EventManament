@@ -11,6 +11,7 @@ import com.dao.repository.IPicRepo;
 import com.form.OutputAPIForm;
 import com.service.dto.BaseOccasionDto;
 import com.service.dto.ComponentEventDto;
+import com.service.dto.ItineraryDto;
 import com.service.dto.OccasionDto;
 import com.utility.StringUtility;
 import com.utility.Utility;
@@ -27,17 +28,19 @@ public class OccasionSrv implements IOccasionSrv{
 
     private final IOccasionRepo occasionRepo;
     private final IPicRepo picRepo;
-
     private final IOccasionTypeRepo occasionTypeRepo;
+    private final ItinerarySrv itinerarySrv;
 
-    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo) {
+    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv) {
         this.occasionRepo = occasionRepo;
         this.picRepo = picRepo;
         this.occasionTypeRepo = occasionTypeRepo;
+        this.itinerarySrv = itinerarySrv;
     }
 
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
         OutputAPIForm<OccasionDto> retVal = new OutputAPIForm<>();
+        OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary = new OutputAPIForm<>();
         try{
             retVal = validateBaseOccasionDto(dto);
             if(retVal.isSuccess()){
@@ -47,7 +50,7 @@ public class OccasionSrv implements IOccasionSrv{
                     picRepo.save(pic);
                     Occasion occasion = new Occasion(dto,pic.getPicId());
                     occasionRepo.save(occasion);
-                    retVal.setData(new OccasionDto(occasion, getTabs(occasionType)));
+                    retVal.setData(new OccasionDto(occasion, getTabs(occasionType,dto,occasion.getOccasionId())));
                 }
             }
         }catch (Exception e){
@@ -57,10 +60,19 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
     }
 
-    private ArrayList<ComponentEventDto> getTabs(OccasionType occasionType ){
+    private ArrayList<ComponentEventDto> getTabs(OccasionType occasionType,BaseOccasionDto dto,Long occasionId ){
         ArrayList<ComponentEventDto> retVal =new ArrayList<>();
+        OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary;
+        ComponentEventDto componentEvent;
         for(OccasionComponent occasionComponent:occasionType.getOccasionComponents()){
             try{
+                componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
+                                                        occasionComponent.getComponent().getComponentNameFa(),
+                                                        occasionComponent.getOrder());
+                if(componentEvent.getComponentName().equals("Itinerary")){
+                    defaultItinerary = itinerarySrv.saveDefaultItinerary(dto, occasionId);
+                    componentEvent.setItineraries(defaultItinerary.getData());
+                }
                 retVal.add(new ComponentEventDto(
                         occasionComponent.getComponent().getComponentName(),
                         occasionComponent.getComponent().getComponentNameFa(),
@@ -83,6 +95,5 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
 
     }
-
 
 }
