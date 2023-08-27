@@ -22,7 +22,7 @@ public class ItineraryDetailDto{
     private Timestamp entTime;
     private Long timeDistance;
     private Long wayDistance;
-    private ActivityTypeDto activityType;
+    private ActivityDto activityType;
     private EventDto eventId;
     private String description;
     private PlaceDto destination;
@@ -35,7 +35,7 @@ public class ItineraryDetailDto{
              itineraryDetail.getEndTime(),
              itineraryDetail.getTimeDistance(),
              itineraryDetail.getWayDistance(),
-             new ActivityTypeDto(itineraryDetail.getActivityId()),
+             new ActivityDto(itineraryDetail.getActivityId()),
              new EventDto(itineraryDetail.getEventId()),
              itineraryDetail.getDescription(),
              new PlaceDto(itineraryDetail.getDestinationPlaceId()));

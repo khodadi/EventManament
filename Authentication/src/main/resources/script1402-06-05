@@ -1,0 +1,85 @@
+alter table env_data.event
+    add event_name_fa varchar(100);
+
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (1, 0, 'Events', '2023-08-28', 1, null, null, '????? ???????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (20, 1, 'Foot', '2023-08-28', 1, null, null, '???');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (30, 1, 'Movie', '2023-08-28', 1, null, null, '?????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (40, 1, 'Sport', '2023-08-28', 1, null, null, '?????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (50, 1, 'Entertainment', '2023-08-28', 1, null, null, '??????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (21, 20, 'Breakfast', '2023-08-28', 1, null, null, '??????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (22, 20, 'Lunch', '2023-08-28', 1, null, null, '????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (23, 20, 'Dinner', '2023-08-28', 1, null, null, '???');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (31, 30, 'Cinema', '2023-08-28', 1, null, null, '?????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (32, 30, 'Theater', '2023-08-28', 1, null, null, '?????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (41, 40, 'Mountaineer', '2023-08-28', 1, null, null, '?????????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (42, 40, 'Cycling', '2023-08-28', 1, null, null, '?????? ?????');
+INSERT INTO env_data.event (event_id, parent_event_id, event_name, creation_date, creator_user_id, last_update, updater_user_id, event_name_fa) VALUES (43, 40, 'Tracking', '2023-08-28', 1, null, null, '?????????');
+
+alter table env_data.equipment
+    add equipment_name_fa varchar(100);
+
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (1, 'Equipment', 1, '2023-08-28', null, null, null, '???????');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (20, 'Camp', 1, '2023-08-28', null, null, null, '???');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (50, 'Tracking', 1, '2023-08-28', null, null, null, '?????????');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (100, 'Mountaineer', 1, '2023-08-28', null, null, null, '????????');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (51, 'Backpack', 50, '2023-08-28', null, null, null, '???? ????');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (52, 'Water', 50, '2023-08-28', null, null, null, '??');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (101, 'Shoes', 100, '2023-08-28', null, null, null, '???');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (102, 'ThreeSeason', 101, '2023-08-28', null, null, null, '?? ???');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (103, 'Winter', 101, '2023-08-28', null, null, null, '?????');
+INSERT INTO env_data.equipment (equipment_id, equipment_name, parent_equipment_id, creation_date, creator_user_id, last_update, updater_user_id, equipment_name_fa) VALUES (104, 'Bottom', 100, '2023-08-28', null, null, null, '?????');
+
+alter table env_data.place
+    add place_name_fa varchar(100);
+
+alter table env_data.place
+    rename column place_name to name;
+
+alter table env_data.place
+    rename column place_description to description;
+
+alter table env_data.place
+    rename column place_phone to phone;
+
+alter table env_data.place
+    rename column place_score to score;
+
+alter table env_data.place
+    rename column place_cost to cost;
+
+alter table env_data.place
+    rename column place_latitude to latitude;
+
+alter table env_data.place
+    rename column place_longitude to longitude;
+
+alter table env_data.place
+    rename column place_name_fa to name_fa;
+
+alter table env_data.place
+    add free bool;
+
+alter table env_data.place
+    add public_view bool;
+
+
+create sequence env_data.seq_acivity
+    as integer
+    minvalue 1000
+    maxvalue 9999
+    cycle;
+
+
+create table env_data.activity
+(
+    "activity_Id"   bigint not null
+        constraint activity_pk
+            primary key,
+    name            varchar(100),
+    name_fa         varchar(200),
+    pic_id          bigint,
+    creation_date   date   not null,
+    creator_user_id bigint,
+    last_update     date,
+    updater_user_id bigint
+);

@@ -4,8 +4,7 @@ import com.basedata.CodeException;
 import com.form.OutputAPIForm;
 import com.service.dto.BaseItineraryDetailDto;
 import com.service.dto.BaseOccasionDto;
-import com.service.dto.OccasionDto;
-import com.service.services.IItinerary;
+import com.service.services.IItinerarySrv;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IOccasionSrv;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.imageio.spi.IIOServiceProvider;
 import java.net.URI;
 
 @RestController
@@ -32,10 +30,10 @@ public class OccasionController {
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
     @Autowired
-    private IItinerary iItinerarySrv;
+    private IItinerarySrv iItinerarySrv;
 
     @PostMapping("/save")
-    public ResponseEntity<OutputAPIForm> saveUser(@RequestBody BaseOccasionDto occasion){
+    public ResponseEntity<OutputAPIForm> saveOccasion(@RequestBody BaseOccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
         try{

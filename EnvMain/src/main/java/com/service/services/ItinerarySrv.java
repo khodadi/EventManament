@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @Service
 @Transactional
 @Slf4j
-public class ItinerarySrv implements IItinerary{
+public class ItinerarySrv implements IItinerarySrv {
 
     private final IItineraryRepo itineraryRepo;
     private final IItineraryDetailRepo itineraryDetailRepo;

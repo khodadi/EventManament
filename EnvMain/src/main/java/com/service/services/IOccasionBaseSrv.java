@@ -2,8 +2,7 @@ package com.service.services;
 
 
 import com.form.OutputAPIForm;
-import com.service.dto.BaseData;
-import com.service.dto.OccasionTypeDto;
+import com.service.dto.*;
 
 import java.util.ArrayList;
 
@@ -17,6 +16,12 @@ import java.util.ArrayList;
 public interface IOccasionBaseSrv {
 
     OutputAPIForm<ArrayList<OccasionTypeDto>> getAllOccasionTypes();
+    OutputAPIForm<ArrayList<ActivityDto>> getAllActivity();
+    OutputAPIForm<EventDto> getAllEvent();
+    OutputAPIForm<EquipmentDto> getAllEquipment();
     OutputAPIForm saveOccasionType(OccasionTypeDto dto);
+    OutputAPIForm saveActivity(ActivityDto dto);
     OutputAPIForm<ArrayList<BaseData>> getBaseData();
+
+
 }

@@ -2,8 +2,7 @@ package com.api.controller;
 
 import com.basedata.CodeException;
 import com.form.OutputAPIForm;
-import com.service.dto.BaseData;
-import com.service.dto.OccasionTypeDto;
+import com.service.dto.*;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IOccasionBaseSrv;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
  **/
 
 @RestController
-@RequestMapping("/api/v1/occasionType")
+@RequestMapping("/api/v1/baseData")
 @RequiredArgsConstructor
 @Slf4j
 public class BaseDateController {
@@ -33,12 +32,57 @@ public class BaseDateController {
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
 
-    @PostMapping("/list")
+    @PostMapping("/occasionType/list")
     public ResponseEntity<OutputAPIForm> listOfOccasionType(){
         OutputAPIForm<ArrayList<OccasionTypeDto>> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasionType/list").toUriString());
         try{
             retVal = occasionBaseSrv.getAllOccasionTypes();
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/activity/list")
+    public ResponseEntity<OutputAPIForm> listOfActivity(){
+        OutputAPIForm<ArrayList<ActivityDto>> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/activity/List").toUriString());
+        try{
+            retVal = occasionBaseSrv.getAllActivity();
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/eventType/list")
+    public ResponseEntity<OutputAPIForm> listOfEventType(){
+        OutputAPIForm<EventDto> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/eventType").toUriString());
+        try{
+            retVal = occasionBaseSrv.getAllEvent();
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/equipment/list")
+    public ResponseEntity<OutputAPIForm> listOfEquipment(){
+        OutputAPIForm<EquipmentDto> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/equipment").toUriString());
+        try{
+            retVal = occasionBaseSrv.getAllEquipment();
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);
@@ -61,7 +105,7 @@ public class BaseDateController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-    @PostMapping("/save")
+    @PostMapping("occasionType/save")
     public ResponseEntity<OutputAPIForm> saveOccasionType(@RequestBody OccasionTypeDto occasionTypeDto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
@@ -74,6 +118,18 @@ public class BaseDateController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
+    @PostMapping("activity/save")
+    public ResponseEntity<OutputAPIForm> saveActivity(@RequestBody ActivityDto dto){
+        OutputAPIForm retVal = new OutputAPIForm();
+        try{
+            retVal = occasionBaseSrv.saveActivity(dto);
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
 
 }
