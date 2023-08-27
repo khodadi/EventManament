@@ -24,4 +24,11 @@ public class BaseItineraryDetailDto {
     private Long eventId;
     private String description;
     private Long destinationId;
+
+    public ArrayList<Long> getItineraryEquipments() {
+        if(itineraryEquipments == null){
+            itineraryEquipments = new ArrayList<>();
+        }
+        return itineraryEquipments;
+    }
 }

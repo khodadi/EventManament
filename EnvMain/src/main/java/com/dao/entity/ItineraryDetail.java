@@ -27,7 +27,7 @@ public class ItineraryDetail extends ABaseEntity{
     private Long destinationPlaceId;
     @Column(name = "START_TIME")
     private Timestamp startTime;
-    @Column(name = "EBD_TIME")
+    @Column(name = "END_TIME")
     private Timestamp endTime;
     @Column(name = "TIME_DISTANCE")
     private Long timeDistance;
@@ -43,8 +43,8 @@ public class ItineraryDetail extends ABaseEntity{
     public ItineraryDetail(BaseItineraryDetailDto dto){
         this(null,
         dto.getItineraryId(),
-        dto.getSource().getPlaceId(),
-        dto.getDestination().getPlaceId(),
+        dto.getSourceId(),
+        dto.getDestinationId(),
         dto.getStartTime(),
         dto.getEntTime(),
         dto.getTimeDistance(),

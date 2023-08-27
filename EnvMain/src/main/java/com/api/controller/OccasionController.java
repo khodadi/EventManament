@@ -2,8 +2,10 @@ package com.api.controller;
 
 import com.basedata.CodeException;
 import com.form.OutputAPIForm;
+import com.service.dto.BaseItineraryDetailDto;
 import com.service.dto.BaseOccasionDto;
 import com.service.dto.OccasionDto;
+import com.service.services.IItinerary;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IOccasionSrv;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.imageio.spi.IIOServiceProvider;
 import java.net.URI;
 
 @RestController
@@ -28,6 +31,8 @@ public class OccasionController {
     private IOccasionSrv occasionSrv;
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
+    @Autowired
+    private IItinerary iItinerarySrv;
 
     @PostMapping("/save")
     public ResponseEntity<OutputAPIForm> saveUser(@RequestBody BaseOccasionDto occasion){
@@ -35,6 +40,21 @@ public class OccasionController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
         try{
             retVal = occasionSrv.saveOccasion(occasion);
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.created(uri).body(retVal);
+    }
+
+    @PostMapping("/itinerary/detail/save")
+    public ResponseEntity<OutputAPIForm> saveItineraryDetail(@RequestBody BaseItineraryDetailDto dto){
+        OutputAPIForm retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
+        try{
+            retVal = iItinerarySrv.saveItineraryDetail(dto);
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);

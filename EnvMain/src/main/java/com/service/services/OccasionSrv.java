@@ -73,11 +73,7 @@ public class OccasionSrv implements IOccasionSrv{
                     defaultItinerary = itinerarySrv.saveDefaultItinerary(dto, occasionId);
                     componentEvent.setItineraries(defaultItinerary.getData());
                 }
-                retVal.add(new ComponentEventDto(
-                        occasionComponent.getComponent().getComponentName(),
-                        occasionComponent.getComponent().getComponentNameFa(),
-                        occasionComponent.getOrder()
-                ));
+                retVal.add(componentEvent);
             }catch (Exception e){
                 log.error(e.getMessage());
             }
