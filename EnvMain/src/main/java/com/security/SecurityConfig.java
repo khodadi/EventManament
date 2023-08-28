@@ -59,6 +59,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/activity/list").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/activity/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/eventType/length").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"eventmanagment/api/v1/baseData/equipment/list").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/eventmanagment/api/v1/baseData/length").hasRole("ordinary");
         http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedException(messageBundleSrv));
 

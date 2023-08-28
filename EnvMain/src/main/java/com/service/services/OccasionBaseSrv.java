@@ -167,6 +167,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
                 for(int i=1;i <equipments.size();i++){
                     findAndAddToTree(equipmentDto,equipments.get(i));
                 }
+                retVal.setData(equipmentDto);
             }
         }catch (Exception e){
             retVal.setSuccess(false);
