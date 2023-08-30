@@ -23,4 +23,5 @@ public class OccasionTypeDto {
     private String occasionTypeName;
     private String occasionTypeNameFa;
     private byte[] pic;
+    private Long picId;
 }

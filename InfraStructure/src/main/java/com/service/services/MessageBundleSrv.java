@@ -35,10 +35,10 @@ public class MessageBundleSrv implements IMessageBundleSrv{
     public void createMsg(OutputAPIForm obj, Locale locale){
         try{
             if(obj.isSuccess()){
-                obj.setMessage(ResourceBundle.getBundle("message",locale).getString("successfulMessage"));
+                obj.setMessage(ResourceBundle.getBundle("message_infra",locale).getString("successfulMessage"));
             }else{
                for(CodeException exp:obj.getErrors()){
-                   obj.setMessage(ResourceBundle.getBundle("message",locale).getString("error."+exp.toString().toLowerCase()));
+                   obj.setMessage(ResourceBundle.getBundle("message_infra",locale).getString("error."+exp.toString().toLowerCase()));
                    break;
                }
             }

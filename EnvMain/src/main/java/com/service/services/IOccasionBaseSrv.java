@@ -19,8 +19,8 @@ public interface IOccasionBaseSrv {
     OutputAPIForm<ArrayList<ActivityDto>> getAllActivity();
     OutputAPIForm<EventDto> getAllEvent();
     OutputAPIForm<EquipmentDto> getAllEquipment();
-    OutputAPIForm saveOccasionType(OccasionTypeDto dto);
-    OutputAPIForm saveActivity(ActivityDto dto);
+    OutputAPIForm<OccasionTypeDto> saveOccasionType(OccasionTypeDto dto);
+    OutputAPIForm<ActivityDto> saveActivity(ActivityDto dto);
     OutputAPIForm<ArrayList<BaseData>> getBaseData();
 
 

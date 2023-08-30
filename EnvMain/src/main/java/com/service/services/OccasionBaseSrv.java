@@ -49,6 +49,10 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
                 picRepo.save(pic);
                 OccasionType ent = new OccasionType(null,dto.getOccasionTypeName(),dto.getOccasionTypeNameFa(),pic.getPicId(),pic,null);
                 occasionTypeRepo.save(ent);
+                dto.setOccasionTypeId(ent.getOccasionTypeId());
+                dto.setPicId(pic.getPicId());
+                dto.setPic(null);
+                retVal.setData(dto);
             }
         }catch (Exception e){
             retVal.setSuccess(false);
@@ -57,14 +61,18 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
         return retVal;
     }
 
-    public OutputAPIForm saveActivity(ActivityDto dto){
-        OutputAPIForm retVal = new OutputAPIForm<>();
+    public OutputAPIForm<ActivityDto> saveActivity(ActivityDto dto){
+        OutputAPIForm<ActivityDto> retVal = new OutputAPIForm<>();
         try{
             if(retVal.isSuccess()){
                 Pic pic = new Pic(dto.getPic(), dto.getName());
                 picRepo.save(pic);
                 Activity ent = new Activity(null,dto.getName(),dto.getNameFa(),pic.getPicId(),pic);
                 activityRepo.save(ent);
+                dto.setPic(null);
+                dto.setActivityId(ent.getActivityId());
+                dto.setPicId(ent.getPicId());
+                retVal.setData(dto);
             }
         }catch (Exception e){
             retVal.setSuccess(false);
@@ -80,7 +88,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
             List<OccasionType> occasionTypes = occasionTypeRepo.findAll();
             for(OccasionType occasionType:occasionTypes){
                 try{
-                    occasionTypeDtos.add(new OccasionTypeDto(occasionType.getOccasionTypeId(), occasionType.getOccasionTypeName(),occasionType.getOccasionTypeNameFa(), occasionType.getPic().getPic()));
+                    occasionTypeDtos.add(new OccasionTypeDto(occasionType.getOccasionTypeId(), occasionType.getOccasionTypeName(),occasionType.getOccasionTypeNameFa(), occasionType.getPic().getPic(), occasionType.getPicId()));
                 }catch (Exception e){
                     log.error(e.getMessage());
                 }
@@ -100,7 +108,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
             List<Activity> activities = activityRepo.findAll();
             for(Activity activity:activities){
                 try{
-                    activityDtos.add(new ActivityDto(activity.getActivityId(), activity.getNameFa(),activity.getName(),activity.getPic().getPic()));
+                    activityDtos.add(new ActivityDto(activity.getActivityId(), activity.getNameFa(),activity.getName(),activity.getPic().getPicId(),activity.getPic().getPic()));
                 }catch (Exception e){
                     log.error(e.getMessage());
                 }
@@ -150,6 +158,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
                 for(int i=1;i <events.size();i++){
                     findAndAddToTree(eventDto,events.get(i));
                 }
+                retVal.setData(eventDto);
             }
         }catch (Exception e){
             retVal.setSuccess(false);

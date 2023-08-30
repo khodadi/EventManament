@@ -13,6 +13,7 @@ public class ActivityDto {
     private Long activityId;
     private String nameFa;
     private String name;
+    private Long picId;
     private byte[] pic;
 
     public ActivityDto(Long activityId) {
