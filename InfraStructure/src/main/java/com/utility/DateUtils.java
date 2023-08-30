@@ -1,6 +1,5 @@
 package com.utility;
 
-import com.basedata.CodeException;
 import com.form.OutputAPIForm;
 import com.utility.jalalicalendar.DateConverter;
 import com.utility.jalalicalendar.JalaliCalendar;

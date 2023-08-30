@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.dao.entity.Occasion;
 import com.dao.entity.OccasionComponent;
 import com.dao.entity.OccasionType;

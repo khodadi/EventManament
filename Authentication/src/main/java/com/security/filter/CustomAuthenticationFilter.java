@@ -1,7 +1,9 @@
 package com.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.dao.repository.IEnvUserTokenRepo;
+import com.basedata.generalcode.CodeException;
+
+import static com.utility.InfraSecurityUtils.generateResponse;
 import com.form.OutputAPIForm;
 import com.service.services.IEvnUsersSrv;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -45,14 +46,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String base64Credentials = request.getHeader("Authorization").substring("Basic".length()).trim();
-        byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
-        String credentials = new String(credDecoded, StandardCharsets.UTF_8);
-        final String[] values = credentials.split(":", 2);
-        String username = values[0];
-        String password = values[1];
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
-        return authenticationManager.authenticate(authenticationToken);
+        Authentication retVal = null;
+        try{
+            String base64Credentials = request.getHeader("Authorization").substring("Basic".length()).trim();
+            byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+            String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+            final String[] values = credentials.split(":", 2);
+            String username = values[0];
+            String password = values[1];
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
+            retVal = authenticationManager.authenticate(authenticationToken);
+        }catch (Exception e){
+            generateResponse(response, CodeException.BAD_USER_PASS,true);
+            retVal = null;
+        }
+        return retVal;
     }
 
     @Override

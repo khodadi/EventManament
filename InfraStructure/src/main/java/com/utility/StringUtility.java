@@ -1,6 +1,6 @@
 package com.utility;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import org.springframework.util.StringUtils;
 

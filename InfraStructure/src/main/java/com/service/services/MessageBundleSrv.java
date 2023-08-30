@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

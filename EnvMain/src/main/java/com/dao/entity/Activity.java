@@ -17,7 +17,7 @@ public class Activity extends ABaseEntity{
     @GeneratedValue(generator = "SEQ_ACTIVITY", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "SEQ_ACTIVITY", allocationSize = 1, sequenceName = "SEQ_ACTIVITY",schema = "ENV_DATA")
     private Long activityId;
-    @Column(name = "nNAME")
+    @Column(name = "NAME")
     private String name;
     @Column(name = "NAME_FA")
     private String nameFa;

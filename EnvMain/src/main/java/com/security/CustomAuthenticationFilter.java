@@ -1,13 +1,12 @@
 package com.security;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import com.service.services.IUserGeneralSrv;
 import com.utility.InfraSecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,10 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @Creator 8/9/2023

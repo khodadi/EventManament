@@ -1,4 +1,4 @@
-package com.basedata;
+package com.basedata.generalcode;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CodeException {
@@ -9,7 +9,12 @@ public enum CodeException {
     DATA_BASE_EXCEPTION(7),
     INVALID_LANGUAGE(8),
     INVALIDATE_DATETIME(9),
-    ACCESS_DENIED(10);
+    ACCESS_DENIED(10),
+    BAD_USER_PASS(401),
+    EXPIRED_TOKEN(12),
+    INVALID_MAIL(13),
+    INVALID_CELLPHONE(14),
+    INVALID_USERNAME(15);
     private int codeException;
     CodeException(int code) {
         this.codeException = code;

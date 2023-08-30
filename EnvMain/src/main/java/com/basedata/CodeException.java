@@ -8,8 +8,8 @@ public enum CodeException {
     MANDATORY_FIELD(6),
     DATA_BASE_EXCEPTION(7),
     INVALID_LANGUAGE(8),
-    INVALIDATE_DATETIME(9),
-    EXPIRED_TOKEN(10);
+    INVALIDATE_DATETIME(9);
+
 
     private int codeException;
     CodeException(int code) {
