@@ -1,7 +1,7 @@
 package com.service.services;
 
 import com.form.OutputAPIForm;
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.dao.entity.EnvUsers;
 import com.dao.entity.EnvUsersToken;
 import com.dao.repository.IEnvUserTokenRepo;
@@ -64,13 +64,13 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
                 retVal.setData(new UserSecurity(user.getUserName(),"NULL",true,true,true,true,authorities,new EnvUserDto(user)));
             }else{
                 retVal.setSuccess(false);
-                retVal.getErrors().add(CodeException.INVALID_TOKEN);
+                retVal.getErrors().add(CodeException.EXPIRED_TOKEN);
                 log.error("The User do not find in database");
                 throw new UsernameNotFoundException("The User do not find in database");
             }
         }catch (Exception e){
             retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.INVALID_TOKEN);
+            retVal.getErrors().add(CodeException.EXPIRED_TOKEN);
         }
         return retVal;
     }

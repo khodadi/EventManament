@@ -1,6 +1,6 @@
 package com.basedata.exceptions;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;

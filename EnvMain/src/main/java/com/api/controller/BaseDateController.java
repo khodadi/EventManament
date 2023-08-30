@@ -1,6 +1,6 @@
 package com.api.controller;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import com.service.dto.*;
 import com.service.services.IMessageBundleSrv;

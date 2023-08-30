@@ -1,8 +1,7 @@
 package com.api.controller;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
-import com.service.dto.BaseOccasionDto;
 import com.service.dto.PlaceDto;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IPlaceSrv;

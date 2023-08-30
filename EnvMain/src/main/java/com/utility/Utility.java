@@ -1,11 +1,10 @@
 package com.utility;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.basedata.OccasionLengthTypeEnum;
 import com.form.OutputAPIForm;
 import com.service.dto.BaseOccasionDto;
 import com.service.dto.OccasionTypeDto;
-import com.service.services.OccasionBaseSrv;
 
 import java.sql.Timestamp;
 import java.util.Objects;

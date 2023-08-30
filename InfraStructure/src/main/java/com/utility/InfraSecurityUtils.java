@@ -1,22 +1,19 @@
 package com.utility;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.form.OutputAPIForm;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.result.Output;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.Utilities;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @Creator 8/9/2023
@@ -27,6 +24,7 @@ import java.util.Locale;
 @Slf4j
 @Component
 public class InfraSecurityUtils {
+
     public static void generateResponse(HttpServletResponse response, CodeException codeException, boolean returnHttpStatus){
         OutputAPIForm<Object> retval = new OutputAPIForm<>();
         try {

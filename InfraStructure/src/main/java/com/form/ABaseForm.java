@@ -1,6 +1,6 @@
 package com.form;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.dao.entity.Pic;
 import com.dao.entity.Place;
 import com.dao.entity.PlacePic;

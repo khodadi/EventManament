@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.dao.entity.Itinerary;
 import com.dao.entity.ItineraryDetail;
 import com.dao.entity.ItineraryDetailEquipment;

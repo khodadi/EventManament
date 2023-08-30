@@ -1,6 +1,6 @@
 package com.service.services;
 
-import com.basedata.CodeException;
+import com.basedata.generalcode.CodeException;
 import com.basedata.UserType;
 import com.form.OutputAPIForm;
 import com.security.UserSecurity;
