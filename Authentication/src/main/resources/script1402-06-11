@@ -1,0 +1,5 @@
+alter table env_data.occasion_pic
+	add name varchar(100);
+
+
+alter table env_data.occasion_pic alter column sharable type boolean using sharable::boolean;

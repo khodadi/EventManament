@@ -1,18 +1,13 @@
 package com.service.services;
 
 import com.basedata.generalcode.CodeException;
-import com.dao.entity.Occasion;
-import com.dao.entity.OccasionComponent;
-import com.dao.entity.OccasionType;
-import com.dao.entity.Pic;
+import com.dao.entity.*;
+import com.dao.repository.IOccasionPicRepo;
 import com.dao.repository.IOccasionRepo;
 import com.dao.repository.IOccasionTypeRepo;
 import com.dao.repository.IPicRepo;
 import com.form.OutputAPIForm;
-import com.service.dto.BaseOccasionDto;
-import com.service.dto.ComponentEventDto;
-import com.service.dto.ItineraryDto;
-import com.service.dto.OccasionDto;
+import com.service.dto.*;
 import com.utility.StringUtility;
 import com.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +25,14 @@ public class OccasionSrv implements IOccasionSrv{
     private final IPicRepo picRepo;
     private final IOccasionTypeRepo occasionTypeRepo;
     private final ItinerarySrv itinerarySrv;
+    private final IOccasionPicRepo occasionPicRepo;
 
-    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv) {
+    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo) {
         this.occasionRepo = occasionRepo;
         this.picRepo = picRepo;
         this.occasionTypeRepo = occasionTypeRepo;
         this.itinerarySrv = itinerarySrv;
+        this.occasionPicRepo = occasionPicRepo;
     }
 
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
@@ -92,4 +89,24 @@ public class OccasionSrv implements IOccasionSrv{
 
     }
 
+
+    public OutputAPIForm<OccasionPicDto> saveOccasionPic(OccasionPicDto dto){
+
+        OutputAPIForm<OccasionPicDto> retVal =new OutputAPIForm();
+        try{
+            Pic pic = new Pic(dto.getPic(), dto.getName());
+            picRepo.save(pic);
+            OccasionPic ent = new OccasionPic(dto,pic);
+            occasionPicRepo.save(ent);
+            dto.setPicId(pic.getPicId());
+            dto.setOccasionPicId(ent.getOccasionPicId());
+            dto.setPic(null);
+            retVal.setData(dto);
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+
+    }
 }

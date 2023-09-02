@@ -54,4 +54,5 @@ public class Place extends ABaseEntity{
                 dto.isFree(),
                 dto.isPublicPlace());
     }
+
 }

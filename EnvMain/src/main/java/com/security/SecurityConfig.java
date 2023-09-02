@@ -51,18 +51,21 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 "/oauth/token",
                 "/swagger-ui/**"
         ).permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/save").hasRole("ordinary");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/itinerary/detail/save").hasRole("ordinary");
 
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/save").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/pic/save").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/itinerary/detail/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/occasionType/list").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/occasionType/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/activity/list").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/activity/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/eventType/length").hasRole("ordinary");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"eventmanagment/api/v1/baseData/equipment/list").hasRole("ordinary");
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/eventmanagment/api/v1/baseData/length").hasRole("ordinary");
-        http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedException(messageBundleSrv));
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/equipment/list").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/eventmanagment/api/v1/baseData/length").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/place/save").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/place/pic/save").hasRole("ordinary");
 
+        http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedException(messageBundleSrv));
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(new CustomAuthenticationFilter(getApplicationContext().getBean(IUserGeneralSrv.class)), BasicAuthenticationFilter.class);
     }

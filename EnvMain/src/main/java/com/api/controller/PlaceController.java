@@ -3,6 +3,7 @@ package com.api.controller;
 import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import com.service.dto.PlaceDto;
+import com.service.dto.PlacePicDto;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IPlaceSrv;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,21 @@ public class PlaceController {
             retVal = placeSrv.savePlace(dto);
         }catch (Exception e){
             log.error("Error in save PLace",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/pic/save")
+    public ResponseEntity<OutputAPIForm> savePlacePic(@RequestBody PlacePicDto dto){
+        OutputAPIForm<PlacePicDto> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/place/pic/save").toUriString());
+        try{
+            retVal = placeSrv.savePlacePic(dto);
+        }catch (Exception e){
+            log.error("Error in save PLace Pic",e);
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
         }

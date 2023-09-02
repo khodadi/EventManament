@@ -34,7 +34,6 @@ public class OccasionType extends ABaseEntity{
     @OneToOne
     @JoinColumn(name = "pic_Id",insertable = false ,updatable=false)
     private Pic pic;
-
     @OneToMany(mappedBy = "occasionTypeId")
     private Set<OccasionComponent> occasionComponents;
 }

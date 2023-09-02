@@ -9,6 +9,7 @@ import com.dao.repository.IPlacePicRepo;
 import com.dao.repository.IPlaceRepo;
 import com.form.OutputAPIForm;
 import com.service.dto.PlaceDto;
+import com.service.dto.PlacePicDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -54,4 +55,26 @@ public class PlaceSrv implements IPlaceSrv{
         }
         return retVal;
     }
+
+    public OutputAPIForm<PlacePicDto> savePlacePic(PlacePicDto dto){
+        OutputAPIForm<PlacePicDto> retVal = new OutputAPIForm<>();
+        Pic pic;
+        PlacePic placePic;
+        try{
+            pic = new Pic(dto.getPic(), dto.getName());
+            picRepo.save(pic);
+            dto.setPicId(pic.getPicId());
+            placePic = new PlacePic(null,dto.getPlaceId(),pic.getPicId());
+            placPicRepo.save(placePic);
+            dto.setPlacePicId(placePic.getPlaceId());
+            retVal.setData(dto);
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+
+
 }
