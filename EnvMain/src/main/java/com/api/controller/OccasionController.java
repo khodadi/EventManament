@@ -2,9 +2,7 @@ package com.api.controller;
 
 import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
-import com.service.dto.BaseItineraryDetailDto;
-import com.service.dto.BaseOccasionDto;
-import com.service.dto.OccasionPicDto;
+import com.service.dto.*;
 import com.service.services.IItinerarySrv;
 import com.service.services.IMessageBundleSrv;
 import com.service.services.IOccasionSrv;
@@ -63,6 +61,20 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
+    @PostMapping("/cost/save")
+    public ResponseEntity<OutputAPIForm> saveOccasionCost(@RequestBody OccasionCostDto occasionCost){
+        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/save").toUriString());
+        try{
+            retVal = occasionSrv.saveOccasionCost(occasionCost);
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
 
     @PostMapping("/itinerary/detail/save")
     public ResponseEntity<OutputAPIForm> saveItineraryDetail(@RequestBody BaseItineraryDetailDto dto){

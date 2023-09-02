@@ -2,10 +2,7 @@ package com.service.services;
 
 import com.basedata.generalcode.CodeException;
 import com.dao.entity.*;
-import com.dao.repository.IOccasionPicRepo;
-import com.dao.repository.IOccasionRepo;
-import com.dao.repository.IOccasionTypeRepo;
-import com.dao.repository.IPicRepo;
+import com.dao.repository.*;
 import com.form.OutputAPIForm;
 import com.service.dto.*;
 import com.utility.StringUtility;
@@ -27,12 +24,18 @@ public class OccasionSrv implements IOccasionSrv{
     private final ItinerarySrv itinerarySrv;
     private final IOccasionPicRepo occasionPicRepo;
 
-    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo) {
+    private final IOccasionUsersRepo occasionUsersRepo;
+
+    private final IOccasionCostRepo occasionCostRepo;
+
+    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo) {
         this.occasionRepo = occasionRepo;
         this.picRepo = picRepo;
         this.occasionTypeRepo = occasionTypeRepo;
         this.itinerarySrv = itinerarySrv;
         this.occasionPicRepo = occasionPicRepo;
+        this.occasionUsersRepo = occasionUsersRepo;
+        this.occasionCostRepo = occasionCostRepo;
     }
 
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
@@ -89,7 +92,6 @@ public class OccasionSrv implements IOccasionSrv{
 
     }
 
-
     public OutputAPIForm<OccasionPicDto> saveOccasionPic(OccasionPicDto dto){
 
         OutputAPIForm<OccasionPicDto> retVal =new OutputAPIForm();
@@ -108,5 +110,33 @@ public class OccasionSrv implements IOccasionSrv{
         }
         return retVal;
 
+    }
+
+    public OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto){
+        OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
+        try{
+            OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId());
+            occasionUsersRepo.save(ent);
+            dto.setOccasionUserId(ent.getOccasionUserId());
+            retVal.setData(dto);
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm<OccasionCostDto> saveOccasionCost(OccasionCostDto dto){
+        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm<>();
+        try{
+            OccasionCost ent = new OccasionCost(dto);
+            occasionCostRepo.save(ent);
+            dto.setOccasionId(ent.getOccasionCostId());
+            retVal.setData(dto);
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
     }
 }

@@ -1,0 +1,2 @@
+alter table env_data.occasion_cost
+    add description varchar(100);
