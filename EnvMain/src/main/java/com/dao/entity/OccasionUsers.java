@@ -1,5 +1,6 @@
 package com.dao.entity;
 
+import com.basedata.StateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,7 @@ public class OccasionUsers extends ABaseEntity{
     private Long UserId;
     @Column(name = "OCCASION_ID")
     private Long occasionId;
+    @Column(name = "STATE_REQUEST")
+    private StateRequest stateRequest;
 
 }

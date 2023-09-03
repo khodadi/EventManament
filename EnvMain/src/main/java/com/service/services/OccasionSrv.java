@@ -1,5 +1,6 @@
 package com.service.services;
 
+import com.basedata.StateRequest;
 import com.basedata.generalcode.CodeException;
 import com.dao.entity.*;
 import com.dao.repository.*;
@@ -115,7 +116,7 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
         try{
-            OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId());
+            OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId(), StateRequest.Requested);
             occasionUsersRepo.save(ent);
             dto.setOccasionUserId(ent.getOccasionUserId());
             retVal.setData(dto);
