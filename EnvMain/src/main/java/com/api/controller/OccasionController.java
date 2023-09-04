@@ -68,7 +68,22 @@ public class OccasionController {
         try{
             retVal = occasionSrv.saveOccasionCost(occasionCost);
         }catch (Exception e){
-            log.error("Error in save user",e);
+            log.error("Error in save cost occasion",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/user/save")
+    public ResponseEntity<OutputAPIForm> saveOccasionUser(@RequestBody OccasionUsersDto occasionUsers){
+        OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/user/save").toUriString());
+        try{
+            retVal = occasionSrv.saveOccasionUsers(occasionUsers);
+        }catch (Exception e){
+            log.error("Error in save occasion user",e);
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
         }

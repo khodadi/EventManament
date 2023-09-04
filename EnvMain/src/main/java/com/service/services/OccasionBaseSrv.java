@@ -1,5 +1,6 @@
 package com.service.services;
 
+import com.basedata.StateRequest;
 import com.basedata.generalcode.CodeException;
 import com.basedata.OccasionLengthTypeEnum;
 import com.dao.entity.*;
@@ -142,6 +143,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
         retVal.setData(new ArrayList<>());
         try{
             retVal.getData().add(OccasionLengthTypeEnum.getLovOccasionType());
+            retVal.getData().add(StateRequest.getLovStatusRequest());
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.UNDEFINED);

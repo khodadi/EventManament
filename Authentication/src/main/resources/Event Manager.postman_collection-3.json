@@ -324,7 +324,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDQwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4wLjUwOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkzNDQzMzI1fQ.sLKLI0afcakcjEE6wzWlUD8LC6Qwkt7t1W77b3k8N2o",
+													"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTcyLjE2LjExLjExOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkzODI1ODEzfQ.SPQHNnBn_FdwOc0fX7_wOVQ_IYrdZYulIw7xSRodUV0",
 													"type": "string"
 												}
 											]
@@ -941,6 +941,92 @@
 										"v1",
 										"occasion",
 										"pic",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddOccasionCost",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTcyLjE2LjExLjExOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkzODI1ODEzfQ.SPQHNnBn_FdwOc0fX7_wOVQ_IYrdZYulIw7xSRodUV0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"occasionCost\": 11200,\r\n    \"userId\":null,\r\n    \"occasionId\":1001,  \r\n    \"description\":\"Betoche\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8090/eventmanagment/api/v1/occasion/cost/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"eventmanagment",
+										"api",
+										"v1",
+										"occasion",
+										"cost",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddOccasionUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTcyLjE2LjExLjExOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkzODI1ODEzfQ.SPQHNnBn_FdwOc0fX7_wOVQ_IYrdZYulIw7xSRodUV0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":1020,\r\n    \"occasionId\":1001\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8090/eventmanagment/api/v1/occasion/user/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"eventmanagment",
+										"api",
+										"v1",
+										"occasion",
+										"user",
 										"save"
 									]
 								}

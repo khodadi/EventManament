@@ -119,6 +119,7 @@ public class OccasionSrv implements IOccasionSrv{
             OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId(), StateRequest.Requested);
             occasionUsersRepo.save(ent);
             dto.setOccasionUserId(ent.getOccasionUserId());
+            dto.setStateRequest(ent.getStateRequest());
             retVal.setData(dto);
         }catch (Exception e){
             retVal.setSuccess(false);
@@ -132,7 +133,7 @@ public class OccasionSrv implements IOccasionSrv{
         try{
             OccasionCost ent = new OccasionCost(dto);
             occasionCostRepo.save(ent);
-            dto.setOccasionId(ent.getOccasionCostId());
+            dto.setOccasionCostId(ent.getOccasionCostId());
             retVal.setData(dto);
         }catch (Exception e){
             retVal.setSuccess(false);

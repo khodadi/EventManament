@@ -1,13 +1,14 @@
 package com.dao.entity;
 
 import com.service.dto.OccasionCostDto;
+import com.utility.InfraSecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 @Entity
-@Table(name = "OCCASION_COSR",schema = "ENV_DATA")
+@Table(name = "OCCASION_COST",schema = "ENV_DATA")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class OccasionCost extends ABaseEntity{
     public OccasionCost(OccasionCostDto dto){
         this(null,
                 dto.getOccasionCost(),
-                dto.getUserId(),
+                dto.getUserId()== null? InfraSecurityUtils.getCurrentUser() :dto.getUserId(),
                 dto.getOccasionId(),
                 dto.getDescription());
     }
