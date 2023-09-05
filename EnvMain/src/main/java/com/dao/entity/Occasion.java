@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.naming.Name;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Set;
 
 @Entity
 @Table(name = "Occasion",schema = "ENV_DATA")
@@ -40,11 +42,17 @@ public class Occasion extends ABaseEntity{
     private Boolean sharable;
     @Column(name = "PIC_ID")
     private Long picId;
+    @OneToOne
+    @JoinColumn(name = "pic_Id",insertable = false ,updatable=false)
+    private Pic pic;
     @Column(name = "LATITUDE")
     private float latitude;
     @Column(name = "LONGITUDE")
     private float longitude;
-
+    @OneToMany(mappedBy = "occasionId",targetEntity = OccasionUsers.class)
+    private Set<OccasionUsers> occasionUsers;
+    @OneToMany(mappedBy = "occasionId",targetEntity = Itinerary.class)
+    private Set<Itinerary> itineraries;
 
     public Occasion(BaseOccasionDto dto,Long picId){
         this(null,
@@ -56,7 +64,10 @@ public class Occasion extends ABaseEntity{
                 dto.getEndDate(),
                 dto.getSharable(),
                 picId,
+                null,
                 dto.getLatitude(),
-                dto.getLongitude());
+                dto.getLongitude(),
+                null,
+                null);
     }
 }

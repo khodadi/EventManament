@@ -23,9 +23,12 @@ public abstract class ABaseForm {
     private String message  = "";
     @Builder.Default
     private boolean success = true;
+    @Builder.Default
+    private boolean nextPage = false;
 
     ABaseForm(){
         setSuccess(true);
+        setNextPage(false);
         setMessage("");
     }
 

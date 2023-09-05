@@ -19,7 +19,7 @@ public class OccasionUsers extends ABaseEntity{
     @SequenceGenerator(name = "SEQ_OCCASION_USERS", allocationSize = 1, sequenceName = "SEQ_OCCASION_USERS",schema = "ENV_DATA")
     private Long occasionUserId;
     @Column(name = "USER_ID")
-    private Long UserId;
+    private Long userId;
     @Column(name = "OCCASION_ID")
     private Long occasionId;
     @Column(name = "STATE_REQUEST")

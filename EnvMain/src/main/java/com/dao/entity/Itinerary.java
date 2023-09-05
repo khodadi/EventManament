@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name = "ITINERARY",schema = "ENV_DATA")
@@ -22,6 +23,8 @@ public class Itinerary extends ABaseEntity{
     private Long occasionId;
     @Column(name = "itineraryDate")
     private Timestamp itineraryDate;
+    @OneToMany(mappedBy = "itineraryId",targetEntity = ItineraryDetail.class)
+    private Set<ItineraryDetail> itineraryDetails;
 
     public Itinerary(Long occasionId, Timestamp itineraryDate) {
         this.occasionId = occasionId;

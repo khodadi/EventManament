@@ -17,15 +17,17 @@ public class OccasionDto extends BaseOccasionDto{
     private Long occasionId;
     private Long picId;
     private ArrayList<ComponentEventDto> tabs;
+    private ArrayList<OccasionUsersDto> occasionUsersDtos;
 
-    public OccasionDto(Occasion ent,ArrayList<ComponentEventDto> tabs){
+
+    public OccasionDto(Occasion ent,ArrayList<ComponentEventDto> tabs,boolean sendPic){
         super(ent.getOccasionName(),
                 ent.getOccasionTypeId(),
                 ent.getOccasionLengthType(),
                 ent.getStartDate(),
                 ent.getEndDate(),
                 ent.getSharable(),
-                null,
+                sendPic?ent.getPic().getPic():null,
                 ent.getLatitude(),
                 ent.getLongitude());
         this.setCreationDate(ent.getCreationDate());
@@ -33,5 +35,8 @@ public class OccasionDto extends BaseOccasionDto{
         this.setOccasionId(ent.getOccasionId());
         this.setPicId(ent.getPicId());
         this.setTabs(tabs);
+    }
+    public OccasionDto(Occasion ent){
+        this(ent,null,false);
     }
 }

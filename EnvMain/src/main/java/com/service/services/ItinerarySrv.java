@@ -40,7 +40,7 @@ public class ItinerarySrv implements IItinerarySrv {
             for(int i = 0;i < numberOfDate;i++){
                 Itinerary itinerary = new Itinerary(occasionId,DateUtils.addDays(DateUtils.getBeginOfDay(baseOccasionDto.getStartDate()),i));
                 itineraryRepo.save(itinerary);
-                itineraries.add(new ItineraryDto(itinerary.getItineraryId(),itinerary.getOccasionId(),itinerary.getItineraryDate()));
+                itineraries.add(new ItineraryDto(itinerary.getItineraryId(),itinerary.getOccasionId(),itinerary.getItineraryDate(),null));
             }
             retVal.setData(itineraries);
         }catch (Exception e){

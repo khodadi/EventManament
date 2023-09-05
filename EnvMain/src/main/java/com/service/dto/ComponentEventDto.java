@@ -18,6 +18,7 @@ public class ComponentEventDto implements Comparable<ComponentEventDto> {
     private String componentNameFa;
     private int order;
     private ArrayList<ItineraryDto> Itineraries;
+    private ArrayList<OccasionUsersDto> occasionUsersDtos;
 
     public ComponentEventDto(String componentName, String componentNameFa, int order) {
         this.componentName = componentName;
