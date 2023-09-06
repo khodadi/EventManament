@@ -53,6 +53,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         ).permitAll();
 
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/save").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/update").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/pic/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/itinerary/detail/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/cost/save").hasRole("ordinary");

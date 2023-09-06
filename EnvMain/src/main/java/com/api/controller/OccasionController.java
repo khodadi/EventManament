@@ -44,6 +44,22 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<OutputAPIForm> updateOccasion(@RequestBody OccasionDto occasion){
+        OutputAPIForm retVal = new OutputAPIForm();
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/update").toUriString());
+        try{
+            retVal = occasionSrv.editOccasion(occasion);
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+
     @GetMapping("")
     public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestBody CriOccasionDto criOccasion){
         OutputAPIForm retVal = new OutputAPIForm();
