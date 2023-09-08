@@ -907,6 +907,48 @@
 							"response": []
 						},
 						{
+							"name": "UpdateOccasion",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDQwIiwicm9sZSI6WyJvcmRpbmFyeSJdLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4wLjUwOjgwOTIvYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiZXhwIjoxNjkzOTU5Mzc5fQ.0Un1OmOsfjG7jY-81m-DgRUTSU4B3Be1RYt-B_XzjkE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"occasionId\": 1162,\r\n    \"occasionName\":\"First Update\",\r\n    \"occasionTypeId\":1080,\r\n    \"occasionLengthType\":0,\r\n    \"startDate\": 1691827549000,\r\n    \"endDate\":1692173149000,\r\n    \"sharable\":true,\r\n    \"latitude\":35.75130,\r\n    \"longitude\":51.39977,\r\n    \"pic\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8090/eventmanagment/api/v1/occasion/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"eventmanagment",
+										"api",
+										"v1",
+										"occasion",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "ListOccasion",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
