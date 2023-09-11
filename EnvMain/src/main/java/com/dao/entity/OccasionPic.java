@@ -35,9 +35,12 @@ public class OccasionPic extends ABaseEntity{
     @OneToOne
     @JoinColumn(name = "pic_Id",insertable = false ,updatable=false)
     private Pic pic;
+    @OneToOne
+    @JoinColumn(name = "occasion_id",insertable = false ,updatable=false)
+    private Occasion occasion;
 
     public OccasionPic(OccasionPicDto dto,Pic pic){
-        this(null,dto.getOccasionId(), dto.isSharable(), dto.getName(), pic.getPicId(),pic);
+        this(null,dto.getOccasionId(), dto.isSharable(), dto.getName(), pic.getPicId(),pic,null);
     }
 
 }

@@ -32,6 +32,7 @@ public class OccasionSrv implements IOccasionSrv{
     private final IOccasionCostRepo occasionCostRepo;
 
     public final static int pageSize = 5;
+
     public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo) {
         this.occasionRepo = occasionRepo;
         this.picRepo = picRepo;
@@ -41,6 +42,7 @@ public class OccasionSrv implements IOccasionSrv{
         this.occasionUsersRepo = occasionUsersRepo;
         this.occasionCostRepo = occasionCostRepo;
     }
+
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
         OutputAPIForm<OccasionDto> retVal = new OutputAPIForm<>();
         OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary = new OutputAPIForm<>();
@@ -82,6 +84,7 @@ public class OccasionSrv implements IOccasionSrv{
 
         return retVal;
     }
+
     public OutputAPIForm<ArrayList<OccasionDto>> listOccasion(CriOccasionDto criOccasion){
         OutputAPIForm<ArrayList<OccasionDto>> retVal = new OutputAPIForm<>();
         ArrayList<OccasionDto> occasionDtos = new ArrayList<>();
@@ -129,6 +132,7 @@ public class OccasionSrv implements IOccasionSrv{
         Collections.sort(retVal);
         return retVal;
     }
+
     private void setOccasionItinerary(Occasion event,ComponentEventDto componentEvent){
         if(componentEvent.getComponentName().equals("Itinerary")){
             ArrayList<ItineraryDto> itineraryDtos = new ArrayList<>();
@@ -139,6 +143,7 @@ public class OccasionSrv implements IOccasionSrv{
             componentEvent.setItineraries(itineraryDtos);
         }
     }
+
     private void setOccasionParticipant(Occasion event,ComponentEventDto componentEvent){
         if(componentEvent.getComponentName().equals("Participant")){
             ArrayList<OccasionUsersDto> occasionUsersDtos = new ArrayList<>();
@@ -206,26 +211,6 @@ public class OccasionSrv implements IOccasionSrv{
 
     }
 
-    public OutputAPIForm<OccasionPicDto> saveOccasionPic(OccasionPicDto dto){
-
-        OutputAPIForm<OccasionPicDto> retVal =new OutputAPIForm();
-        try{
-            Pic pic = new Pic(dto.getPic(), dto.getName());
-            picRepo.save(pic);
-            OccasionPic ent = new OccasionPic(dto,pic);
-            occasionPicRepo.save(ent);
-            dto.setPicId(pic.getPicId());
-            dto.setOccasionPicId(ent.getOccasionPicId());
-            dto.setPic(null);
-            retVal.setData(dto);
-        }catch (Exception e){
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
-        }
-        return retVal;
-
-    }
-
     public OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
         try{
@@ -241,18 +226,179 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
     }
 
-    public OutputAPIForm<OccasionCostDto> saveOccasionCost(OccasionCostDto dto){
-        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm<>();
+    public OutputAPIForm<OccasionPicDto> saveOccasionPic(OccasionPicDto dto){
+        OutputAPIForm<OccasionPicDto> retVal =new OutputAPIForm();
         try{
-            OccasionCost ent = new OccasionCost(dto);
-            occasionCostRepo.save(ent);
-            dto.setOccasionCostId(ent.getOccasionCostId());
-            retVal.setData(dto);
+            if(hasAccessInsOccasionCost(dto.getOccasionId())){
+                Pic pic = new Pic(dto.getPic(), dto.getName());
+                picRepo.save(pic);
+                OccasionPic ent = new OccasionPic(dto,pic);
+                occasionPicRepo.save(ent);
+                dto.setPicId(pic.getPicId());
+                dto.setOccasionPicId(ent.getOccasionPicId());
+                dto.setPic(null);
+                retVal.setData(dto);
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.ACCESS_DENIED);
+            }
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
         }
         return retVal;
+    }
+
+    public OutputAPIForm deleteOccasionPic(OccasionPicDto dto){
+        OutputAPIForm retVal = new OutputAPIForm();
+        try{
+            OccasionPic ent = occasionPicRepo.getOne(dto.getOccasionPicId());
+            if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionPic(ent)){
+                occasionPicRepo.deleteById(ent.getOccasionPicId());
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.ACCESS_DENIED);
+            }
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+            log.error(e.getMessage());
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm<ArrayList<OccasionCostDto>> listOccasionCost(CriOccasionDto criOccasion){
+        OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm<>();
+        ArrayList<OccasionCostDto> dtos = new ArrayList<>();
+        List<Occasion> occasions = occasionRepo.getOccasionByUserId(InfraSecurityUtils.getCurrentUser(),
+                                                                    criOccasion.getOccasionId(),
+                                                                    StateRequest.Accepted,
+                                                                    PageRequest.of(0, pageSize+1, Sort.by("startDate")));
+        if(Objects.nonNull(occasions) &&
+           occasions.size() == 1 &&
+           Objects.nonNull(occasions.get(0)) &&
+           Objects.nonNull(occasions.get(0).getOccasionCosts())){
+               for(OccasionCost ent:occasions.get(0).getOccasionCosts()){
+                   dtos.add(new OccasionCostDto(ent.getOccasionCostId(),ent.getOccasionCost(),ent.getUserId(),ent.getOccasionId(),ent.getDescription()));
+               }
+        }
+        retVal.setData(dtos);
+        return retVal;
+    }
+
+    public OutputAPIForm<OccasionCostDto> saveOccasionCost(OccasionCostDto dto){
+        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm<>();
+        try{
+            if(hasAccessInsOccasionCost(dto.getOccasionId())){
+                OccasionCost ent = new OccasionCost(dto);
+                occasionCostRepo.save(ent);
+                dto.setOccasionCostId(ent.getOccasionCostId());
+                retVal.setData(dto);
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.ACCESS_DENIED);
+            }
+
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm<OccasionCostDto> updateOccasionCost(OccasionCostDto dto){
+        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm<>();
+        try{
+            OccasionCost ent = occasionCostRepo.getOne(dto.getOccasionCostId());
+            if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionCost(ent)){
+                ent.updateEnt(dto);
+                occasionCostRepo.save(ent);
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.ACCESS_DENIED);
+            }
+
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm deleteOccasionCost(OccasionCostDto dto){
+        OutputAPIForm retVal = new OutputAPIForm<>();
+        try{
+            OccasionCost ent = occasionCostRepo.getOne(dto.getOccasionCostId());
+            if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionCost(ent)){
+                occasionRepo.deleteById(dto.getOccasionCostId());
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.ACCESS_DENIED);
+            }
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+            log.error(e.getMessage());
+        }
+        return retVal;
+    }
+
+    public boolean hasAccessDelUpdateOccasionCost(OccasionCost ent){
+        boolean retVal = false;
+        try{
+            if(ent.getCreatorUserId() != null && ent.getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
+                    ||
+              (Objects.nonNull(ent.getOccasion()) &&
+               Objects.nonNull(ent.getOccasion().getCreatorUserId()) &&
+               ent.getOccasion().getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
+              )
+            ){
+                retVal = true;
+            }
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return retVal;
+
+    }
+
+    public boolean hasAccessInsOccasionCost(Long occasionId){
+        boolean retVal = false;
+        try{
+            Occasion occasion = occasionRepo.getOne(occasionId);
+            if((Objects.nonNull(occasion) && Objects.nonNull(occasion.getCreatorUserId()) && occasion.getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser()))){
+                retVal = true;
+            }else if(Objects.nonNull(occasion) && Objects.nonNull(occasion.getOccasionUsers())){
+                for(OccasionUsers usr: occasion.getOccasionUsers()){
+                    if(Objects.nonNull(usr) && Objects.nonNull(usr.getUserId()) && usr.getUserId().equals(InfraSecurityUtils.getCurrentUser())){
+                        retVal = true;
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return retVal;
+    }
+
+    public boolean hasAccessDelUpdateOccasionPic(OccasionPic ent){
+        boolean retVal = false;
+        try{
+            if(ent.getCreatorUserId() != null && ent.getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
+                    ||
+                    (Objects.nonNull(ent.getOccasion()) &&
+                            Objects.nonNull(ent.getOccasion().getCreatorUserId()) &&
+                            ent.getOccasion().getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
+                    )
+            ){
+                retVal = true;
+            }
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return retVal;
+
     }
 
 }

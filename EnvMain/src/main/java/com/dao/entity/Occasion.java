@@ -53,6 +53,8 @@ public class Occasion extends ABaseEntity{
     private Set<OccasionUsers> occasionUsers;
     @OneToMany(mappedBy = "occasionId",targetEntity = Itinerary.class)
     private Set<Itinerary> itineraries;
+    @OneToMany(mappedBy = "occasionId",targetEntity = OccasionUsers.class,fetch = FetchType.LAZY)
+    private Set<OccasionCost> occasionCosts;
 
     public Occasion(BaseOccasionDto dto,Long picId){
         this(null,
@@ -67,6 +69,7 @@ public class Occasion extends ABaseEntity{
                 null,
                 dto.getLatitude(),
                 dto.getLongitude(),
+                null,
                 null,
                 null);
     }

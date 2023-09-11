@@ -5,8 +5,9 @@ import com.utility.InfraSecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.util.Objects;
+
 @Entity
 @Table(name = "OCCASION_COST",schema = "ENV_DATA")
 @Data
@@ -26,12 +27,21 @@ public class OccasionCost extends ABaseEntity{
     private Long occasionId;
     @Column(name = "DESCRIPTION")
     private String description;
+    @OneToOne
+    @JoinColumn(name = "OCCASION_ID",insertable = false ,updatable=false)
+    private Occasion occasion;
 
     public OccasionCost(OccasionCostDto dto){
         this(null,
                 dto.getOccasionCost(),
                 dto.getUserId()== null? InfraSecurityUtils.getCurrentUser() :dto.getUserId(),
                 dto.getOccasionId(),
-                dto.getDescription());
+                dto.getDescription(),
+                null);
+    }
+
+    public void updateEnt(OccasionCostDto dto){
+        this.setOccasionCost(Objects.nonNull(dto.getOccasionCost()) ? dto.getOccasionCost(): this.getOccasionCost());
+        this.setUserId(Objects.nonNull(dto.getUserId()) ? dto.getUserId(): this.getUserId());
     }
 }

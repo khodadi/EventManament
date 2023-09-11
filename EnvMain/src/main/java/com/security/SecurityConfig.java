@@ -56,7 +56,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/update").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/pic/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/itinerary/detail/save").hasRole("ordinary");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/cost/save").hasRole("ordinary");
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/eventmanagment/api/v1/occasion/cost").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/cost").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT,"/eventmanagment/api/v1/occasion/cost").hasRole("ordinary");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/eventmanagment/api/v1/occasion/cost").hasRole("ordinary");
+
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/occasion/user/save").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/occasionType/list").hasRole("ordinary");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/eventmanagment/api/v1/baseData/occasionType/save").hasRole("ordinary");
