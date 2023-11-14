@@ -3,7 +3,7 @@ package com;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import java.net.InetAddress;
 
@@ -14,7 +14,7 @@ import java.net.InetAddress;
  * @Author k.khodadi
  **/
 
-@EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class AppAPIGateway extends SpringBootServletInitializer {
     public static void main(String[] args){

@@ -1,11 +1,11 @@
 package com.dao.entity;
 
 import com.service.dto.BaseItineraryDetailDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 @Entity
 @Table(name = "ITINERARY_DETAIL",schema = "ENV_DATA")

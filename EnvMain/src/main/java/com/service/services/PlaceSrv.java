@@ -12,8 +12,8 @@ import com.service.dto.PlaceDto;
 import com.service.dto.PlacePicDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 @Service

@@ -3,14 +3,14 @@ package com.dao.entity;
 
 import com.basedata.OccasionLengthTypeEnum;
 import com.service.dto.BaseOccasionDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import javax.naming.Name;
-import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Set;
 
 @Entity

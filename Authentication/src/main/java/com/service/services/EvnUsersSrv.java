@@ -1,11 +1,11 @@
 package com.service.services;
 
-import com.form.OutputAPIForm;
 import com.basedata.generalcode.CodeException;
 import com.dao.entity.EnvUsers;
 import com.dao.entity.EnvUsersToken;
 import com.dao.repository.IEnvUserTokenRepo;
 import com.dao.repository.IUserRepo;
+import com.form.OutputAPIForm;
 import com.security.UserSecurity;
 import com.service.dto.EnvUserDto;
 import com.service.dto.EnvUserSaveDto;
@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +35,23 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.envUserTokenRepo = envUserTokenRepo;
+    }
+
+
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            EnvUsers user =  userRepo.findByUserName(username);
+            if (user == null) {
+                log.error("the user : {} do not find in database!", username);
+                throw new UsernameNotFoundException("the user do not find in database!");
+            } else {
+                log.info("the user : {} find in database!", username);
+            }
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(user.getUserType().toString()));
+//            new org.springframework.security.core.userdetails.User(user.getCellPhone(), user.getPassword(), authorities);
+            return new UserSecurity(user.getUserName(),user.getPassword(),true,true,true,true,authorities,new EnvUserDto(user));
+        };
     }
 
     @Override

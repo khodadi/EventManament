@@ -2,14 +2,12 @@ package com.dao.entity;
 
 import com.basedata.DeactivationReason;
 import com.basedata.UserType;
-import com.service.dto.EnvUserDto;
 import com.service.dto.EnvUserSaveDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.util.unit.DataUnit;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity

@@ -2,14 +2,12 @@ package com.dao.entity;
 
 import com.security.UserSecurity;
 import com.security.filter.CustomAuthenticationFilter;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang.time.DateUtils;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 

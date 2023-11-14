@@ -11,14 +11,13 @@
     <artifactId>Eureka</artifactId>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-            <version>${spring-cloud-gateway-server}</version>
         </dependency>
     </dependencies>
 

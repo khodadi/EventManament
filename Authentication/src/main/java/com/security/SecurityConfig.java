@@ -1,34 +1,39 @@
 package com.security;
 
 
+import com.basedata.exceptions.CustomAccessDeniedException;
 import com.dao.repository.IEnvUserTokenRepo;
 import com.security.filter.CustomAuthenticationFilter;
 import com.security.filter.CustomAuthorizationFilter;
 import com.service.services.IEvnUsersSrv;
+import com.service.services.IMessageBundleSrv;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
+
+    private final CustomAuthorizationFilter customAuthorizationFilter;
 
     private final IEvnUsersSrv evnUsersSrv;
 
@@ -36,31 +41,46 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder bCryptPasswordEncoder;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
+    private final IMessageBundleSrv messageBundleSrv;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),evnUsersSrv);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests(auth ->{
+                            auth.requestMatchers(
+                                    "/api/v1/**",
+                                    "/api/v1/user/guest/forgot-password/**",
+                                    "/api/v1/auth/get-captcha",
+                                    "/api/v1/auth/register/**",
+                                    "/api/v1/auth/login/**",
+                                    "/api/v1/auth/**",
+                                    "/api/v1/user",
+                                    "/api/v1/auth/module-login",
+                                    "/api/v1/auth/index.html/**",
+                                    "/api/v1/auth/swagger-ui/**",
+                                    "/authentication/**",
+                                    "/api/login",
+                                    "/api/token/refresh",
+                                    "/api/v1/user/save",
+                                    "/favicon.ico").permitAll();
+                            auth.anyRequest().authenticated();
+                        }
+                )
+                .httpBasic(withDefaults());
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager(), evnUsersSrv);
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        "/v2/api-docs","/**","/webjars/**","/swagger-ui.html/**","/swagger-resources/**","/swagger-ui/**","/v3/api-docs/**","/favicon.ico"
-        http.authorizeRequests().antMatchers("/api/login","/api/token/refresh").permitAll();
-        http.authorizeRequests().antMatchers("/api/v1/user/save").permitAll();
-        http.authorizeRequests().antMatchers("/authentication/api/v1/token/user").hasRole("MODULE");
-//        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/user/save/**").hasAnyAuthority("ROLE_USER");
         http.addFilter(customAuthenticationFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManagerBean();
+    public AuthenticationManager authenticationManager(){
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(evnUsersSrv.userDetailsService());
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return new ProviderManager(authProvider);
     }
-
 
 }

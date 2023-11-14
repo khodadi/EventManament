@@ -3,13 +3,13 @@ package com.utility;
 import com.basedata.generalcode.CodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.form.OutputAPIForm;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ public class InfraSecurityUtils {
     public static Long getCurrentUser(){
         Long retVal = -1L;
         try{
-            retVal = new Long(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+            retVal = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         }catch (Exception e){
             retVal = -1L;
         }

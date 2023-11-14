@@ -2,10 +2,11 @@ package com.dao.entity;
 
 import com.service.dto.OccasionCostDto;
 import com.utility.InfraSecurityUtils;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
+
 import java.util.Objects;
 
 @Entity

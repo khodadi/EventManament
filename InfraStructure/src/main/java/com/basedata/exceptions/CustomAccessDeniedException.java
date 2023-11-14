@@ -4,13 +4,13 @@ import com.basedata.generalcode.CodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -23,7 +23,10 @@ import java.util.Locale;
 
 public class CustomAccessDeniedException implements AccessDeniedHandler {
 
+
     private final IMessageBundleSrv messageBundleSrv;
+
+
 
     public CustomAccessDeniedException(IMessageBundleSrv messageBundleSrv) {
         this.messageBundleSrv = messageBundleSrv;

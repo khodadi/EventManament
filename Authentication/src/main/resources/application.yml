@@ -8,7 +8,7 @@ spring:
   #    active: test
 
   application:
-    name: authentication-service # current service name used for eureka registration
+    name: authentication # current service name used for eureka registration
 
   devtools:
     add-properties: false
@@ -23,9 +23,11 @@ eureka:
     leaseRenewalIntervalInSeconds: 20 # Notifying Eureka that the client is up or down or killed (second)
     leaseExpirationDurationInSeconds: 20 # Notifying Eureka that the client is up or down or killed (second)
     prefer-ip-address: true # registers the service ip rather than the server name
+    hostname: localhost
   client:
     register-with-eureka: true # register him self at eureka
     fetch-registry: true # pull down a local copy of the registries
+
 #----------- allowed cors origin
 cors:
   allowed-origins:

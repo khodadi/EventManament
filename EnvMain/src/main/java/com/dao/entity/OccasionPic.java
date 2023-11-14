@@ -1,11 +1,12 @@
 package com.dao.entity;
 
 import com.service.dto.OccasionPicDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 /**
  * @Creator 9/2/2023
@@ -32,6 +33,7 @@ public class OccasionPic extends ABaseEntity{
     private String name;
     @Column(name = "PIC_ID")
     private Long picId;
+    @JdbcTypeCode(SqlTypes.JSON)
     @OneToOne
     @JoinColumn(name = "pic_Id",insertable = false ,updatable=false)
     private Pic pic;

@@ -1,15 +1,12 @@
 package com.service.dto;
 
-import com.basedata.OccasionLengthTypeEnum;
 import com.dao.entity.Occasion;
-import com.dao.entity.OccasionType;
-import com.dao.entity.Pic;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Objects;

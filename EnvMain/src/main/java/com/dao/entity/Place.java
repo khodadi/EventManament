@@ -1,11 +1,10 @@
 package com.dao.entity;
 
 import com.service.dto.PlaceDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 @Entity
 @Table(name = "PLACE",schema = "ENV_DATA")
 @Data
