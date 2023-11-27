@@ -1,6 +1,6 @@
-package com.dao.repository;
+package com.env.dao.repository;
 
-import com.dao.entity.Itinerary;
+import com.env.dao.entity.Itinerary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IItineraryRepo extends JpaRepository<Itinerary,Long> {

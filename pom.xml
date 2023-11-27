@@ -33,11 +33,12 @@
         <org.apache.poi.poi-ooxml>5.2.2</org.apache.poi.poi-ooxml>
     </properties>
     <modules>
+        <module>InfraStructure</module>
         <module>Eureka</module>
         <module>APIGateway</module>
         <module>EnvMain</module>
         <module>Authentication</module>
-        <module>InfraStructure</module>
+
     </modules>
 
     <parent>

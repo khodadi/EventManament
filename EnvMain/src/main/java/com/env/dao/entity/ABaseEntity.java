@@ -1,4 +1,4 @@
-package com.dao.entity;
+package com.env.dao.entity;
 
 import com.utility.DateUtils;
 import com.utility.InfraSecurityUtils;

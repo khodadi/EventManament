@@ -26,10 +26,14 @@ import java.net.URI;
 @Slf4j
 public class TokenController {
 
-    @Autowired
     private IEvnUsersSrv evnUsersSrv;
-    @Autowired
     private IMessageBundleSrv messageBundleSrv;
+
+    @Autowired
+    public TokenController(IEvnUsersSrv evnUsersSrv, IMessageBundleSrv messageBundleSrv) {
+        this.evnUsersSrv = evnUsersSrv;
+        this.messageBundleSrv = messageBundleSrv;
+    }
 
     @PostMapping("/user")
     public ResponseEntity<OutputAPIForm<UserDetails>> getUserByToken(@RequestParam(required = true) String token){

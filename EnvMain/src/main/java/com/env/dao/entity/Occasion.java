@@ -1,8 +1,8 @@
-package com.dao.entity;
+package com.env.dao.entity;
 
 
-import com.basedata.OccasionLengthTypeEnum;
-import com.service.dto.BaseOccasionDto;
+import com.env.basedata.OccasionLengthTypeEnum;
+import com.env.service.dto.BaseOccasionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

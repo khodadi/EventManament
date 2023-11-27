@@ -1,13 +1,15 @@
-package com.service.services;
+package com.env.service.services;
 
 import com.basedata.generalcode.CodeException;
-import com.dao.entity.Itinerary;
-import com.dao.entity.ItineraryDetail;
-import com.dao.entity.ItineraryDetailEquipment;
-import com.dao.entity.Occasion;
-import com.dao.repository.IItineraryDetailEquipmentRepo;
-import com.dao.repository.IItineraryDetailRepo;
-import com.dao.repository.IItineraryRepo;
+import com.env.dao.entity.Itinerary;
+import com.env.dao.entity.ItineraryDetail;
+import com.env.dao.entity.ItineraryDetailEquipment;
+import com.env.dao.entity.Occasion;
+import com.env.dao.repository.IItineraryDetailEquipmentRepo;
+import com.env.dao.repository.IItineraryDetailRepo;
+import com.env.dao.repository.IItineraryRepo;
+import com.env.dao.entity.Itinerary;
+import com.env.service.dto.*;
 import com.form.OutputAPIForm;
 import com.service.dto.*;
 import com.utility.DateUtils;
@@ -35,7 +37,7 @@ public class ItinerarySrv implements IItinerarySrv {
         this.itineraryDetailEquipmentRepo = itineraryDetailEquipmentRepo;
     }
     @Override
-    public OutputAPIForm<ArrayList<ItineraryDto>> saveDefaultItinerary(BaseOccasionDto baseOccasionDto,Long occasionId) {
+    public OutputAPIForm<ArrayList<ItineraryDto>> saveDefaultItinerary(BaseOccasionDto baseOccasionDto, Long occasionId) {
         OutputAPIForm<ArrayList<ItineraryDto>> retVal = new OutputAPIForm<>();
         ArrayList<ItineraryDto> itineraries = new ArrayList<>();
         try{
@@ -92,7 +94,7 @@ public class ItinerarySrv implements IItinerarySrv {
         return retVal;
     }
 
-    public void insertForEditDefaultItinerary(Optional<Occasion> occasion,OccasionDto dto,OutputAPIForm<ArrayList<ItineraryDto>> retVal){
+    public void insertForEditDefaultItinerary(Optional<Occasion> occasion, OccasionDto dto, OutputAPIForm<ArrayList<ItineraryDto>> retVal){
         boolean insetItinerary ;
         Timestamp startDate;
         if(occasion.isPresent()){

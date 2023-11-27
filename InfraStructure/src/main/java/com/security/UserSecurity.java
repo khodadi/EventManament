@@ -1,9 +1,8 @@
-package com.euk.security;
+package com.security;
 
 import com.service.dto.EnvUserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-
 import java.util.Collection;
 
 public class UserSecurity extends User  {

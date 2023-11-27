@@ -1,10 +1,14 @@
-package com.api.controller;
+package com.env.controller;
 
 import com.basedata.generalcode.CodeException;
+import com.env.service.dto.ActivityDto;
+import com.env.service.dto.EquipmentDto;
+import com.env.service.dto.EventDto;
+import com.env.service.dto.OccasionTypeDto;
+import com.env.service.services.IOccasionBaseSrv;
 import com.form.OutputAPIForm;
 import com.service.dto.*;
 import com.service.services.IMessageBundleSrv;
-import com.service.services.IOccasionBaseSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +31,14 @@ import java.util.ArrayList;
 @Slf4j
 public class BaseDateController {
 
-    @Autowired
     private IOccasionBaseSrv occasionBaseSrv;
-    @Autowired
     private IMessageBundleSrv messageBundleSrv;
+
+    @Autowired
+    public BaseDateController(IOccasionBaseSrv occasionBaseSrv, IMessageBundleSrv messageBundleSrv) {
+        this.occasionBaseSrv = occasionBaseSrv;
+        this.messageBundleSrv = messageBundleSrv;
+    }
 
     @PostMapping("/occasionType/list")
     public ResponseEntity<OutputAPIForm> listOfOccasionType(){

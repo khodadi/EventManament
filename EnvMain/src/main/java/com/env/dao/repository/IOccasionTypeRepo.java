@@ -1,6 +1,6 @@
-package com.dao.repository;
+package com.env.dao.repository;
 
-import com.dao.entity.OccasionType;
+import com.env.dao.entity.OccasionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

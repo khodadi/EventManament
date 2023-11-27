@@ -1,6 +1,6 @@
-package com.service.dto;
+package com.env.service.dto;
 
-import com.dao.entity.Occasion;
+import com.env.dao.entity.Occasion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

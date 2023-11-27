@@ -1,6 +1,6 @@
-package com.dao.repository;
+package com.env.dao.repository;
 
-import com.dao.entity.Activity;
+import com.env.dao.entity.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IActivityRepo extends JpaRepository<Activity,Long> {

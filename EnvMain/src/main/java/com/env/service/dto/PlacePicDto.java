@@ -1,4 +1,4 @@
-package com.service.dto;
+package com.env.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

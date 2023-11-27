@@ -1,4 +1,4 @@
-package com.dao.entity;
+package com.auth.dao.entity;
 
 import com.auth.security.UserSecurity;
 import com.auth.security.filter.CustomAuthenticationFilter;

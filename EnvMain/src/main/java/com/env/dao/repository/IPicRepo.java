@@ -1,6 +1,6 @@
-package com.dao.repository;
+package com.env.dao.repository;
 
-import com.dao.entity.Pic;
+import com.env.dao.entity.Pic;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IPicRepo extends JpaRepository<Pic,Long> {

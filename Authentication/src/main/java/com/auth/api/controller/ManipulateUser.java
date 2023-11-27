@@ -22,10 +22,15 @@ import java.net.URI;
 @RequiredArgsConstructor
 @Slf4j
 public class ManipulateUser {
-    @Autowired
     private IEvnUsersSrv iEvnUsersSrv;
-    @Autowired
     private IMessageBundleSrv messageBundleSrv;
+
+    @Autowired
+    public ManipulateUser(IEvnUsersSrv iEvnUsersSrv, IMessageBundleSrv messageBundleSrv) {
+        this.iEvnUsersSrv = iEvnUsersSrv;
+        this.messageBundleSrv = messageBundleSrv;
+    }
+
     @PostMapping("/save")
     public ResponseEntity<OutputAPIForm> saveUser(@RequestBody EnvUserSaveDto user){
         OutputAPIForm retVal = new OutputAPIForm();

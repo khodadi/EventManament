@@ -1,6 +1,6 @@
-package com.dao.entity;
+package com.env.dao.entity;
 
-import com.service.dto.OccasionPicDto;
+import com.env.service.dto.OccasionPicDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +41,7 @@ public class OccasionPic extends ABaseEntity{
     @JoinColumn(name = "occasion_id",insertable = false ,updatable=false)
     private Occasion occasion;
 
-    public OccasionPic(OccasionPicDto dto,Pic pic){
+    public OccasionPic(OccasionPicDto dto, Pic pic){
         this(null,dto.getOccasionId(), dto.isSharable(), dto.getName(), pic.getPicId(),pic,null);
     }
 

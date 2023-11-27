@@ -1,10 +1,12 @@
-package com.utility;
+package com.env.utility;
 
 import com.basedata.generalcode.CodeException;
-import com.basedata.OccasionLengthTypeEnum;
+import com.env.basedata.OccasionLengthTypeEnum;
+import com.env.basedata.OccasionLengthTypeEnum;
 import com.form.OutputAPIForm;
-import com.service.dto.BaseOccasionDto;
-import com.service.dto.OccasionTypeDto;
+import com.env.service.dto.BaseOccasionDto;
+import com.env.service.dto.OccasionTypeDto;
+import com.utility.StringUtility;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -39,7 +41,7 @@ public class Utility {
         return retVal;
     }
 
-    public static OutputAPIForm checkOccasionDateTime(OccasionLengthTypeEnum occasionLengthType, Timestamp startDate,Timestamp endDate){
+    public static OutputAPIForm checkOccasionDateTime(OccasionLengthTypeEnum occasionLengthType, Timestamp startDate, Timestamp endDate){
         OutputAPIForm retVal = new OutputAPIForm<>();
         if(Objects.isNull(occasionLengthType) || Objects.isNull(startDate) || Objects.isNull(endDate)){
             retVal.setSuccess(false);

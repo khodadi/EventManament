@@ -1,4 +1,4 @@
-package com.basedata;
+package com.env.basedata;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CodeException {

@@ -1,7 +1,7 @@
-package com.dao.repository;
+package com.env.dao.repository;
 
-import com.basedata.StateRequest;
-import com.dao.entity.Occasion;
+import com.env.basedata.StateRequest;
+import com.env.dao.entity.Occasion;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,7 +1,7 @@
-package com.service.dto;
+package com.env.service.dto;
 
-import com.dao.entity.Itinerary;
-import com.dao.entity.ItineraryDetail;
+import com.env.dao.entity.Itinerary;
+import com.env.dao.entity.ItineraryDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

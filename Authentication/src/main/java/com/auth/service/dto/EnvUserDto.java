@@ -1,7 +1,7 @@
 package com.auth.service.dto;
 
 import com.auth.basedata.UserType;
-import com.dao.entity.EnvUsers;
+import com.auth.dao.entity.EnvUsers;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 

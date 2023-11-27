@@ -1,8 +1,8 @@
-package com.service.services;
+package com.env.service.services;
 
 import com.form.OutputAPIForm;
-import com.service.dto.PlaceDto;
-import com.service.dto.PlacePicDto;
+import com.env.service.dto.PlaceDto;
+import com.env.service.dto.PlacePicDto;
 
 public interface IPlaceSrv {
     OutputAPIForm<PlaceDto> savePlace(PlaceDto dto);

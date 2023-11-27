@@ -1,6 +1,7 @@
 package com.service.services;
 
 import com.form.OutputAPIForm;
+import org.springframework.stereotype.Service;
 
 /**
  * @Creator 8/9/2023
@@ -8,7 +9,7 @@ import com.form.OutputAPIForm;
  * @Author k.khodadi
  **/
 
-
+@Service
 public interface IUserGeneralSrv {
     <T> OutputAPIForm<T> getUserToken(String token);
 }

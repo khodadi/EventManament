@@ -1,6 +1,6 @@
-package com.dao.entity;
+package com.env.dao.entity;
 
-import com.service.dto.BaseItineraryDetailDto;
+import com.env.service.dto.BaseItineraryDetailDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

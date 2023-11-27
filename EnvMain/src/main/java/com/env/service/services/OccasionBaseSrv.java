@@ -1,14 +1,18 @@
-package com.service.services;
+package com.env.service.services;
 
-import com.basedata.OccasionLengthTypeEnum;
-import com.basedata.StateRequest;
 import com.basedata.generalcode.CodeException;
-import com.dao.entity.*;
-import com.dao.repository.*;
+import com.env.basedata.OccasionLengthTypeEnum;
+import com.env.basedata.StateRequest;
+import com.env.dao.entity.*;
+import com.env.dao.repository.*;
+import com.env.service.dto.ActivityDto;
+import com.env.service.dto.EquipmentDto;
+import com.env.service.dto.EventDto;
+import com.env.service.dto.OccasionTypeDto;
+import com.env.utility.Utility;
 import com.form.OutputAPIForm;
-import com.service.dto.*;
+import com.service.dto.BaseData;
 import com.utility.StringUtility;
-import com.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -198,7 +202,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
         }
     }
 
-    public void findAndAddToTree(EquipmentDto dto,Equipment ent){
+    public void findAndAddToTree(EquipmentDto dto, Equipment ent){
         if(dto.getEquipmentId().equals(ent.getParentEquipmentId())){
             dto.getChildren().add(new EquipmentDto(ent));
         }else{

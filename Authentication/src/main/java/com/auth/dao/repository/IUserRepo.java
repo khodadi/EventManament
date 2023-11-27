@@ -1,7 +1,7 @@
-package com.dao.repository;
+package com.auth.dao.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.dao.entity.EnvUsers;
+import com.auth.dao.entity.EnvUsers;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.dao.entity;
+package com.env.dao.entity;
 
-import com.service.dto.OccasionCostDto;
+import com.env.service.dto.OccasionCostDto;
 import com.utility.InfraSecurityUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

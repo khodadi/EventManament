@@ -1,14 +1,14 @@
-package com.service.services;
+package com.env.service.services;
 
-import com.basedata.StateRequest;
 import com.basedata.generalcode.CodeException;
-import com.dao.entity.*;
-import com.dao.repository.*;
+import com.env.basedata.StateRequest;
+import com.env.dao.entity.*;
+import com.env.dao.repository.*;
+import com.env.service.dto.*;
+import com.env.utility.Utility;
 import com.form.OutputAPIForm;
-import com.service.dto.*;
 import com.utility.InfraSecurityUtils;
 import com.utility.StringUtility;
-import com.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -155,7 +155,7 @@ public class OccasionSrv implements IOccasionSrv{
         }
     }
 
-    private ArrayList<ComponentEventDto> saveDefaultTabs(OccasionType occasionType,BaseOccasionDto dto,Long occasionId ){
+    private ArrayList<ComponentEventDto> saveDefaultTabs(OccasionType occasionType, BaseOccasionDto dto, Long occasionId ){
         ArrayList<ComponentEventDto> retVal =new ArrayList<>();
         OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary;
         ComponentEventDto componentEvent;
@@ -204,7 +204,7 @@ public class OccasionSrv implements IOccasionSrv{
         retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionName(),false,1,50,false):retVal;
         retVal = retVal.isSuccess() ? Utility.checkMandatoryBaseOccasion(dto):retVal;
         retVal = retVal.isSuccess() ? Utility.checkPic(dto.getPic(),true):retVal;
-        retVal = retVal.isSuccess() ? Utility.checkOccasionDateTime(dto.getOccasionLengthType(),dto.getStartDate(),dto.getEndDate()):retVal;
+        retVal = retVal.isSuccess() ? Utility.checkOccasionDateTime(dto.getOccasionLengthType(), dto.getStartDate(), dto.getEndDate()):retVal;
         return retVal;
 
     }

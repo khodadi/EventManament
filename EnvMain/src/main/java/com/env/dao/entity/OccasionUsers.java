@@ -1,6 +1,6 @@
-package com.dao.entity;
+package com.env.dao.entity;
 
-import com.basedata.StateRequest;
+import com.env.basedata.StateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

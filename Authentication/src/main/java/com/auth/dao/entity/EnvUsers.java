@@ -1,4 +1,4 @@
-package com.dao.entity;
+package com.auth.dao.entity;
 
 import com.auth.basedata.DeactivationReason;
 import com.auth.basedata.UserType;

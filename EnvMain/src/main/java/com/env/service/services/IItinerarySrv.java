@@ -1,11 +1,11 @@
-package com.service.services;
+package com.env.service.services;
 
-import com.dao.entity.Occasion;
+import com.env.dao.entity.Occasion;
 import com.form.OutputAPIForm;
-import com.service.dto.BaseItineraryDetailDto;
-import com.service.dto.BaseOccasionDto;
-import com.service.dto.ItineraryDto;
-import com.service.dto.OccasionDto;
+import com.env.service.dto.BaseItineraryDetailDto;
+import com.env.service.dto.BaseOccasionDto;
+import com.env.service.dto.ItineraryDto;
+import com.env.service.dto.OccasionDto;
 
 import java.util.ArrayList;
 import java.util.Optional;

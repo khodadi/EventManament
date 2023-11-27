@@ -2,7 +2,7 @@ package com.auth.security;
 
 
 import com.auth.service.services.IEvnUsersSrv;
-import com.dao.repository.IEnvUserTokenRepo;
+import com.auth.dao.repository.IEnvUserTokenRepo;
 import com.auth.security.filter.CustomAuthenticationFilter;
 import com.auth.security.filter.CustomAuthorizationFilter;
 import com.service.services.IMessageBundleSrv;
