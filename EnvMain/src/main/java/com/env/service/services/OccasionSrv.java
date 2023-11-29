@@ -47,7 +47,7 @@ public class OccasionSrv implements IOccasionSrv{
         try{
             retVal = validateBaseOccasionDto(dto);
             if(retVal.isSuccess()){
-                OccasionType occasionType = occasionTypeRepo.getOne(dto.getOccasionTypeId());
+                OccasionType occasionType = occasionTypeRepo.getReferenceById(dto.getOccasionTypeId());
                 if(occasionType != null && occasionType.getOccasionComponents()!= null){
                     Pic pic = new Pic(dto.getPic(), dto.getOccasionName());
                     picRepo.save(pic);

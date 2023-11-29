@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8095
 
 eureka:
   instance:
@@ -8,4 +8,4 @@ eureka:
     register-with-eureka: true # register him self at eureka
     fetch-registry: true # pull down a local copy of the registries
     service-url:
-      defaultZone: http://localhost:8761/eureka # discovery service location
+      defaultZone: http://localhost:8766/eureka # discovery service location

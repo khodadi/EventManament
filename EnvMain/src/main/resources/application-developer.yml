@@ -1,5 +1,5 @@
 server:
-  port: 8091
+  port: 8096
   cors:
     origins:
       - http://localhost:3000
@@ -12,7 +12,7 @@ spring:
   logging:
     level : debug
   datasource:
-    url: jdbc:postgresql://localhost:5432/env_db
+    url: jdbc:postgresql://91.107.191.99:5432/env_db
     driver-class-name: org.postgresql.Driver
     username: env_user
     password: 123456
@@ -40,7 +40,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka # discovery service loc
+      defaultZone: http://localhost:8766/eureka # discovery service loc
 
 base_type:
   users: users

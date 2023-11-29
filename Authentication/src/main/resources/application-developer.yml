@@ -1,7 +1,8 @@
 server:
-  port: 8092
+  port: 8097
   cors:
     origins:
+      - http://91.107.191.99:3000
       - http://localhost:3000
     methods:
       - POST
@@ -10,7 +11,7 @@ server:
       - OPTIONS
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/env_db
+    url: jdbc:postgresql://91.107.191.99:5432/env_db
     driver-class-name: org.postgresql.Driver
     username: env_user
     password: 123456
@@ -44,7 +45,7 @@ eureka:
     register-with-eureka: true # register him self at eureka
     fetch-registry: true # pull down a local copy of the registries
     service-url:
-      defaultZone: http://localhost:8761/eureka # discovery service location
+      defaultZone: http://localhost:8766/eureka # discovery service location
 base_type:
   users: users
 

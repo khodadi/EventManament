@@ -75,8 +75,6 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-
-
     @PostMapping("/pic")
     public ResponseEntity<OutputAPIForm> saveOccasionPic(@RequestBody OccasionPicDto occasionPic){
         OutputAPIForm retVal = new OutputAPIForm();
@@ -106,9 +104,6 @@ public class OccasionController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
-
-
     @GetMapping("/cost")
     public ResponseEntity<OutputAPIForm> listOccasionCost(@RequestParam CriOccasionDto criOccasion){
         OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm();

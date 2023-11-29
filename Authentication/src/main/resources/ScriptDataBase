@@ -1,5 +1,6 @@
 CREATE USER env_user WITH PASSWORD '123456';
 
+CREATE TABLESPACE tbl_space_env LOCATION '/usr/local/pgdata/';
 CREATE TABLESPACE tbl_space_env LOCATION 'G:\postgres\tbl_space_env';
 
 CREATE DATABASE env_db OWNER env_user TABLESPACE tbl_space_env;
@@ -38,17 +39,17 @@ create table env_auth.env_users
     user_name varchar(20) not null
 );
 
-alter table env_auth.env_users owner to env_user;
+--alter table env_auth.env_users owner to env_user;
 
 
 -- auto-generated definition
-create sequence seq_env_user
+create sequence env_auth.seq_env_user
     minvalue 1000
     maxvalue 999999999999
     cache 20
     cycle;
 
-alter sequence seq_env_user owner to env_user;
+--alter sequence seq_env_user owner to env_user;
 
 
 create table env_auth.block_users

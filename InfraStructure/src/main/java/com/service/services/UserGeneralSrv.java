@@ -30,7 +30,7 @@ public class UserGeneralSrv implements IUserGeneralSrv{
         OutputAPIForm result = new OutputAPIForm<>();
         try{
 
-            String url = "http://localhost:8090/authentication/api/v1/token/user?token="+token;
+            String url = "http://localhost:8095/authentication/api/v1/token/user?token="+token;
             result =  CallWSRest.post(url,"admin:123456",null,OutputAPIForm.class);
             retVal = convertResult(result);
         }catch (Exception e){

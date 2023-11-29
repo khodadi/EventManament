@@ -32,6 +32,8 @@ eureka:
 cors:
   allowed-origins:
     - http://localhost:3000
+    - http://91.107.191.99:3000
     - http://localhost:3001
+    - http://91.107.191.99:3001
 token:
   number_token: 3
