@@ -87,10 +87,18 @@ public class OccasionSrv implements IOccasionSrv{
         OutputAPIForm<ArrayList<OccasionDto>> retVal = new OutputAPIForm<>();
         ArrayList<OccasionDto> occasionDtos = new ArrayList<>();
         OccasionDto occasionDto;
-        List<Occasion> occasions = occasionRepo.getOccasionByUserId(criOccasion.getUserId() == null ?InfraSecurityUtils.getCurrentUser(): criOccasion.getUserId(),
-                                                                    criOccasion.getOccasionId(),
-                                                                    StateRequest.Accepted,
-                                                                    PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
+        List<Occasion> occasions;
+        if(InfraSecurityUtils.checkLogin()){
+            occasions = occasionRepo.getOccasionByUserId(criOccasion.getUserId(),
+                                                         criOccasion.getOccasionId(),
+                                                         StateRequest.Accepted,
+                                                         PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
+        }else{
+            occasions = occasionRepo.getOccasionPublic(criOccasion.getOccasionId(),
+                                                       PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
+
+        }
+
         if(occasions!= null && occasions.size()> pageSize){
             retVal.setNextPage(true);
         }
@@ -120,12 +128,14 @@ public class OccasionSrv implements IOccasionSrv{
         ArrayList<ComponentEventDto> retVal= new ArrayList<>();
         ComponentEventDto componentEvent;
         for(OccasionComponent occasionComponent:event.getOccasionType().getOccasionComponents()){
-            componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                    occasionComponent.getComponent().getComponentNameFa(),
-                    occasionComponent.getOrder());
-            setOccasionItinerary(event,componentEvent);
-            setOccasionParticipant(event,componentEvent);
-            retVal.add(componentEvent);
+            if(InfraSecurityUtils.checkLogin() || (!InfraSecurityUtils.checkLogin() && !occasionComponent.isNeedLogin()) ){
+                componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
+                        occasionComponent.getComponent().getComponentNameFa(),
+                        occasionComponent.getOrder());
+                setOccasionItinerary(event,componentEvent);
+                setOccasionParticipant(event,componentEvent);
+                retVal.add(componentEvent);
+            }
         }
         Collections.sort(retVal);
         return retVal;
@@ -398,5 +408,7 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
 
     }
+
+
 
 }

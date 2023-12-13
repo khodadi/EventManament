@@ -25,4 +25,6 @@ public class OccasionComponent extends ABaseEntity{
     private Component component;
     @Column(name = "ORDER")
     private int order;
+    @Column(name = "NEED_LOGIN")
+    private boolean needLogin;
 }

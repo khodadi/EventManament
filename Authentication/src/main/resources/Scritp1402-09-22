@@ -1,0 +1,1 @@
+alter table env_data.occasion_component add "need_Login" boolean default true;

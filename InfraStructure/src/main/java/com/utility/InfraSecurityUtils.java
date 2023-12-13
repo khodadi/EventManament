@@ -25,6 +25,8 @@ import java.util.List;
 @Component
 public class InfraSecurityUtils {
 
+    public static final Long defaultUser = -1L;
+
     public static void generateResponse(HttpServletResponse response, CodeException codeException, boolean returnHttpStatus){
         OutputAPIForm<Object> retval = new OutputAPIForm<>();
         try {
@@ -44,11 +46,25 @@ public class InfraSecurityUtils {
     }
 
     public static Long getCurrentUser(){
-        Long retVal = -1L;
+        Long retVal;
         try{
             retVal = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         }catch (Exception e){
-            retVal = -1L;
+//            log.error("Error in get current user",e);
+            retVal = defaultUser;
+        }
+        return retVal;
+    }
+
+    public static boolean checkLogin(){
+        boolean retVal = false;
+        try{
+            if(!getCurrentUser().equals(defaultUser)){
+                retVal = true;
+            }
+        }catch (Exception e){
+            log.error("Error in get current user",e);
+            retVal = false;
         }
         return retVal;
     }

@@ -54,7 +54,13 @@ public class SecurityConfig {
                     auth.requestMatchers(
                             "/api/v1/**",
                             "/api/v1/dashboard/index.html/**",
-                            "/api/v1/dashboard/swagger-ui/**"
+                            "/api/v1/dashboard/swagger-ui/**",
+                            "/api/v1/baseData/occasionType/list",
+                            "/api/v1/baseData/activity/list",
+                            "/api/v1/baseData/eventType/list",
+                            "/api/v1/baseData/equipment/list",
+                            "/api/v1/baseData/length",
+                            "api/v1/occasion"
                     ).permitAll();
                     auth.anyRequest().authenticated();
                 }
@@ -65,123 +71,6 @@ public class SecurityConfig {
         http.headers().frameOptions().disable();
         return http.build();
     }
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers(
-//                            "/soap/**",
-//                            "/register/**",
-//                            "/approve/**",
-//                            "/forget/**",
-//                            "/cdn/**",
-//                            "/cus1/**",
-//                            "/hystrix.stream",
-//                            "/swagger-ui.html",
-//                            "/webjars/springfox-swagger-ui/**",
-//                            "/configuration/ui",
-//                            "/swagger-resources",
-//                            "/v3/api-docs/**",
-//                            "/swagger-resources/configuration/ui",
-//                            "/swagger-resources/configuration/security",
-//                            "/css/**",
-//                            "/js/**",
-//                            "/images/jcaptcha",
-//                            "/templates/doc/**",
-//                            "/oauth/token",
-//                            "/swagger-ui/**"
-//                    ).permitAll();
-//                    auth.anyRequest().authenticated();
-//                }
-//        );
-//
-////        http.authorizeHttpRequests(auth -> {
-////            auth.requestMatchers(
-////                    "/eventmanagment/api/v1/occasion/save",
-////                    "/eventmanagment/api/v1/occasion/update",
-////                    "/eventmanagment/api/v1/occasion/pic/save",
-////                    "/eventmanagment/api/v1/occasion/itinerary/detail/save",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/user/save",
-////                    "/eventmanagment/api/v1/baseData/occasionType/list",
-////                    "/eventmanagment/api/v1/baseData/occasionType/save",
-////                    "/eventmanagment/api/v1/baseData/activity/list",
-////                    "/eventmanagment/api/v1/baseData/activity/save",
-////                    "/eventmanagment/api/v1/baseData/eventType/length",
-////                    "/eventmanagment/api/v1/baseData/equipment/list",
-////                    "/eventmanagment/api/v1/baseData/length",
-////                    "/eventmanagment/api/v1/place/save",
-////                    "/eventmanagment/api/v1/place/pic/save"
-////            ).hasRole("ordinary");
-////            auth.anyRequest().authenticated();
-////        });
-////        http.authorizeRequests().anyRequest().authenticated();
-//        http.addFilterBefore(new CustomAuthenticationFilter(ApplicationContextProvider.getApplicationContext().getBean(IUserGeneralSrv.class)), BasicAuthenticationFilter.class);
-//        http.httpBasic(withDefaults());
-//        http.headers().frameOptions().disable();
-//        return http.build();
-//    }
-//
-//    public void configure(HttpSecurity http) throws Exception {
-//
-//        http.authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers(
-//                            "/soap/**",
-//                            "/register/**",
-//                            "/approve/**",
-//                            "/forget/**",
-//                            "/cdn/**",
-//                            "/cus1/**",
-//                            "/hystrix.stream",
-//                            "/swagger-ui.html",
-//                            "/webjars/springfox-swagger-ui/**",
-//                            "/configuration/ui",
-//                            "/swagger-resources",
-//                            "/v3/api-docs/**",
-//                            "/swagger-resources/configuration/ui",
-//                            "/swagger-resources/configuration/security",
-//                            "/css/**",
-//                            "/js/**",
-//                            "/images/jcaptcha",
-//                            "/templates/doc/**",
-//                            "/oauth/token",
-//                            "/swagger-ui/**"
-//                    ).permitAll();
-//                    auth.anyRequest().authenticated();
-//                }
-//        );
-//
-////        http.authorizeHttpRequests(auth -> {
-////            auth.requestMatchers(
-////                    "/eventmanagment/api/v1/occasion/save",
-////                    "/eventmanagment/api/v1/occasion/update",
-////                    "/eventmanagment/api/v1/occasion/pic/save",
-////                    "/eventmanagment/api/v1/occasion/itinerary/detail/save",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/cost",
-////                    "/eventmanagment/api/v1/occasion/user/save",
-////                    "/eventmanagment/api/v1/baseData/occasionType/list",
-////                    "/eventmanagment/api/v1/baseData/occasionType/save",
-////                    "/eventmanagment/api/v1/baseData/activity/list",
-////                    "/eventmanagment/api/v1/baseData/activity/save",
-////                    "/eventmanagment/api/v1/baseData/eventType/length",
-////                    "/eventmanagment/api/v1/baseData/equipment/list",
-////                    "/eventmanagment/api/v1/baseData/length",
-////                    "/eventmanagment/api/v1/place/save",
-////                    "/eventmanagment/api/v1/place/pic/save"
-////            ).hasRole("ordinary");
-////            auth.anyRequest().authenticated();
-////        });
-////        http.authorizeRequests().anyRequest().authenticated();
-//        http.addFilterBefore(new CustomAuthenticationFilter(ApplicationContextProvider.getApplicationContext().getBean(IUserGeneralSrv.class)), BasicAuthenticationFilter.class);
-//        http.httpBasic(withDefaults());
-//        http.headers().frameOptions().disable();
-//    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -194,5 +83,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
