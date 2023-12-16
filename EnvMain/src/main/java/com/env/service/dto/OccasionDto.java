@@ -47,7 +47,7 @@ public class OccasionDto extends BaseOccasionDto{
 
     public void updateEnt(Occasion ent){
         ent.setOccasionTypeId(Objects.isNull(this.getOccasionTypeId())? ent.getOccasionTypeId(): this.getOccasionTypeId());
-        ent.setOccasionName(StringUtils.isEmpty(this.getOccasionName())?ent.getOccasionName():this.getOccasionName());
+        ent.setOccasionName(StringUtils.hasLength(this.getOccasionName())?ent.getOccasionName():this.getOccasionName());
         ent.setOccasionLengthType(Objects.isNull(this.getOccasionLengthType())?ent.getOccasionLengthType():this.getOccasionLengthType());
         ent.setPicId(Objects.isNull(this.getPicId())?ent.getPicId():this.getPicId());
         ent.setStartDate(Objects.isNull(this.getStartDate())?ent.getStartDate():this.getStartDate());
