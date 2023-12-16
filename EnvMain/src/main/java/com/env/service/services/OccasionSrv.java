@@ -47,15 +47,18 @@ public class OccasionSrv implements IOccasionSrv{
         try{
             retVal = validateBaseOccasionDto(dto);
             if(retVal.isSuccess()){
-                OccasionType occasionType = occasionTypeRepo.getReferenceById(dto.getOccasionTypeId());
-                if(occasionType != null && occasionType.getOccasionComponents()!= null){
+                Optional<OccasionType> occasionType = occasionTypeRepo.findById(dto.getOccasionTypeId());
+                if(occasionType.isPresent()){
                     Pic pic = new Pic(dto.getPic(), dto.getOccasionName());
                     picRepo.save(pic);
                     Occasion occasion = new Occasion(dto,pic.getPicId());
                     occasionRepo.save(occasion);
                     OccasionUsers occasionUser = new OccasionUsers(null,occasion.getCreatorUserId(),occasion.getOccasionId(),StateRequest.Accepted);
                     occasionUsersRepo.save(occasionUser);
-                    retVal.setData(new OccasionDto(occasion, saveDefaultTabs(occasionType,dto,occasion.getOccasionId()),false));
+                    retVal.setData(new OccasionDto(occasion, saveDefaultTabs(occasionType.get(),dto,occasion.getOccasionId()),false));
+                }else{
+                    retVal.setSuccess(false);
+                    retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
                 }
             }
         }catch (Exception e){
@@ -216,7 +219,6 @@ public class OccasionSrv implements IOccasionSrv{
         retVal = retVal.isSuccess() ? Utility.checkPic(dto.getPic(),true):retVal;
         retVal = retVal.isSuccess() ? Utility.checkOccasionDateTime(dto.getOccasionLengthType(), dto.getStartDate(), dto.getEndDate()):retVal;
         return retVal;
-
     }
 
     public OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto){

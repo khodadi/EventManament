@@ -1,7 +1,7 @@
 package com.env.basedata;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum CodeException {
+public enum CodeException  {
     SYSTEM_EXCEPTION(1),
     UNDEFINED(2),
     LENGTH_FIELD(5),

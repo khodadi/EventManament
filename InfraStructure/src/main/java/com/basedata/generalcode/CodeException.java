@@ -14,7 +14,9 @@ public enum CodeException {
     EXPIRED_TOKEN(401),
     INVALID_MAIL(13),
     INVALID_CELLPHONE(14),
-    INVALID_USERNAME(15);
+    INVALID_USERNAME(15),
+    NOT_FIND_REFERENCE(16),
+    INTERNAL_ERROR(17);
     private int codeException;
     CodeException(int code) {
         this.codeException = code;
