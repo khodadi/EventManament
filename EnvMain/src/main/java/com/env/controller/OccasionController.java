@@ -61,8 +61,7 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-
-    @GetMapping("")
+    @PostMapping("")
     public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestBody CriOccasionDto criOccasion){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion").toUriString());
@@ -92,7 +91,7 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @DeleteMapping("/pic")
+    @PostMapping("/pic/delete")
     public ResponseEntity deleteOccasionPic(@RequestBody OccasionPicDto occasionPic){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion").toUriString());
@@ -106,7 +105,7 @@ public class OccasionController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-    @GetMapping("/cost")
+    @PostMapping("/cost")
     public ResponseEntity<OutputAPIForm> listOccasionCost(@RequestParam CriOccasionDto criOccasion){
         OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/list").toUriString());
@@ -121,7 +120,7 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("/cost")
+    @PostMapping("/cost/save")
     public ResponseEntity<OutputAPIForm> saveOccasionCost(@RequestBody OccasionCostDto occasionCost){
         OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/save").toUriString());
@@ -151,7 +150,7 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @DeleteMapping("/cost")
+    @DeleteMapping("/cost/delete")
     public ResponseEntity deleteOccasionCost(@RequestBody OccasionCostDto occasionCost){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/save").toUriString());
