@@ -38,6 +38,7 @@
         <module>APIGateway</module>
         <module>EnvMain</module>
         <module>Authentication</module>
+        <module>ShopMain</module>
 
     </modules>
 
