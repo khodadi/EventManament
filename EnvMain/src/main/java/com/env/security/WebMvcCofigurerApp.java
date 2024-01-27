@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import java.util.Locale;
+
 /**
  * @Creator 1/27/2024
  * @Project IntelliJ IDEA
@@ -37,6 +39,7 @@ public class WebMvcCofigurerApp implements WebMvcConfigurer {
                 new ResourceBundleMessageSource();
         messageSource.setBasenames("language/messages");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultLocale(new Locale("fa"));
         return messageSource;
     }
 }
