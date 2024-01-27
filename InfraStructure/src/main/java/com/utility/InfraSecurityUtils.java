@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.form.OutputAPIForm;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class InfraSecurityUtils {
         Long retVal;
         try{
             retVal = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+            LocaleContextHolder.getLocale();
         }catch (Exception e){
 //            log.error("Error in get current user",e);
             retVal = defaultUser;

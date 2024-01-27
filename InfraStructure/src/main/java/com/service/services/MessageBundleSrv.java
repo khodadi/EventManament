@@ -3,6 +3,8 @@ package com.service.services;
 import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -13,12 +15,12 @@ import java.util.ResourceBundle;
 public class MessageBundleSrv implements IMessageBundleSrv{
 
     public String getMessage(String key){
-        String retVal = getMessage(key,new Locale("fa"));
+        String retVal = getMessage(key, LocaleContextHolder.getLocale() ==null ? new Locale("fa"):LocaleContextHolder.getLocale());
         return retVal;
     }
     public void createMsg(OutputAPIForm obj){
         try{
-            createMsg(obj,new Locale("fa"));
+            createMsg(obj,LocaleContextHolder.getLocale() ==null ? new Locale("fa"):LocaleContextHolder.getLocale());
         }catch (Exception e){
             log.error(e.getMessage());
         }

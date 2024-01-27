@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * @Creator 8/12/2023
@@ -101,7 +102,7 @@ public class BaseDateController {
     }
 
     @GetMapping("/length")
-    public ResponseEntity<OutputAPIForm> listOfBaseData(){
+    public ResponseEntity<OutputAPIForm> listOfBaseData(Locale locale){
         OutputAPIForm<ArrayList<BaseData>> retVal = new OutputAPIForm();
         try{
             retVal = occasionBaseSrv.getBaseData();

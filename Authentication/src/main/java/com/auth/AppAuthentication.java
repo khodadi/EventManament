@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import java.util.Locale;
 
 /**
  * @Creator 5/7/2023
@@ -17,9 +20,6 @@ import org.springframework.stereotype.Component;
  * @Author k.khodadi
  **/
 
-
-//@EnableFeignClients
-//@EnableZuulProxy
 @Slf4j
 @EnableDiscoveryClient
 @SpringBootApplication
@@ -32,5 +32,15 @@ public class AppAuthentication extends SpringBootServletInitializer {
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(new Locale("fa"));
+        return slr;
+    }
+
+
 
 }

@@ -7,6 +7,7 @@ import com.form.OutputAPIForm;
 import com.env.service.dto.BaseOccasionDto;
 import com.env.service.dto.OccasionTypeDto;
 import com.utility.StringUtility;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -23,6 +24,11 @@ public class Utility {
         retVal = retVal.isSuccess()? checkNull(dto.getLatitude()):retVal;
         retVal = retVal.isSuccess()? checkNull(dto.getLongitude()):retVal;
         return retVal;
+    }
+
+
+    public static void setLocaleInContext(){
+//        SecurityContextHolder.getContext().getAuthentication().getPrincipal().
     }
 
     public static OutputAPIForm checkMandatoryOccasionTypeDto(OccasionTypeDto dto){
