@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -40,6 +41,8 @@ public class SecurityConfig {
     private final PasswordEncoder bCryptPasswordEncoder;
 
     private final IMessageBundleSrv messageBundleSrv;
+
+    private final LocaleResolver localeResolver;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -66,7 +69,7 @@ public class SecurityConfig {
                         }
                 )
                 .httpBasic(withDefaults());
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager(), evnUsersSrv);
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager(), evnUsersSrv,localeResolver);
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

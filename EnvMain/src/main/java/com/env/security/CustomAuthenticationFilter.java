@@ -14,8 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.LocaleResolver;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -29,8 +31,11 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private final IUserGeneralSrv userGeneralSrv;
 
-    public CustomAuthenticationFilter(IUserGeneralSrv userGeneralSrv) {
+    private final LocaleResolver localeResolver;
+
+    public CustomAuthenticationFilter(IUserGeneralSrv userGeneralSrv, LocaleResolver localeResolver) {
         this.userGeneralSrv = userGeneralSrv;
+        this.localeResolver = localeResolver;
     }
 
     @Override
@@ -43,7 +48,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 OutputAPIForm<UserSecurity> obj = userGeneralSrv.getUserToken(token);
                 if(Objects.nonNull(obj) && obj.isSuccess()){
                     log.info("*********** token found : " + obj.getData().toString());
-
+                    localeResolver.setLocale(httpServletRequest,httpServletResponse,new Locale(obj.getData().getEnvUser().getDefaultLocale()));
                     log.info("*********** token is valid!");
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(obj.getData().getEnvUser().getUserId(), null, obj.getData().getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);

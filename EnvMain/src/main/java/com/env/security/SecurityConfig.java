@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.LocaleResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfig {
     private final Environment environment;
+    private final LocaleResolver localeResolver;
     private final ApplicationContext context;
     private final IMessageBundleSrv messageBundleSrv;
 
@@ -66,7 +68,7 @@ public class SecurityConfig {
                 }
         );
         http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedException(ApplicationContextProvider.getApplicationContext().getBean(MessageBundleSrv.class)));
-        http.addFilterBefore(new CustomAuthenticationFilter(ApplicationContextProvider.getApplicationContext().getBean(IUserGeneralSrv.class)), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new CustomAuthenticationFilter(ApplicationContextProvider.getApplicationContext().getBean(IUserGeneralSrv.class), localeResolver), BasicAuthenticationFilter.class);
         http.httpBasic(withDefaults());
         http.headers().frameOptions().disable();
         return http.build();

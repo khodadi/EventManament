@@ -1,0 +1,2 @@
+alter table env_auth.env_users
+    add default_locale varchar default 'fa';

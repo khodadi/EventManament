@@ -16,8 +16,8 @@ public class EnvUserDto extends EnvUserSaveDto{
     private Long userId;
     private UserType userType;
 
-    public EnvUserDto( Long userId, UserType userType,String firstName, String lastName, String mobileNumber, String mail, String userName, String password) {
-        super(firstName, lastName, mobileNumber, mail, userName, password);
+    public EnvUserDto( Long userId, UserType userType,String firstName, String lastName, String mobileNumber, String mail, String userName, String password,String localeDefault) {
+        super(firstName, lastName, mobileNumber, mail, userName, password,localeDefault);
         this.userId = userId;
         this.userType = userType;
     }

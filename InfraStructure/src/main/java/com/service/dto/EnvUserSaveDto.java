@@ -16,4 +16,5 @@ public class EnvUserSaveDto {
     private String mail;
     private String userName;
     private String password;
+    private String defaultLocale;
 }

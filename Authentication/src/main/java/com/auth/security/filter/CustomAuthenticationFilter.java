@@ -12,6 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +21,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.LocaleResolver;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -34,16 +38,20 @@ import static com.utility.InfraSecurityUtils.generateResponse;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static Long EXPIRE_TOKEN = 3 * 60 * 60 * 1000L;
-    public static Long EXPIRE_REFRESH_TOKEN =6 * 60 * 60 * 1000L;
-    private AuthenticationManager authenticationManager;
+    public static Long EXPIRE_REFRESH_TOKEN = 6 * 60 * 60 * 1000L;
+    public static String defaultLocaleConfig = "fa";
 
+    private AuthenticationManager authenticationManager;
     private IEvnUsersSrv evnUsersSrv;
+    private LocaleResolver localeResolver;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager,
-                                      IEvnUsersSrv evnUsersSrv) {
+                                      IEvnUsersSrv evnUsersSrv,
+                                      LocaleResolver localeResolver) {
 
         this.authenticationManager = authenticationManager;
         this.evnUsersSrv = evnUsersSrv;
+        this.localeResolver = localeResolver;
     }
 
     @Override
@@ -86,6 +94,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token",access_token);
         tokens.put("refresh_token",refresh_token);
+
+//        LocaleContextHolder.setLocale(new Locale(user.getEnvUser().getDefaultLocale()== null ? defaultLocaleConfig:user.getEnvUser().getDefaultLocale()));
+        localeResolver.setLocale(request,response,new Locale(user.getEnvUser().getDefaultLocale()));
         OutputAPIForm outputAPIForm = evnUsersSrv.saveToken(user,tokens);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         if(outputAPIForm.isSuccess()){

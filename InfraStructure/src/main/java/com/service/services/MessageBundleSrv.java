@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 public class MessageBundleSrv implements IMessageBundleSrv{
 
     public String getMessage(String key){
+
         String retVal = getMessage(key, LocaleContextHolder.getLocale() ==null ? new Locale("fa"):LocaleContextHolder.getLocale());
         return retVal;
     }

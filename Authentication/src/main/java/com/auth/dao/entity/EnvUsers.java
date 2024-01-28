@@ -25,6 +25,7 @@ public class EnvUsers extends ABaseEntity {
         this.setUnsuccessfulTries(0);
         this.setCreationDate(new Timestamp(System.currentTimeMillis()));
         this.setCreatorUserId(1L);
+        this.setDefaultLocale(dto.getDefaultLocale());
     }
 
     @Id
@@ -58,5 +59,8 @@ public class EnvUsers extends ABaseEntity {
     private DeactivationReason deactivationReason;
     @Column(name = "USER_TYPE")
     private UserType userType;
+    @Column(name = "DEFAULT_LOCALE")
+    private String defaultLocale;
+
 
 }

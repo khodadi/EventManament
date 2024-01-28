@@ -50,7 +50,8 @@ public class UserGeneralSrv implements IUserGeneralSrv{
                 ((LinkedHashMap)result.getData().get("envUser")).get("mobileNumber")== null ?"":((LinkedHashMap)result.getData().get("envUser")).get("mobileNumber").toString(),
                 ((LinkedHashMap)result.getData().get("envUser")).get("mail") == null ?"":((LinkedHashMap)result.getData().get("envUser")).get("mail").toString(),
                 ((LinkedHashMap)result.getData().get("envUser")).get("userName") == null ?"":((LinkedHashMap)result.getData().get("envUser")).get("userName").toString(),
-                ""
+                "",
+                ((LinkedHashMap)result.getData().get("envUser")).get("defaultLocale") == null ?"":((LinkedHashMap)result.getData().get("envUser")).get("defaultLocale").toString()
         );
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for(LinkedHashMap m:(ArrayList<LinkedHashMap>)result.getData().get("authorities")){
@@ -63,5 +64,4 @@ public class UserGeneralSrv implements IUserGeneralSrv{
         retVal.setData(userSecurity);
         return retVal;
     }
-
 }

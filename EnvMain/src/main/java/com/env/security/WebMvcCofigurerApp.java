@@ -31,8 +31,6 @@ public class WebMvcCofigurerApp implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-
-
     @Bean("messageSource")
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource =

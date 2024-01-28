@@ -6,7 +6,6 @@ spring:
     active: developer
   #    active: operation
   #    active: test
-
   application:
     name: authentication # current service name used for eureka registration
 
@@ -37,3 +36,8 @@ cors:
     - http://91.107.191.99:3001
 token:
   number_token: 3
+
+locale:
+  default: fa
+
+

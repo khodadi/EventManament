@@ -42,5 +42,4 @@ public class AppEventManagement extends SpringBootServletInitializer {
         return slr;
     }
 
-
 }
