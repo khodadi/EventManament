@@ -7,6 +7,7 @@ import com.env.dao.repository.*;
 import com.env.service.dto.*;
 import com.env.utility.Utility;
 import com.form.OutputAPIForm;
+import com.utility.GeneralUtility;
 import com.utility.InfraSecurityUtils;
 import com.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
@@ -133,7 +134,7 @@ public class OccasionSrv implements IOccasionSrv{
         for(OccasionComponent occasionComponent:event.getOccasionType().getOccasionComponents()){
             if(InfraSecurityUtils.checkLogin() || (!InfraSecurityUtils.checkLogin() && !occasionComponent.isNeedLogin()) ){
                 componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                        occasionComponent.getComponent().getComponentNameFa(),
+                        GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
                         occasionComponent.getOrder());
                 setOccasionItinerary(event,componentEvent);
                 setOccasionParticipant(event,componentEvent);
@@ -174,9 +175,10 @@ public class OccasionSrv implements IOccasionSrv{
         ComponentEventDto componentEvent;
         for(OccasionComponent occasionComponent:occasionType.getOccasionComponents()){
             try{
+
                 componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                                                        occasionComponent.getComponent().getComponentNameFa(),
-                                                        occasionComponent.getOrder());
+                        GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
+                        occasionComponent.getOrder());
                 if(componentEvent.getComponentName().equals("Itinerary")){
                     defaultItinerary = itinerarySrv.saveDefaultItinerary(dto, occasionId);
                     componentEvent.setItineraries(defaultItinerary.getData());
@@ -197,7 +199,7 @@ public class OccasionSrv implements IOccasionSrv{
         for(OccasionComponent occasionComponent:occasion.get().getOccasionType().getOccasionComponents()){
             try{
                 componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                        occasionComponent.getComponent().getComponentNameFa(),
+                        GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
                         occasionComponent.getOrder());
                 if(componentEvent.getComponentName().equals("Itinerary")){
                     defaultItinerary = itinerarySrv.editDefaultItinerary(occasion,dto);

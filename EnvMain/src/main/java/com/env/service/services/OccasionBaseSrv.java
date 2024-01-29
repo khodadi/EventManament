@@ -12,6 +12,8 @@ import com.env.service.dto.OccasionTypeDto;
 import com.env.utility.Utility;
 import com.form.OutputAPIForm;
 import com.service.dto.BaseData;
+import com.service.services.IMessageBundleSrv;
+import com.utility.GeneralUtility;
 import com.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -90,11 +92,16 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
     public OutputAPIForm<ArrayList<OccasionTypeDto>> getAllOccasionTypes(){
         OutputAPIForm<ArrayList<OccasionTypeDto>> retVal = new OutputAPIForm<>();
         try{
+            IMessageBundleSrv messageBundleSrv = GeneralUtility.getMessageSrv();
             ArrayList<OccasionTypeDto> occasionTypeDtos = new ArrayList<>();
             List<OccasionType> occasionTypes = occasionTypeRepo.findAll();
             for(OccasionType occasionType:occasionTypes){
                 try{
-                    occasionTypeDtos.add(new OccasionTypeDto(occasionType.getOccasionTypeId(), occasionType.getOccasionTypeName(),occasionType.getOccasionTypeNameFa(), occasionType.getPic().getPic(), occasionType.getPicId()));
+                    occasionTypeDtos.add(new OccasionTypeDto(occasionType.getOccasionTypeId(),
+                                                            occasionType.getOccasionTypeName(),
+                                                            messageBundleSrv!=null?messageBundleSrv.getMessage(("table.occasionType"+"."+occasionType.getOccasionTypeName()).toLowerCase()):occasionType.getOccasionTypeNameFa(),
+                                                            occasionType.getPic().getPic(),
+                                                            occasionType.getPicId()));
                 }catch (Exception e){
                     log.error(e.getMessage());
                 }
@@ -110,11 +117,12 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
     public OutputAPIForm<ArrayList<ActivityDto>> getAllActivity(){
         OutputAPIForm<ArrayList<ActivityDto>> retVal = new OutputAPIForm<>();
         try{
+            IMessageBundleSrv messageBundleSrv = GeneralUtility.getMessageSrv();
             ArrayList<ActivityDto> activityDtos = new ArrayList<>();
             List<Activity> activities = activityRepo.findAll();
             for(Activity activity:activities){
                 try{
-                    activityDtos.add(new ActivityDto(activity.getActivityId(), activity.getNameFa(),activity.getName(),activity.getPic().getPicId(),activity.getPic().getPic()));
+                    activityDtos.add(new ActivityDto(activity.getActivityId(), messageBundleSrv!=null?messageBundleSrv.getMessage(("table.activity"+"."+activity.getName()).toLowerCase()):activity.getNameFa() ,activity.getName(),activity.getPic().getPicId(),activity.getPic().getPic()));
                 }catch (Exception e){
                     log.error(e.getMessage());
                 }

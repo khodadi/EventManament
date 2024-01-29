@@ -1,6 +1,7 @@
 package com.env.service.dto;
 
 import com.env.dao.entity.Event;
+import com.utility.GeneralUtility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,10 @@ public class EventDto {
     }
 
     public EventDto(Event ent){
-        this(ent.getEventId(),ent.getEventNameFa(),ent.getEventName(),new ArrayList<>());
+        this(ent.getEventId(),
+                GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.event"+"."+ent.getEventName()).toLowerCase()):ent.getEventNameFa(),
+                ent.getEventName(),
+                new ArrayList<>());
     }
 
     public ArrayList<EventDto> getChildren() {

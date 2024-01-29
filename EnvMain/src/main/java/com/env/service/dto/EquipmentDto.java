@@ -1,6 +1,8 @@
 package com.env.service.dto;
 
 import com.env.dao.entity.Equipment;
+import com.service.services.IMessageBundleSrv;
+import com.utility.GeneralUtility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,9 @@ public class EquipmentDto {
     }
 
     public EquipmentDto(Equipment ent){
-        this(ent.getEquipmentId(),ent.getEquipmentName(),ent.getEquipmentNameFa(),new ArrayList<>());
+        this(ent.getEquipmentId(),
+             ent.getEquipmentName(),
+             GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.equipment"+"."+ent.getEquipmentName()).toLowerCase()):ent.getEquipmentNameFa(),
+             new ArrayList<>());
     }
 }
