@@ -109,6 +109,22 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         return retVal;
     }
 
+
+    public OutputAPIForm<com.auth.service.dto.EnvUserDto> updateLocaleUser(com.auth.service.dto.EnvUserSaveDto dto) {
+        OutputAPIForm<com.auth.service.dto.EnvUserDto> retVal = validationUser(dto);
+        if(retVal.isSuccess()){
+            try{
+
+            }catch (Exception e){
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+            }
+        }
+        return retVal;
+    }
+
+
+
     public OutputAPIForm validationUser(EnvUserSaveDto dto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{

@@ -1,11 +1,13 @@
 package com.env.service.dto;
 
 import com.env.dao.entity.Event;
+import com.service.services.IMessageBundleSrv;
 import com.utility.GeneralUtility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class EventDto {
 
     public EventDto(Event ent){
         this(ent.getEventId(),
-                GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.event"+"."+ent.getEventName()).toLowerCase()):ent.getEventNameFa(),
+                GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.event"+"."+ent.getEventName())):ent.getEventNameFa(),
                 ent.getEventName(),
                 new ArrayList<>());
     }

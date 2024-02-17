@@ -40,13 +40,15 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
     private final IEventRepo eventRepo;
     private final IEquipmentRepo equipmentRepo;
     private final IActivityRepo activityRepo;
+    private IMessageBundleSrv messageBundleSrv;
 
-    public OccasionBaseSrv(IOccasionTypeRepo occasionTypeRepo, IPicRepo picRepo, IEventRepo eventRepo, IEquipmentRepo equipmentRepo, IActivityRepo activityRepo) {
+    public OccasionBaseSrv(IOccasionTypeRepo occasionTypeRepo, IPicRepo picRepo, IEventRepo eventRepo, IEquipmentRepo equipmentRepo, IActivityRepo activityRepo, IMessageBundleSrv messageBundleSrv) {
         this.occasionTypeRepo = occasionTypeRepo;
         this.picRepo = picRepo;
         this.eventRepo = eventRepo;
         this.equipmentRepo = equipmentRepo;
         this.activityRepo = activityRepo;
+        this.messageBundleSrv = messageBundleSrv;
     }
 
     public OutputAPIForm saveOccasionType(OccasionTypeDto dto) {
@@ -92,14 +94,15 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
     public OutputAPIForm<ArrayList<OccasionTypeDto>> getAllOccasionTypes(){
         OutputAPIForm<ArrayList<OccasionTypeDto>> retVal = new OutputAPIForm<>();
         try{
-            IMessageBundleSrv messageBundleSrv = GeneralUtility.getMessageSrv();
+            String nameTrl ;
             ArrayList<OccasionTypeDto> occasionTypeDtos = new ArrayList<>();
             List<OccasionType> occasionTypes = occasionTypeRepo.findAll();
             for(OccasionType occasionType:occasionTypes){
                 try{
+                    nameTrl =  messageBundleSrv.getMessage("table.occasionType."+occasionType.getOccasionTypeName()) ;
                     occasionTypeDtos.add(new OccasionTypeDto(occasionType.getOccasionTypeId(),
                                                             occasionType.getOccasionTypeName(),
-                                                            messageBundleSrv!=null?messageBundleSrv.getMessage(("table.occasionType"+"."+occasionType.getOccasionTypeName()).toLowerCase()):occasionType.getOccasionTypeNameFa(),
+                                                            StringUtility.hasLength(nameTrl)?nameTrl : occasionType.getOccasionTypeNameFa(),
                                                             occasionType.getPic().getPic(),
                                                             occasionType.getPicId()));
                 }catch (Exception e){
@@ -117,12 +120,17 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
     public OutputAPIForm<ArrayList<ActivityDto>> getAllActivity(){
         OutputAPIForm<ArrayList<ActivityDto>> retVal = new OutputAPIForm<>();
         try{
-            IMessageBundleSrv messageBundleSrv = GeneralUtility.getMessageSrv();
+            String nameTrl;
             ArrayList<ActivityDto> activityDtos = new ArrayList<>();
             List<Activity> activities = activityRepo.findAll();
             for(Activity activity:activities){
                 try{
-                    activityDtos.add(new ActivityDto(activity.getActivityId(), messageBundleSrv!=null?messageBundleSrv.getMessage(("table.activity"+"."+activity.getName()).toLowerCase()):activity.getNameFa() ,activity.getName(),activity.getPic().getPicId(),activity.getPic().getPic()));
+                    nameTrl = messageBundleSrv.getMessage("table.activity"+"."+activity.getName());
+                    activityDtos.add(new ActivityDto(activity.getActivityId(),
+                                                        StringUtility.hasLength(nameTrl)?nameTrl: activity.getNameFa()  ,
+                                                        activity.getName(),
+                                                        activity.getPic().getPicId(),
+                                                        activity.getPic().getPic()));
                 }catch (Exception e){
                     log.error(e.getMessage());
                 }

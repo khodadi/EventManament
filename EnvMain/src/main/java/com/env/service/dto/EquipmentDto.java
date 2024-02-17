@@ -30,7 +30,7 @@ public class EquipmentDto {
     public EquipmentDto(Equipment ent){
         this(ent.getEquipmentId(),
              ent.getEquipmentName(),
-             GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.equipment"+"."+ent.getEquipmentName()).toLowerCase()):ent.getEquipmentNameFa(),
+             GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.equipment"+"."+ent.getEquipmentName())):ent.getEquipmentNameFa(),
              new ArrayList<>());
     }
 }
