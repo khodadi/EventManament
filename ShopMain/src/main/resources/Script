@@ -1,109 +1,93 @@
-// User postgres
-CREATE USER shp_user WITH PASSWORD '123456';
-CREATE TABLESPACE tbl_space_shp LOCATION '/usr/local/pgdata/';
-CREATE TABLESPACE tbl_space_shp LOCATION 'E:\postgres\tbl_space_shp';
-CREATE DATABASE shp_db OWNER shp_user TABLESPACE tbl_space_shp;
-CREATE USER shp_data_user WITH PASSWORD '123456'
-// User shp_user
+CREATE SCHEMA env_shp;
+CREATE USER env_shp_user WITH PASSWORD '123456'
 
-CREATE SCHEMA shp_data;
-GRANT SELECT, UPDATE ON ALL TABLES IN SCHEMA shp_data TO shp_data_user;
-
-
-create table shp_data.shop
+create table env_shp.category
 (
-    shop_id          integer   not null
-        constraint pk_shop
-            primary key,
-    shop_name        varchar   not null,
-    shop_category_id integer   not null,
-    shop_tel         varchar,
-    shop_address     varchar,
-    description      varchar,
-    creation_date    timestamp not null,
-    creation_user_id integer   not null,
-    last_update      timestamp,
-    update_user_id   integer
+	category_id integer not null
+		constraint category_pk
+			primary key,
+	parent_category_id integer,
+	name varchar
 );
 
-alter table shp_data.shop
-    owner to shp_user;
-create sequence shp_data.shop_seq
-    as integer
-    minvalue 1000
-    maxvalue 999999999
-    cache 20;
+alter table env_shp.category owner to env_user;
 
-alter sequence shp_data.shop_seq owner to shp_user;
-
-
-
-create table shp_data.shop_category
+create table env_shp.category_trl
 (
-    shop_category_id        integer   not null
-        constraint pk_shop_category
-            primary key,
-    parent_shop_category_id integer   not null,
-    name_category_fa        varchar   not null,
-    name_category_en        varchar   not null,
-    creation_date           timestamp not null,
-    creation_user_id        integer,
-    last_update             timestamp,
-    update_user_id          integer
+	category_trl_id integer,
+	name_trl varchar,
+	locale_trl varchar,
+	category_id integer
 );
 
-create sequence shp_data.shop_category_seq
-    as integer
-    minvalue 1000
-    maxvalue 9999999999
-    cache 20;
+alter table env_shp.category_trl owner to env_user;
 
-alter sequence shp_data.shop_category_seq owner to shp_user;
-
-
-create table shp_data.shop_pic
+create table env_shp.pic
 (
-    shop_pic_id integer not null
-        constraint pk_shop_pic
-            primary key,
-    pic         bytea   not null,
-    description varchar
+	pic_id bigint not null
+		constraint pic_pk
+			primary key,
+	pic bytea,
+	pic_name varchar(100),
+	creation_date date not null,
+	creator_user_id bigint,
+	last_update date,
+	updater_user_id bigint
 );
 
-alter table shp_data.shop_pic
-    owner to shp_user;
-create sequence shp_data.shop_pic_seq
-    as integer
-    minvalue 1000
-    maxvalue 99999999
-    cache 20;
+alter table env_shp.pic owner to env_user;
 
-alter sequence shp_data.shop_pic_seq owner to shp_user;
-
-
-create table shp_data.shop_about
+create table env_shp.provider
 (
-    shop_about_id    integer not null
-        constraint pk_shop_about
-            primary key,
-    shop_id          integer,
-    desc_sale        varchar,
-    desc_pic         varchar,
-    pic_id           integer,
-    creation_date    timestamp,
-    creation_user_id integer,
-    last_update      timestamp,
-    update_user_id   integer
+	provider_id integer not null,
+	shop_name varchar not null,
+	creation_date timestamp not null,
+	last_update timestamp,
+	creator_user_id integer,
+	updater_user_id integer,
+	category_id integer,
+	pic_id integer
 );
 
-alter table shp_data.shop_about
-    owner to shp_user;
+alter table env_shp.provider owner to env_user;
 
+create table env_shp.provider_trl
+(
+	provider_trl_id integer not null
+		constraint provider_trl_pk
+			primary key,
+	locale_trl varchar not null,
+	provider_trl char,
+	provider_id integer,
+	creation_date timestamp,
+	creator_user_id integer,
+	last_update timestamp,
+	updater_user_id integer
+);
 
-create sequence shp_data.shop_about_seq
-    as integer
-    minvalue 1000
-    maxvalue 99999999
-    cache 20;
+alter table env_shp.provider_trl owner to env_user;
 
-alter sequence shp_data.shop_about_seq owner to shp_user;
+create sequence env_shp.pic_seq
+	minvalue 1000
+	maxvalue 99999999999999
+	cache 20
+	cycle;
+
+alter sequence env_shp.pic_seq owner to env_user;
+
+create sequence env_shp.provider_seq
+	minvalue 1000
+	maxvalue 999999999999
+	cache 20
+	cycle;
+
+alter sequence env_shp.provider_seq owner to env_user;
+
+create sequence env_shp."provider_Trl_Seq"
+	minvalue 1000
+	maxvalue 9999999999999999
+	cache 20
+	cycle;
+
+alter sequence env_shp."provider_Trl_Seq" owner to env_user;
+
