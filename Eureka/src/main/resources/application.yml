@@ -17,3 +17,5 @@ eureka:
     # all others services to get themselves registered - 5 MS only for dev mode
     # in average, each service takes 30 seconds to get registered (3 health requests)
     enableSelfPreservation: false # check client is up or down or killed
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/

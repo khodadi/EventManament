@@ -41,5 +41,4 @@ public class AppEventManagement extends SpringBootServletInitializer {
         slr.setDefaultLocale(new Locale("fa"));
         return slr;
     }
-
 }

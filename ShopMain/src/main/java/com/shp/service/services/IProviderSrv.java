@@ -1,5 +1,8 @@
 package com.shp.service.services;
 
+import com.form.OutputAPIForm;
+import com.shp.service.dto.ProviderDto;
+
 /**
  * @Creator 2/18/2024
  * @Project IntelliJ IDEA
@@ -8,4 +11,5 @@ package com.shp.service.services;
 
 
 public interface IProviderSrv {
+    OutputAPIForm insertProvider(ProviderDto providerDto);
 }

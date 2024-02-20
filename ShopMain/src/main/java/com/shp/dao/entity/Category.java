@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
-
     @Id
     @Column(name = "category_id")
     @GeneratedValue(generator = "provider_seq", strategy = GenerationType.SEQUENCE)
@@ -27,5 +26,4 @@ public class Category {
     private String name;
     @Column(name = "parent_category_id")
     private Long parentCategoryId;
-
 }

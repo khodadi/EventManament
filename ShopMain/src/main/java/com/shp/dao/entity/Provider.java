@@ -1,5 +1,6 @@
 package com.shp.dao.entity;
 
+import com.shp.service.dto.ProviderDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +28,6 @@ public class Provider extends ABaseEntity{
     private Long providerId;
     @Column(name = "shop_name")
     private String shopName;
-    @Column(name = "NAME_FA")
-    private String nameFa;
     @Column(name = "pic_id")
     private Long picId;
     @Column(name = "category_id")
@@ -42,4 +41,11 @@ public class Provider extends ABaseEntity{
     @OneToMany
     @JoinColumn(name = "provider_id")
     private List<ProviderTrl> providerTrls;
+
+
+    public Provider(ProviderDto dto) {
+        this.setShopName(dto.getShopName());
+        this.setPicId(dto.getPicId());
+        this.setCategoryId(dto.getCategoryId());
+    }
 }
