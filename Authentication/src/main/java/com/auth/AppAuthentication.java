@@ -34,8 +34,6 @@ public class AppAuthentication extends SpringBootServletInitializer {
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();

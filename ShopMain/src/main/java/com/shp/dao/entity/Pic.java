@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "PIC",schema = "ENV_DATA")
+@Table(name = "PIC",schema = "env_shp")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pic extends ABaseEntity{
-
     @Id
     @Column(name = "PIC_ID")
     @GeneratedValue(generator = "pic_seq", strategy = GenerationType.SEQUENCE)

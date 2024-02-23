@@ -90,4 +90,143 @@ create sequence env_shp."provider_Trl_Seq"
 	cycle;
 
 alter sequence env_shp."provider_Trl_Seq" owner to env_user;
+-------------------------------------------------------
+alter sequence env_shp."provider_Trl_Seq" rename to provider_trl_seq;
 
+alter table env_shp.provider_trl
+    alter column provider_trl type varchar using provider_trl::varchar;
+
+
+create table env_shp."Items"
+(
+    item_id         integer           not null,
+    item_name       integer           not null,
+    count_item      integer default 0 not null,
+    provider_id     integer           not null,
+    creator_user_id integer,
+    update_user_id  integer,
+    creation_date   timestamp,
+    last_update     timestamp
+);
+
+alter table env_shp."Items"
+    owner to env_user;
+
+create sequence env_shp.item_seq
+    as integer
+    minvalue 100
+    maxvalue 99999999
+    cache 20
+    cycle;
+
+
+create table env_shp.tag
+    (
+        tag_id   integer not null,
+        tag_name varchar not null
+    );
+
+
+create table env_shp.item_tag
+(
+    item_tag_id integer,
+    tag_id      integer,
+    item_id     integer
+);
+create sequence env_shp.item_tag_seq
+    as integer
+    minvalue 1000
+    maxvalue 999999;
+
+create table env_shp.attribute
+(
+    attribute_id   integer,
+    attribute_name varchar
+);
+
+alter table env_shp.attribute
+    owner to env_user;
+
+
+create table env_shp.item_attribute
+(
+    item_attribute_id integer not null,
+    attribute_id      integer not null,
+    item_id           integer not null,
+    value_attribute   varchar
+);
+
+alter table env_shp.item_attribute
+    owner to env_user;
+
+
+create sequence env_shp.item_attribute_seq
+    minvalue 1000
+    maxvalue 999999999
+    cache 20
+    cycle;
+
+alter sequence env_shp.item_attribute_seq owner to env_user;
+
+create table env_shp.item_pic
+(
+    item_pic_id integer not null,
+    item_id     integer not null,
+    pic_name    varchar,
+    pic_id      integer not null
+);
+
+alter table env_shp."Items"
+    rename to item;
+
+alter table env_shp.item
+    add category_id integer not null;
+
+alter table env_shp.item
+    alter column item_name type varchar using item_name::varchar;
+
+alter table env_shp.item
+    rename column update_user_id to updater_user_id;
+
+create table env_shp.cart
+(
+    cart_id         integer not null,
+    state           integer not null,
+    creation_date   timestamp,
+    creator_user_id integer,
+    last_updater    timestamp,
+    updater_user_id integer
+);
+
+alter table env_shp.cart
+    owner to env_user;
+
+
+create table env_shp.cart_item
+(
+    cart_item_id    integer,
+    item_id         integer,
+    price           double precision,
+    creation_date   timestamp,
+    creator_user_id integer,
+    updater_user_id integer,
+    last_updater    timestamp
+);
+
+alter table env_shp.cart_item
+    owner to env_user;
+
+create sequence env_shp.cart_item_seq
+    minvalue 1000
+    maxvalue 999999999999
+    cache 20
+    cycle;
+
+create sequence env_shp.cart_seq
+    minvalue 1000
+    maxvalue 999999999999
+    cache 20
+    cycle;
+
+    alter table env_shp.cart_item
+        add count_order integer;

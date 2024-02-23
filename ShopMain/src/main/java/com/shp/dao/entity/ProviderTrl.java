@@ -1,5 +1,6 @@
 package com.shp.dao.entity;
 
+import com.shp.service.dto.ProviderDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,4 +32,10 @@ public class ProviderTrl extends ABaseEntity {
     @OneToOne
     @JoinColumn(name = "provider_id",insertable = false ,updatable=false)
     private Provider provider;
+
+    public ProviderTrl(ProviderDto dto) {
+        this.setLocaleTrl(dto.getLocaleTrl());
+        this.setProviderId(dto.getProviderId());
+        this.setProviderTrl(dto.getShopNameTrl());
+    }
 }

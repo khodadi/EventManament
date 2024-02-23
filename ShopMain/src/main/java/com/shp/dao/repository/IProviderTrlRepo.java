@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Author k.khodadi
  **/
 
-public interface IProviderTrlLocale extends JpaRepository<ProviderTrl,Long> {
+public interface IProviderTrlRepo extends JpaRepository<ProviderTrl,Long> {
 }

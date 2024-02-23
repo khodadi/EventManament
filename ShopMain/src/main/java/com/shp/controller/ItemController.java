@@ -3,8 +3,11 @@ package com.shp.controller;
 import com.basedata.generalcode.CodeException;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
+import com.shp.service.dto.ItemAttributeDto;
+import com.shp.service.dto.ItemCriteria;
+import com.shp.service.dto.ItemDto;
 import com.shp.service.dto.ProviderDto;
-import com.shp.service.services.IProviderSrv;
+import com.shp.service.services.IItemSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,36 +16,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 
-/**
- * @Creator 2/20/2024
- * @Project IntelliJ IDEA
- * @Author k.khodadi
- **/
-
-
 @RestController
-@RequestMapping("/api/v1/provider")
+@RequestMapping("/api/v1/item")
 @RequiredArgsConstructor
 @Slf4j
-public class ProviderController {
-    private IProviderSrv providerSrv;
+public class ItemController {
+
+    private IItemSrv itemSrv;
     private IMessageBundleSrv messageBundleSrv;
     @Autowired
-    public ProviderController(IProviderSrv providerSrv, IMessageBundleSrv messageBundleSrv) {
-        this.providerSrv = providerSrv;
+    public ItemController(IItemSrv itemSrv, IMessageBundleSrv messageBundleSrv) {
+        this.itemSrv = itemSrv;
         this.messageBundleSrv = messageBundleSrv;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<OutputAPIForm> addProvider(@RequestBody ProviderDto provider){
-        OutputAPIForm<ProviderDto> retVal = new OutputAPIForm();
+    public ResponseEntity<OutputAPIForm> addItem(@RequestBody ItemDto itemDto){
+        OutputAPIForm<ItemDto> retVal = new OutputAPIForm();
         try{
-            retVal = providerSrv.insertProvider(provider);
+            retVal = itemSrv.insertItem(itemDto);
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);
@@ -51,11 +46,27 @@ public class ProviderController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-    @PostMapping("/list")
-    public ResponseEntity<OutputAPIForm> listOfProvider(@RequestBody ProviderDto provider){
-        OutputAPIForm<ArrayList<ProviderDto>> retVal = new OutputAPIForm();
+
+
+    @PostMapping("/attribute/add")
+    public ResponseEntity<OutputAPIForm> addItemAttribute(@RequestBody ArrayList<ItemAttributeDto> itemAttributeDtos){
+        OutputAPIForm<ArrayList<ItemAttributeDto>> retVal = new OutputAPIForm();
         try{
-            retVal = providerSrv.getProvider();
+            retVal = itemSrv.addItemAttributes(itemAttributeDtos);
+        }catch (Exception e){
+            log.error("Error in save user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<OutputAPIForm> listItem(@RequestBody ItemCriteria cri){
+        OutputAPIForm<ArrayList<ItemDto>> retVal = new OutputAPIForm();
+        try{
+            retVal = itemSrv.listItemProvider(cri);
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);
@@ -66,3 +77,4 @@ public class ProviderController {
     }
 
 }
+
