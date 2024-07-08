@@ -5,6 +5,7 @@ server:
 #    key-store-password: 123456
 #    key-store-type: PKCS12
 #    key-alias: eventManagement
+#  keytool -genkey -alias eventManagement -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore eventManagement.p12  -validity 9999
   cors:
     origins:
       - http://localhost:3000
