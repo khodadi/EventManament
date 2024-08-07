@@ -3,7 +3,7 @@ server:
     context-path: /eventmanagment
 spring:
   profiles:
-    active: developer
+    active: operation
   #    active: operation
   #    active: test
 
@@ -26,6 +26,8 @@ eureka:
   client:
     register-with-eureka: true # register him self at eureka
     fetch-registry: true # pull down a local copy of the registries
+    service-url:
+      defaultZone: http://localhost:8766/eureka # discovery service location
 #----------- allowed cors origin
 cors:
   allowed-origins:
@@ -33,3 +35,6 @@ cors:
     - http://172.24.66.76:8082
     - http://localhost:3000
     - http://localhost:3001
+
+base_type:
+  users: users

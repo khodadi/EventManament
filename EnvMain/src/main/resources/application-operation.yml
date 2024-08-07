@@ -1,12 +1,25 @@
+server:
+  port: 8096
+  cors:
+    origins:
+      - http://localhost:3000
+    methods:
+      - POST
+      - PUT
+      - GET
+      - OPTIONS
 spring:
+  logging:
+    level : debug
   datasource:
-    url: jdbc:postgresql://localhost:5432/env_db
+    url: jdbc:postgresql://91.107.191.99:5432/env_db
     driver-class-name: org.postgresql.Driver
     username: env_user
     password: 123456
   jpa:
     hibernate:
       ddl-auto: none
+      debug: true
     show-sql: true
     properties:
       hibernate:
@@ -22,19 +35,11 @@ spring:
     multipart:
       max-file-size: 2MB
       max-request-size: 2MB
-#----------- redis config
-#  redis:
-#    host: "172.24.66.76"
-#    port: 6380
+
 #----------- eureka developer config
 #eureka:
-#  instance:
-#    prefer-ip-address: true # registers the service ip rather than the server name
 #  client:
-#    register-with-eureka: true # register him self at eureka
-#    fetch-registry: true # pull down a local copy of the registries
 #    service-url:
-#      defaultZone: http://localhost:8766/eureka # discovery service location
-#base_type:
-#  users: users
+#      defaultZone: http://localhost:8766/eureka # discovery service loc
+
 

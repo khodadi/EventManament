@@ -1,9 +1,23 @@
 server:
+  port: 8097
+  cors:
+    origins:
+      - http://91.107.191.99:3000
+      - http://localhost:3000
+      - http://localhost:3000
+      - http://91.107.191.99:3000
+      - http://localhost:3001
+      - http://91.107.191.99:3001
+    methods:
+      - POST
+      - PUT
+      - GET
+      - OPTIONS
   servlet:
     context-path: /authentication
 spring:
   profiles:
-    active: developer
+    active: operation
   #    active: operation
   #    active: test
   application:
@@ -26,6 +40,8 @@ eureka:
   client:
     register-with-eureka: true # register him self at eureka
     fetch-registry: true # pull down a local copy of the registries
+    service-url:
+      defaultZone: http://localhost:8766/eureka # discovery service location
 
 #----------- allowed cors origin
 cors:
@@ -39,5 +55,8 @@ token:
 
 locale:
   default: fa
+
+base_type:
+  users: users
 
 
