@@ -9,11 +9,8 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -45,10 +42,8 @@ public class GatewayLogger implements GlobalFilter, Ordered {
         Mono<Void> retVal = chain.filter(exchange);
         try {
             ServerHttpRequest request = exchange.getRequest();
-            ServerHttpResponse response = exchange.getResponse();
             URI requestURI = request.getURI();
             String scheme = requestURI.getScheme();
-
             if (scheme.equalsIgnoreCase("http") || (scheme.equalsIgnoreCase("https"))) {
                 long startTime = System.currentTimeMillis();
                 StringBuffer requestStr = new StringBuffer();
@@ -63,11 +58,6 @@ public class GatewayLogger implements GlobalFilter, Ordered {
                     request.getHeaders().forEach((key, value) -> finalRequestStr.append(key).append(":").append(value).append(", "));
                 }
                 log.info(requestStr.toString());
-//                if (configGateway.isCheckRequestHeader()) {
-//                    if (!Utility.checkInputData(requestStr.toString())) {
-//                        return response.writeWith(null);
-//                    }
-//                }
                 ServerWebExchange newExchange = exchange.mutate().request(request).response(gatheringInfoAfterResponse(exchange, startTime)).build();
                 return chain.filter(newExchange);
             }

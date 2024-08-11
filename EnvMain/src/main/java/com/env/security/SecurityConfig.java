@@ -68,6 +68,7 @@ public class SecurityConfig {
                 }
         );
         http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedException(ApplicationContextProvider.getApplicationContext().getBean(MessageBundleSrv.class)));
+//        http.addFilter(new Filter());
         http.addFilterBefore(new CustomAuthenticationFilter(ApplicationContextProvider.getApplicationContext().getBean(IUserGeneralSrv.class), localeResolver), BasicAuthenticationFilter.class);
         http.httpBasic(withDefaults());
         http.headers().frameOptions().disable();

@@ -93,11 +93,13 @@ public class OccasionSrv implements IOccasionSrv{
         OccasionDto occasionDto;
         List<Occasion> occasions;
         if(InfraSecurityUtils.checkLogin()){
-            occasions = occasionRepo.getOccasionByUserId(criOccasion.getUserId(),
+            log.info("list occasion user : " + InfraSecurityUtils.getCurrentUser());
+            occasions = occasionRepo.getOccasionByUserId(InfraSecurityUtils.getCurrentUser(),
                                                          criOccasion.getOccasionId(),
                                                          StateRequest.Accepted,
                                                          PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
         }else{
+            log.info("list sharable occasion ");
             occasions = occasionRepo.getOccasionPublic(criOccasion.getOccasionId(),
                                                        PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
 

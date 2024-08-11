@@ -2,7 +2,7 @@
 <configuration debug="true" scan="true" scanPeriod="15 seconds">
     <!--<include resource="org/springframework/boot/logging/logback/base.xml" />-->
     <property name="DEVELOPER_HOME" value="E:\logs" />
-    <property name="OPERATION_HOME" value="root/jarFiles/event" />
+    <property name="OPERATION_HOME" value="/root/jarFiles/event" />
 
     <springProfile name="developer">
         <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -26,7 +26,7 @@
             <encoder>
                 <pattern>%d{yyyy-MM-dd  HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
             </encoder>
-            <file>${OPERATION_HOME}/AUTH.log</file>
+            <file>${DEVELOPER_HOME}/AUTH.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <fileNamePattern>${DEVELOPER_HOME}/auth/AUTH-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>1GB</maxFileSize>
@@ -47,7 +47,7 @@
             </encoder>
             <file>${OPERATION_HOME}/AUTH.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${DEVELOPER_HOME}/auth/AUTH-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>${OPERATION_HOME}/auth/AUTH-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>1GB</maxFileSize>
                 <totalSizeCap>20GB</totalSizeCap>
                 <maxHistory>60</maxHistory>

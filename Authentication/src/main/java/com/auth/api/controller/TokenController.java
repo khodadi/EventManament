@@ -37,6 +37,7 @@ public class TokenController {
 
     @PostMapping("/user")
     public ResponseEntity<OutputAPIForm<UserDetails>> getUserByToken(@RequestParam(required = true) String token){
+        log.info("get user by token : " + token);
         OutputAPIForm<UserDetails> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/token/user").toUriString());
         try{

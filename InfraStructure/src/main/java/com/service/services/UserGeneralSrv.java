@@ -29,8 +29,10 @@ public class UserGeneralSrv implements IUserGeneralSrv{
         OutputAPIForm<UserSecurity> retVal = new OutputAPIForm<>();
         OutputAPIForm result = new OutputAPIForm<>();
         try{
+            log.info("cal service getUserByToken from Auth");
             String url = "http://localhost:8097/authentication/api/v1/token/user?token="+token;
             result =  CallWSRest.post(url,"admin:123456",null,OutputAPIForm.class);
+            log.info("get data from  getUserByToken :"+ result.getData().toString());
             retVal = convertResult(result);
         }catch (Exception e){
             retVal.setSuccess(false);
@@ -43,7 +45,7 @@ public class UserGeneralSrv implements IUserGeneralSrv{
         OutputAPIForm<UserSecurity> retVal = new OutputAPIForm<>();
         ((LinkedHashMap)result.getData().get("envUser")).get("firstName");
         EnvUserDto envUser = new EnvUserDto(
-                new Long((((LinkedHashMap)result.getData().get("envUser")).get("userId").toString())),
+                Long.parseLong((((LinkedHashMap)result.getData().get("envUser")).get("userId").toString())),
                 UserType.valueOf(((LinkedHashMap)result.getData().get("envUser")).get("userType") == null ?"ordinary":((LinkedHashMap)result.getData().get("envUser")).get("userType").toString()) ,
                 ((LinkedHashMap)result.getData().get("envUser")).get("firstName")== null ?"":((LinkedHashMap)result.getData().get("envUser")).get("firstName").toString(),
                 ((LinkedHashMap)result.getData().get("envUser")).get("lastName") == null ?"":((LinkedHashMap)result.getData().get("envUser")).get("lastName").toString(),

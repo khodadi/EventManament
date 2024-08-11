@@ -10,7 +10,10 @@ import com.utility.StringUtility;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class Utility {
 
@@ -25,7 +28,6 @@ public class Utility {
         retVal = retVal.isSuccess()? checkNull(dto.getLongitude()):retVal;
         return retVal;
     }
-
 
     public static void setLocaleInContext(){
 //        SecurityContextHolder.getContext().getAuthentication().getPrincipal().

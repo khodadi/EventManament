@@ -4,23 +4,21 @@ import com.basedata.generalcode.CodeException;
 import com.env.service.dto.*;
 import com.env.service.services.IItinerarySrv;
 import com.env.service.services.IOccasionSrv;
-import com.env.utility.Utility;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
-import com.utility.InfraSecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/occasion")
 @RequiredArgsConstructor
+
 @Slf4j
 public class OccasionController {
 
@@ -61,8 +59,9 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("")
+    @PostMapping(value = "", consumes="application/json",produces = "application/json")
     public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestBody CriOccasionDto criOccasion){
+        log.info("list Occasion ");
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion").toUriString());
         try{
