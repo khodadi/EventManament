@@ -2,7 +2,7 @@ spring:
   application:
     name: gateway # gateway service name to be called by it clients
   profiles:
-    active: operation
+    active: developer
   cloud:
     gateway:
       default-filters:
