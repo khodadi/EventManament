@@ -47,7 +47,7 @@
             </encoder>
             <file>${OPERATION_HOME}/AUTH.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${OPERATION_HOME}/auth/AUTH-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>/auth/AUTH-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>1GB</maxFileSize>
                 <totalSizeCap>20GB</totalSizeCap>
                 <maxHistory>60</maxHistory>

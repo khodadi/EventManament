@@ -32,7 +32,7 @@
             <appender-ref ref="OPERATION_FILE" />
         </root>
     </springProfile>
-
+5
     <springProfile name="operation">
         <!-- Simple file output -->
         <appender name="OPERATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -41,7 +41,7 @@
             </encoder>
             <file>${OPERATION_HOME}/Gateway.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${OPERATION_HOME}/Gateway/Gateway-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>/Gateway/Gateway-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>1GB</maxFileSize>
                 <totalSizeCap>20GB</totalSizeCap>
                 <maxHistory>60</maxHistory>

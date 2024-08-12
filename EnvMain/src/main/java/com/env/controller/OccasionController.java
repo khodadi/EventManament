@@ -61,7 +61,7 @@ public class OccasionController {
 
     @PostMapping(value = "", consumes="application/json",produces = "application/json")
     public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestBody CriOccasionDto criOccasion){
-        log.info("list Occasion ");
+        log.info(" List Occasion ");
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion").toUriString());
         try{

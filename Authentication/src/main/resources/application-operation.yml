@@ -22,19 +22,15 @@ spring:
     multipart:
       max-file-size: 2MB
       max-request-size: 2MB
-#----------- redis config
-#  redis:
-#    host: "172.24.66.76"
-#    port: 6380
-#----------- eureka developer config
-#eureka:
-#  instance:
-#    prefer-ip-address: true # registers the service ip rather than the server name
-#  client:
-#    register-with-eureka: true # register him self at eureka
-#    fetch-registry: true # pull down a local copy of the registries
-#    service-url:
-#      defaultZone: http://localhost:8766/eureka # discovery service location
-#base_type:
-#  users: users
+cors:
+  allowed-origins:
+    - https://qmars.khodaa.de:8443
+    - https://91.107.191.99:8443
+    - http://91.107.191.99:8096
+    - http://localhost:8096
+    - http://localhost:3000
+    - http://91.107.191.99:3000
+    - http://localhost:3001
+    - http://91.107.191.99:3001
+
 

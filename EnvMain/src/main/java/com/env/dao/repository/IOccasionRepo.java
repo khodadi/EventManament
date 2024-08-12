@@ -14,7 +14,7 @@ public interface IOccasionRepo extends JpaRepository<Occasion,Long> {
 
     @Query(" select ent from Occasion ent inner join OccasionUsers usr on (ent.occasionId = usr.occasionId)  " +
            "   where  (" +
-           "    (:occasionId is null or ent.occasionId = :occasionId) and(ent.creatorUserId = :userId)  or   " +   //pay attention to Occasion.creatorUserId
+           "    (:occasionId is null or ent.occasionId = :occasionId) and (ent.creatorUserId = :userId)  or   " +   //pay attention to Occasion.creatorUserId
            "          (usr.stateRequest = :state and  usr.userId = :userId)) or                              " +   //pay attention to Occasion User
            "          (  ent.sharable = true )                                                               "     //pay attention to Occasion Sharable
            )

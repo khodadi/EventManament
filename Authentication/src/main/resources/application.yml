@@ -8,6 +8,7 @@ server:
       - http://91.107.191.99:3000
       - http://localhost:3001
       - http://91.107.191.99:3001
+      - https://qmars.khodaa.de:8443
     methods:
       - POST
       - PUT
@@ -17,7 +18,7 @@ server:
     context-path: /authentication
 spring:
   profiles:
-    active: operation
+    active: developer
   #    active: operation
   #    active: test
   application:
@@ -46,6 +47,10 @@ eureka:
 #----------- allowed cors origin
 cors:
   allowed-origins:
+    - https://qmars.khodaa.de:8443
+    - https://91.107.191.99:8443
+    - http://91.107.191.99:8096
+    - http://localhost:8096
     - http://localhost:3000
     - http://91.107.191.99:3000
     - http://localhost:3001

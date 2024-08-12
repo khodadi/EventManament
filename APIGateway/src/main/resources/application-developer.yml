@@ -5,4 +5,22 @@ server:
     key-store-password: '123456'
     key-store-type: PKCS12
     key-alias: cleansing
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowed-origins: "http://localhost:3000,http://localhost:3001,http://172.24.66.76:8082,http://172.24.66.76:8086,http://91.107.191.99:3000,http://91.107.191.99:3001,https://qmars.khodaa.de:8443"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
 
+logging:
+  level:
+    reactor:
+      netty: info
+    org:
+      springframework:
+        cloud:
+          gateway: info

@@ -45,7 +45,7 @@
             </encoder>
             <file>${OPERATION_HOME}/EVENT.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${DEVELOPER_HOME}/event/EVENT-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>/event/EVENT-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>1GB</maxFileSize>
                 <totalSizeCap>20GB</totalSizeCap>
                 <maxHistory>60</maxHistory>
