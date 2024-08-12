@@ -2,7 +2,20 @@ server:
   port: 8096
   cors:
     origins:
+      - http://172.24.66.76:8086
+      - http://172.24.66.76:8082
       - http://localhost:3000
+      - http://localhost:3001
+      - https://qmars.khodaa.de:8443
+      - https://91.107.191.99:8443
+      - http://91.107.191.99:8096
+      - http://91.107.191.99:8097
+      - http://localhost:8096
+      - http://localhost:8097
+      - http://localhost:3000
+      - http://91.107.191.99:3000
+      - http://localhost:3001
+      - http://91.107.191.99:3001
     methods:
       - POST
       - PUT
