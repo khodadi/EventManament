@@ -48,6 +48,7 @@ public class OccasionSrv implements IOccasionSrv{
         try{
             retVal = validateBaseOccasionDto(dto);
             if(retVal.isSuccess()){
+
                 Optional<OccasionType> occasionType = occasionTypeRepo.findById(dto.getOccasionTypeId());
                 if(occasionType.isPresent()){
                     Pic pic = new Pic(dto.getPic(), dto.getOccasionName());
@@ -177,7 +178,6 @@ public class OccasionSrv implements IOccasionSrv{
         ComponentEventDto componentEvent;
         for(OccasionComponent occasionComponent:occasionType.getOccasionComponents()){
             try{
-
                 componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
                         GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
                         occasionComponent.getOrder());
@@ -218,6 +218,7 @@ public class OccasionSrv implements IOccasionSrv{
 
     public OutputAPIForm validateBaseOccasionDto(BaseOccasionDto dto){
         OutputAPIForm retVal = Utility.checkNull(dto);
+        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionName(),false,1,50,false):retVal;
         retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionName(),false,1,50,false):retVal;
         retVal = retVal.isSuccess() ? Utility.checkMandatoryBaseOccasion(dto):retVal;
         retVal = retVal.isSuccess() ? Utility.checkPic(dto.getPic(),true):retVal;

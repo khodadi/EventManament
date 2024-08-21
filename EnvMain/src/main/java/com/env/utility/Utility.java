@@ -2,18 +2,14 @@ package com.env.utility;
 
 import com.basedata.generalcode.CodeException;
 import com.env.basedata.OccasionLengthTypeEnum;
-import com.env.basedata.OccasionLengthTypeEnum;
-import com.form.OutputAPIForm;
 import com.env.service.dto.BaseOccasionDto;
 import com.env.service.dto.OccasionTypeDto;
+import com.form.OutputAPIForm;
+import com.utility.ImageUtility;
 import com.utility.StringUtility;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class Utility {
 
@@ -38,6 +34,7 @@ public class Utility {
         retVal = retVal.isSuccess()? checkNull(dto.getPic()):retVal;
         return retVal;
     }
+
     public static OutputAPIForm checkPic(byte[] pic, boolean isNull){
         OutputAPIForm retVal = new OutputAPIForm<>();
         if(!isNull){
@@ -45,6 +42,9 @@ public class Utility {
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.MANDATORY_FIELD);
             }
+        }
+        if(retVal.isSuccess() && (Objects.nonNull(pic) || pic.length > 0)){
+            retVal =ImageUtility.validateImage(pic,100,100);
         }
         return retVal;
     }

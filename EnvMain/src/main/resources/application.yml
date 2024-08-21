@@ -3,7 +3,7 @@ server:
     context-path: /eventmanagment
 spring:
   profiles:
-    active: operation
+    active: developer
   #    active: operation
   #    active: test
 

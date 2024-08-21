@@ -16,7 +16,9 @@ public enum CodeException {
     INVALID_CELLPHONE(14),
     INVALID_USERNAME(15),
     NOT_FIND_REFERENCE(16),
-    INTERNAL_ERROR(17);
+    INTERNAL_ERROR(17),
+    INVALID_IMAGE(18);
+
     private int codeException;
     CodeException(int code) {
         this.codeException = code;
