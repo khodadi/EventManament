@@ -164,8 +164,6 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-
-
     @PostMapping("/user/save")
     public ResponseEntity<OutputAPIForm> saveOccasionUser(@RequestBody OccasionUsersDto occasionUsers){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();

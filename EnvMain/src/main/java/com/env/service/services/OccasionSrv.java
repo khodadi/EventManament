@@ -30,7 +30,7 @@ public class OccasionSrv implements IOccasionSrv{
     private final IOccasionUsersRepo occasionUsersRepo;
     private final IOccasionCostRepo occasionCostRepo;
 
-    public final static int pageSize = 5;
+    public final static int pageSize = 100;
 
     public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo) {
         this.occasionRepo = occasionRepo;
@@ -103,7 +103,6 @@ public class OccasionSrv implements IOccasionSrv{
             log.info("list sharable occasion ");
             occasions = occasionRepo.getOccasionPublic(criOccasion.getOccasionId(),
                                                        PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
-
         }
 
         if(occasions!= null && occasions.size()> pageSize){

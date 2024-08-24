@@ -1,5 +1,6 @@
 package com.env.service.dto;
 
+import com.env.basedata.SearchTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CriOccasionDto {
     private int page;
     private Long occasionId;
-    private Long userId;
+    private String occasionName;
+    private SearchTypeEnum searchType;
 }

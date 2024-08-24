@@ -16,6 +16,7 @@ public enum StateRequest {
     }
 
     public int stateRequestCode;
+
     public void setStateRequestCode(int stateRequestCode) {
         this.stateRequestCode = stateRequestCode;
     }

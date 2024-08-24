@@ -29,6 +29,7 @@ public enum OccasionLengthTypeEnum {
     public int getOccasionLengthTypeCode() {
         return occasionLengthTypeCode;
     }
+
     public static BaseData getLovOccasionType(){
         BaseData retVal = new BaseData(OCCASION_LENGTH_KEY,new ArrayList<>());
         IMessageBundleSrv messageBundleSrv =GeneralUtility.getMessageSrv();
