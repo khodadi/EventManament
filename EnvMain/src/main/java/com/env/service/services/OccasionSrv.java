@@ -5,6 +5,8 @@ import com.env.basedata.StateRequest;
 import com.env.dao.entity.*;
 import com.env.dao.repository.*;
 import com.env.service.dto.*;
+import com.env.service.services.tab.ITabSrv;
+import com.env.service.services.tab.TabFactory;
 import com.env.utility.Utility;
 import com.form.OutputAPIForm;
 import com.utility.GeneralUtility;
@@ -29,10 +31,11 @@ public class OccasionSrv implements IOccasionSrv{
     private final IOccasionPicRepo occasionPicRepo;
     private final IOccasionUsersRepo occasionUsersRepo;
     private final IOccasionCostRepo occasionCostRepo;
+    private final IFactory<ITabSrv,String> tabFactory;
 
     public final static int pageSize = 100;
 
-    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo) {
+    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo, IFactory tabFactory) {
         this.occasionRepo = occasionRepo;
         this.picRepo = picRepo;
         this.occasionTypeRepo = occasionTypeRepo;
@@ -40,6 +43,7 @@ public class OccasionSrv implements IOccasionSrv{
         this.occasionPicRepo = occasionPicRepo;
         this.occasionUsersRepo = occasionUsersRepo;
         this.occasionCostRepo = occasionCostRepo;
+        this.tabFactory = tabFactory;
     }
 
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
@@ -48,7 +52,6 @@ public class OccasionSrv implements IOccasionSrv{
         try{
             retVal = validateBaseOccasionDto(dto);
             if(retVal.isSuccess()){
-
                 Optional<OccasionType> occasionType = occasionTypeRepo.findById(dto.getOccasionTypeId());
                 if(occasionType.isPresent()){
                     Pic pic = new Pic(dto.getPic(), dto.getOccasionName());
@@ -101,10 +104,8 @@ public class OccasionSrv implements IOccasionSrv{
                                                          PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
         }else{
             log.info("list sharable occasion ");
-            occasions = occasionRepo.getOccasionPublic(criOccasion.getOccasionId(),
-                                                       PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
+            occasions = occasionRepo.getOccasionPublic(criOccasion.getOccasionId(), PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("startDate")));
         }
-
         if(occasions!= null && occasions.size()> pageSize){
             retVal.setNextPage(true);
         }
@@ -130,59 +131,34 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
     }
 
-    public ArrayList<ComponentEventDto> getTabsEvents(Occasion event){
-        ArrayList<ComponentEventDto> retVal= new ArrayList<>();
-        ComponentEventDto componentEvent;
+    public ArrayList<ComponentEventGeneralDto> getTabsEvents(Occasion event){
+        ArrayList<ComponentEventGeneralDto> retVal= new ArrayList<>();
         for(OccasionComponent occasionComponent:event.getOccasionType().getOccasionComponents()){
-            if(InfraSecurityUtils.checkLogin() || (!InfraSecurityUtils.checkLogin() && !occasionComponent.isNeedLogin()) ){
-                componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                        GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
-                        occasionComponent.getOrder());
-                setOccasionItinerary(event,componentEvent);
-                setOccasionParticipant(event,componentEvent);
-                retVal.add(componentEvent);
+            if((InfraSecurityUtils.checkLogin() || (!InfraSecurityUtils.checkLogin() && !occasionComponent.isNeedLogin()))
+               &&
+               tabFactory.factory(occasionComponent.getComponent().getComponentName()) != null){
+                retVal.add(tabFactory.factory(occasionComponent.getComponent().getComponentName()).createTab(event,occasionComponent));
             }
         }
         Collections.sort(retVal);
         return retVal;
     }
 
-    private void setOccasionItinerary(Occasion event,ComponentEventDto componentEvent){
-        if(componentEvent.getComponentName().equals("Itinerary")){
-            ArrayList<ItineraryDto> itineraryDtos = new ArrayList<>();
-            for(Itinerary itinerary:event.getItineraries()){
-                itineraryDtos.add(new ItineraryDto(itinerary));
-            }
-            Collections.sort(itineraryDtos);
-            componentEvent.setItineraries(itineraryDtos);
-        }
-    }
-
-    private void setOccasionParticipant(Occasion event,ComponentEventDto componentEvent){
-        if(componentEvent.getComponentName().equals("Participant")){
-            ArrayList<OccasionUsersDto> occasionUsersDtos = new ArrayList<>();
-            for(OccasionUsers occasionUsers:event.getOccasionUsers()){
-                occasionUsersDtos.add(new OccasionUsersDto(occasionUsers.getOccasionUserId(),
-                        occasionUsers.getUserId(),
-                        occasionUsers.getOccasionId(),
-                        occasionUsers.getStateRequest()));
-            }
-            componentEvent.setOccasionUsersDtos(occasionUsersDtos);
-        }
-    }
-
-    private ArrayList<ComponentEventDto> saveDefaultTabs(OccasionType occasionType, BaseOccasionDto dto, Long occasionId ){
-        ArrayList<ComponentEventDto> retVal =new ArrayList<>();
+    private ArrayList<ComponentEventGeneralDto> saveDefaultTabs(OccasionType occasionType, BaseOccasionDto dto, Long occasionId ){
+        ArrayList<ComponentEventGeneralDto> retVal =new ArrayList<>();
         OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary;
-        ComponentEventDto componentEvent;
+        ComponentEventGeneralDto componentEvent;
         for(OccasionComponent occasionComponent:occasionType.getOccasionComponents()){
             try{
-                componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                        GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
-                        occasionComponent.getOrder());
-                if(componentEvent.getComponentName().equals("Itinerary")){
+                if(occasionComponent.getComponent().getComponentName().equals("Itinerary")){
                     defaultItinerary = itinerarySrv.saveDefaultItinerary(dto, occasionId);
-                    componentEvent.setItineraries(defaultItinerary.getData());
+                    componentEvent = new ComponentEventGeneralDto( occasionComponent.getComponent().getComponentName(),
+                            GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
+                            occasionComponent.getOrder(),defaultItinerary.getData());
+                }else{
+                    componentEvent = new ComponentEventGeneralDto( occasionComponent.getComponent().getComponentName(),
+                            GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
+                            occasionComponent.getOrder(),null);
                 }
                 retVal.add(componentEvent);
             }catch (Exception e){
@@ -193,18 +169,21 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
     }
 
-    private ArrayList<ComponentEventDto> editDefaultTabs(Optional<Occasion> occasion,OccasionDto dto ){
-        ArrayList<ComponentEventDto> retVal =new ArrayList<>();
+    private ArrayList<ComponentEventGeneralDto> editDefaultTabs(Optional<Occasion> occasion,OccasionDto dto ){
+        ArrayList<ComponentEventGeneralDto> retVal =new ArrayList<>();
         OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary;
-        ComponentEventDto componentEvent;
+        ComponentEventGeneralDto componentEvent;
         for(OccasionComponent occasionComponent:occasion.get().getOccasionType().getOccasionComponents()){
             try{
-                componentEvent = new ComponentEventDto( occasionComponent.getComponent().getComponentName(),
-                        GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
-                        occasionComponent.getOrder());
-                if(componentEvent.getComponentName().equals("Itinerary")){
+                if(occasionComponent.getComponent().getComponentName().equals("Itinerary")){
                     defaultItinerary = itinerarySrv.editDefaultItinerary(occasion,dto);
-                    componentEvent.setItineraries(defaultItinerary.getData());
+                    componentEvent = new ComponentEventGeneralDto( occasionComponent.getComponent().getComponentName(),
+                            GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
+                            occasionComponent.getOrder(),defaultItinerary.getData());
+                }else{
+                    componentEvent = new ComponentEventGeneralDto( occasionComponent.getComponent().getComponentName(),
+                            GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
+                            occasionComponent.getOrder(),null);
                 }
                 retVal.add(componentEvent);
             }catch (Exception e){

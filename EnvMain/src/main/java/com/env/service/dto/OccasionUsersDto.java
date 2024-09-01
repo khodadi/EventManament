@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OccasionUsersDto {
+public class OccasionUsersDto implements ITab {
     private Long occasionUserId;
     private Long UserId;
     private Long occasionId;

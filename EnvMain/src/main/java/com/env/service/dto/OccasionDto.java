@@ -21,10 +21,10 @@ public class OccasionDto extends BaseOccasionDto{
     private Timestamp lastUpdate;
     private Long occasionId;
     private Long picId;
-    private ArrayList<ComponentEventDto> tabs;
+    private ArrayList<ComponentEventGeneralDto> tabs;
     private boolean editable;
 
-    public OccasionDto(Occasion ent,ArrayList<ComponentEventDto> tabs,boolean sendPic){
+    public OccasionDto(Occasion ent,ArrayList<ComponentEventGeneralDto> tabs,boolean sendPic){
         super(ent.getOccasionName(),
                 ent.getOccasionTypeId(),
                 ent.getOccasionLengthType(),

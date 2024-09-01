@@ -119,10 +119,8 @@ public class ItinerarySrv implements IItinerarySrv {
     }
 
     public OutputAPIForm saveItineraryDetail(BaseItineraryDetailDto dto){
-
         OutputAPIForm<ItineraryDetailDto> retVal = new OutputAPIForm();
         try{
-
             ItineraryDetail itineraryDetail = new ItineraryDetail(dto);
             ItineraryDetailEquipment itineraryDetailEquipment;
             itineraryDetailRepo.save(itineraryDetail);

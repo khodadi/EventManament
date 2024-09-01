@@ -5,12 +5,14 @@ import com.service.dto.BaseData;
 import com.service.dto.KeyValue;
 import com.service.services.IMessageBundleSrv;
 import com.utility.GeneralUtility;
-
 import java.util.ArrayList;
 
 public enum StateRequest {
+
     Accepted(0),Requested(1),Rejected(2);
+
     public static final String REQUEST_STATE = "RequestState";
+
     StateRequest(int stateRequestCode){
         this.setStateRequestCode(stateRequestCode);
     }
@@ -58,4 +60,5 @@ public enum StateRequest {
         }
         return retVal;
     }
+
 }

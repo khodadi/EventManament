@@ -16,6 +16,7 @@ server:
       - http://91.107.191.99:3000
       - http://localhost:3001
       - http://91.107.191.99:3001
+      - https://qap-three.vercel.app
     methods:
       - POST
       - PUT
@@ -72,3 +73,4 @@ cors:
     - http://91.107.191.99:3000
     - http://localhost:3001
     - http://91.107.191.99:3001
+    - https://qap-three.vercel.app

@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItineraryDto implements Comparable<ItineraryDto> {
+public class ItineraryDto implements Comparable<ItineraryDto>, ITab {
     private Long itineraryId;
     private Long occasionId;
     private Timestamp itineraryDate;
