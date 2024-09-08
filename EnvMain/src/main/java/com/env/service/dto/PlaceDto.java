@@ -1,5 +1,6 @@
 package com.env.service.dto;
 
+import com.env.dao.entity.Place;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,25 @@ public class PlaceDto {
     private ArrayList<byte[]> pics;
     private ArrayList<Long> picIds;
     private ArrayList<Long> placePicIds;
+
+    PlaceDto(Place ent){
+        this(ent.getPlaceId(),
+                ent.getEventId(),
+                ent.getName(),
+                ent.getNameFa(),
+                ent.getDescription(),
+                ent.getPhone(),
+                ent.getScore(),
+                ent.getCost(),
+                ent.getFree(),
+                ent.getPublicView(),
+                ent.getLatitude(),
+                ent.getLongitude(),
+                null,
+                null,
+                null);
+
+    }
     public PlaceDto(Long placeId) {
         this.placeId = placeId;
     }
@@ -49,4 +69,6 @@ public class PlaceDto {
         }
         return placePicIds;
     }
+
+
 }

@@ -28,7 +28,7 @@ public class ItineraryDetailDto{
     private PlaceDto destination;
     public ItineraryDetailDto(ItineraryDetail itineraryDetail){
         this(itineraryDetail.getItineraryDetailId(),
-             new PlaceDto(itineraryDetail.getSourcePlaceId()),
+             new PlaceDto(itineraryDetail.getSourcePlace()),
              itineraryDetail.getItineraryId(),
              new ArrayList<ItineraryDetailEquipmentDto>(),
              itineraryDetail.getStartTime(),
@@ -38,6 +38,6 @@ public class ItineraryDetailDto{
              new ActivityDto(itineraryDetail.getActivityId()),
              new EventDto(itineraryDetail.getEventId()),
              itineraryDetail.getDescription(),
-             new PlaceDto(itineraryDetail.getDestinationPlaceId()));
+             new PlaceDto(itineraryDetail.getDestinationPlace()));
     }
 }

@@ -1,17 +1,13 @@
 package com.env.service.services;
 
 import com.basedata.generalcode.CodeException;
-import com.env.dao.entity.Itinerary;
-import com.env.dao.entity.ItineraryDetail;
-import com.env.dao.entity.ItineraryDetailEquipment;
-import com.env.dao.entity.Occasion;
+import com.env.dao.entity.*;
 import com.env.dao.repository.IItineraryDetailEquipmentRepo;
 import com.env.dao.repository.IItineraryDetailRepo;
 import com.env.dao.repository.IItineraryRepo;
-import com.env.dao.entity.Itinerary;
+import com.env.dao.repository.IPlaceRepo;
 import com.env.service.dto.*;
 import com.form.OutputAPIForm;
-import com.service.dto.*;
 import com.utility.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,13 +25,14 @@ public class ItinerarySrv implements IItinerarySrv {
 
     private final IItineraryRepo itineraryRepo;
     private final IItineraryDetailRepo itineraryDetailRepo;
-
     private final IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo;
+    private final IPlaceRepo placeRepo;
 
-    public ItinerarySrv(IItineraryRepo itineraryRepo, IItineraryDetailRepo itineraryDetailRepo, IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo) {
+    public ItinerarySrv(IItineraryRepo itineraryRepo, IItineraryDetailRepo itineraryDetailRepo, IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo, IPlaceRepo placeRepo) {
         this.itineraryRepo = itineraryRepo;
         this.itineraryDetailRepo = itineraryDetailRepo;
         this.itineraryDetailEquipmentRepo = itineraryDetailEquipmentRepo;
+        this.placeRepo = placeRepo;
     }
     @Override
     public OutputAPIForm<ArrayList<ItineraryDto>> saveDefaultItinerary(BaseOccasionDto baseOccasionDto, Long occasionId) {
@@ -121,16 +119,24 @@ public class ItinerarySrv implements IItinerarySrv {
     public OutputAPIForm saveItineraryDetail(BaseItineraryDetailDto dto){
         OutputAPIForm<ItineraryDetailDto> retVal = new OutputAPIForm();
         try{
-            ItineraryDetail itineraryDetail = new ItineraryDetail(dto);
-            ItineraryDetailEquipment itineraryDetailEquipment;
-            itineraryDetailRepo.save(itineraryDetail);
-            ItineraryDetailDto data = new ItineraryDetailDto(itineraryDetail);
-            for(Long equipId:dto.getItineraryEquipments()){
-                itineraryDetailEquipment = new ItineraryDetailEquipment(null,equipId,itineraryDetail.getItineraryDetailId());
-                itineraryDetailEquipmentRepo.save(itineraryDetailEquipment);
-                data.getItineraryEquipments().add(new ItineraryDetailEquipmentDto(itineraryDetailEquipment));
+            Place srcPlace = placeRepo.getReferenceById(dto.getSource().getPlaceId());
+            Place decPlace = placeRepo.getReferenceById(dto.getDestination().getPlaceId());
+            if(Objects.nonNull(srcPlace)  && Objects.nonNull(decPlace)){
+                ItineraryDetail itineraryDetail = new ItineraryDetail(dto,srcPlace,decPlace);
+                ItineraryDetailEquipment itineraryDetailEquipment;
+                itineraryDetailRepo.save(itineraryDetail);
+                ItineraryDetailDto data = new ItineraryDetailDto(itineraryDetail);
+                for(Long equipId:dto.getItineraryEquipments()){
+                    itineraryDetailEquipment = new ItineraryDetailEquipment(null,equipId,itineraryDetail.getItineraryDetailId());
+                    itineraryDetailEquipmentRepo.save(itineraryDetailEquipment);
+                    data.getItineraryEquipments().add(new ItineraryDetailEquipmentDto(itineraryDetailEquipment));
+                }
+                retVal.setData(data);
+
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
             }
-            retVal.setData(data);
         }catch (Exception e){
             log.error(e.getMessage());
             retVal.setSuccess(false);

@@ -44,7 +44,7 @@ public class Utility {
             }
         }
         if(retVal.isSuccess() && (Objects.nonNull(pic) || pic.length > 0)){
-            retVal =ImageUtility.validateImage(pic,100,100);
+            retVal =ImageUtility.validateImage(pic,10000,10000);
         }
         return retVal;
     }

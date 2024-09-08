@@ -23,8 +23,14 @@ public class ItineraryDetail extends ABaseEntity{
     private Long itineraryId;
     @Column(name = "SOURCE_PLACE_ID")
     private Long sourcePlaceId;
+    @OneToOne
+    @JoinColumn(name = "SOURCE_PLACE_ID",insertable = false ,updatable=false)
+    private Place sourcePlace;
     @Column(name = "DESTINATION_PLACE_ID")
     private Long destinationPlaceId;
+    @OneToOne
+    @JoinColumn(name = "DESTINATION_PLACE_ID",insertable = false ,updatable=false)
+    private Place destinationPlace;
     @Column(name = "START_TIME")
     private Timestamp startTime;
     @Column(name = "END_TIME")
@@ -40,11 +46,15 @@ public class ItineraryDetail extends ABaseEntity{
     @Column(name = "EVENT_ID")
     private Long eventId;
 
+
+
     public ItineraryDetail(BaseItineraryDetailDto dto){
         this(null,
         dto.getItineraryId(),
-        dto.getSourceId(),
-        dto.getDestinationId(),
+        dto.getSource().getPlaceId(),
+        null,
+        dto.getDestination().getPlaceId(),
+        null,
         dto.getStartTime(),
         dto.getEntTime(),
         dto.getTimeDistance(),
@@ -52,5 +62,10 @@ public class ItineraryDetail extends ABaseEntity{
         dto.getDescription(),
         dto.getActivityType(),
         dto.getEventId());
+    }
+    public ItineraryDetail(BaseItineraryDetailDto dto,Place srcPlace,Place desPlace){
+        this(dto);
+        this.setSourcePlace(srcPlace);
+        this.setDestinationPlace(desPlace);
     }
 }
