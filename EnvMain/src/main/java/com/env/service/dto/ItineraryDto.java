@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 @Setter
@@ -26,6 +27,7 @@ public class ItineraryDto implements Comparable<ItineraryDto>, ITab {
             for(ItineraryDetail itineraryDetail:ent.getItineraryDetails()){
                 itineraryDetails.add(new ItineraryDetailDto(itineraryDetail));
             }
+            Collections.sort(itineraryDetails);
             this.setItineraryDetailDtos(itineraryDetails);
         }
     }
@@ -33,10 +35,14 @@ public class ItineraryDto implements Comparable<ItineraryDto>, ITab {
     @Override
     public int compareTo(ItineraryDto itineraryDto) {
         int retVal = 0;
-        if(itineraryDto.getItineraryDate().after(this.getItineraryDate())){
-            retVal = 1;
-        }else{
-            retVal = -1;
+        try {
+            if(itineraryDto.getItineraryDate().after(this.getItineraryDate())){
+                retVal = -1;
+            }else{
+                retVal = 1;
+            }
+        }catch (Exception e){
+            retVal = 0;
         }
         return retVal;
     }

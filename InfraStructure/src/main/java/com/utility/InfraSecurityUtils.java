@@ -53,7 +53,7 @@ public class InfraSecurityUtils {
             retVal = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
             LocaleContextHolder.getLocale();
         }catch (Exception e){
-            log.error("Error in get current user",e);
+            log.info("Current user is anonymous");
             retVal = defaultUser;
         }
         return retVal;

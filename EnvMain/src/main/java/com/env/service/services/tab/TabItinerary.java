@@ -30,7 +30,6 @@ public class TabItinerary implements ITabSrv {
         ComponentEventGeneralDto tab = new ComponentEventGeneralDto( occasionComponent.getComponent().getComponentName(),
                 GeneralUtility.getMessageSrv()!=null?GeneralUtility.getMessageSrv().getMessage(("table.component"+"."+occasionComponent.getComponent().getComponentName()).toLowerCase()):occasionComponent.getComponent().getComponentNameFa(),
                 occasionComponent.getOrder(),itineraryDtos);
-
         return tab;
     }
 }

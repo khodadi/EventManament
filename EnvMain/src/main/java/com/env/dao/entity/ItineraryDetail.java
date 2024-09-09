@@ -53,7 +53,7 @@ public class ItineraryDetail extends ABaseEntity{
         dto.getItineraryId(),
         dto.getSource().getPlaceId(),
         null,
-        dto.getDestination().getPlaceId(),
+        dto.getDestination() ==null ?null :dto.getDestination().getPlaceId(),
         null,
         dto.getStartTime(),
         dto.getEntTime(),

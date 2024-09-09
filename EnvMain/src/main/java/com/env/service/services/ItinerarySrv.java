@@ -40,7 +40,7 @@ public class ItinerarySrv implements IItinerarySrv {
         ArrayList<ItineraryDto> itineraries = new ArrayList<>();
         try{
             long numberOfDate = DateUtils.diffTwoDateDay(DateUtils.getBeginOfDay(baseOccasionDto.getStartDate()),DateUtils.getBeginOfDay(baseOccasionDto.getEndDate()));
-            for(int i = 0;i < numberOfDate;i++){
+            for(int i = 0;i <= numberOfDate;i++){
                 Itinerary itinerary = new Itinerary(occasionId,DateUtils.addDays(DateUtils.getBeginOfDay(baseOccasionDto.getStartDate()),i));
                 itineraryRepo.save(itinerary);
                 itineraries.add(new ItineraryDto(itinerary.getItineraryId(),itinerary.getOccasionId(),itinerary.getItineraryDate(),null));
@@ -119,9 +119,9 @@ public class ItinerarySrv implements IItinerarySrv {
     public OutputAPIForm saveItineraryDetail(BaseItineraryDetailDto dto){
         OutputAPIForm<ItineraryDetailDto> retVal = new OutputAPIForm();
         try{
-            Place srcPlace = placeRepo.getReferenceById(dto.getSource().getPlaceId());
-            Place decPlace = placeRepo.getReferenceById(dto.getDestination().getPlaceId());
-            if(Objects.nonNull(srcPlace)  && Objects.nonNull(decPlace)){
+            Place srcPlace = (dto!= null && dto.getSource() != null && dto.getSource().getPlaceId() != null) ? placeRepo.getReferenceById(dto.getSource().getPlaceId()):null;
+            Place decPlace = (dto!= null && dto.getSource() != null && dto.getDestination().getPlaceId() != null) ? placeRepo.getReferenceById(dto.getDestination().getPlaceId()): null;
+            if(Objects.nonNull(srcPlace)){
                 ItineraryDetail itineraryDetail = new ItineraryDetail(dto,srcPlace,decPlace);
                 ItineraryDetailEquipment itineraryDetailEquipment;
                 itineraryDetailRepo.save(itineraryDetail);

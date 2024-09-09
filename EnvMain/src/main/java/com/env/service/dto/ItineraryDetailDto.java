@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItineraryDetailDto{
+public class ItineraryDetailDto implements Comparable<ItineraryDetailDto>{
     private Long itineraryDetailId;
     private PlaceDto source;
     private Long itineraryId;
@@ -38,6 +38,21 @@ public class ItineraryDetailDto{
              new ActivityDto(itineraryDetail.getActivityId()),
              new EventDto(itineraryDetail.getEventId()),
              itineraryDetail.getDescription(),
-             new PlaceDto(itineraryDetail.getDestinationPlace()));
+             itineraryDetail.getDestinationPlace() ==null ? null: new PlaceDto(itineraryDetail.getDestinationPlace()));
+    }
+
+    @Override
+    public int compareTo(ItineraryDetailDto o) {
+        int retVal = 0;
+        try{
+            if(this.getStartTime().before(o.getStartTime())){
+                retVal = -1;
+            }else{
+                retVal = 1;
+            }
+        }catch (Exception e){
+            retVal = 0;
+        }
+        return retVal;
     }
 }

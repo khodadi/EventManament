@@ -61,6 +61,7 @@ public class Utility {
         }
         return retVal;
     }
+
     public static OutputAPIForm checkOccasionDate( Timestamp startDate,Timestamp endDate){
         OutputAPIForm retVal = new OutputAPIForm<>();
         if(endDate.before(startDate)){
@@ -69,6 +70,7 @@ public class Utility {
         }
         return retVal;
     }
+
     public static OutputAPIForm checkOccasionTime( Timestamp startDate,Timestamp endDate){
         OutputAPIForm retVal = new OutputAPIForm<>();
         if(endDate.before(startDate)){
