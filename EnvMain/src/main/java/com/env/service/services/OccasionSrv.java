@@ -9,6 +9,7 @@ import com.env.service.services.tab.ITabSrv;
 import com.env.service.services.tab.TabFactory;
 import com.env.utility.Utility;
 import com.form.OutputAPIForm;
+import com.security.UserSecurity;
 import com.utility.GeneralUtility;
 import com.utility.InfraSecurityUtils;
 import com.utility.StringUtility;
@@ -207,11 +208,52 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
         try{
-            OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId(), StateRequest.Requested);
-            occasionUsersRepo.save(ent);
-            dto.setOccasionUserId(ent.getOccasionUserId());
-            dto.setStateRequest(ent.getStateRequest());
-            retVal.setData(dto);
+            if(isValidUserForEditOccasion(occasionUsersRepo.getByOccasionId(dto.getOccasionId()))){
+                OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId(), dto.getStateRequest());
+                occasionUsersRepo.save(ent);
+                dto.setOccasionUserId(ent.getOccasionUserId());
+                dto.setStateRequest(ent.getStateRequest());
+                retVal.setData(dto);
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
+            }
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    private boolean isValidUserForEditOccasion(List<OccasionUsers> occasionUsers){
+        boolean retVal = false;
+        if(Objects.nonNull(occasionUsers)){
+            for(OccasionUsers occasionUser:occasionUsers){
+                if(Objects.nonNull(occasionUser) &&
+                   Objects.nonNull(occasionUser.getUserId()) &&
+                   occasionUser.getUserId().equals(InfraSecurityUtils.getCurrentUser()) &&
+                   occasionUser.getStateRequest().equals(StateRequest.Accepted)
+                ){
+                    retVal = true;
+                    break;
+                }
+            }
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm<OccasionUsersDto> updateOccasionUser(OccasionUsersDto dto){
+        OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
+        try{
+            OccasionUsers ent = occasionUsersRepo.getReferenceById(dto.getOccasionUserId());
+            if(ent != null && InfraSecurityUtils.getCurrentUser().equals(ent.getUserId()) && ent.getStateRequest().equals(StateRequest.Requested) ){
+                ent.setStateRequest(dto.getStateRequest());
+                occasionUsersRepo.save(ent);
+                retVal.setData(new OccasionUsersDto(ent));
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
+            }
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
@@ -245,7 +287,7 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm deleteOccasionPic(OccasionPicDto dto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
-            OccasionPic ent = occasionPicRepo.getOne(dto.getOccasionPicId());
+            OccasionPic ent = occasionPicRepo.getReferenceById(dto.getOccasionPicId());
             if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionPic(ent)){
                 occasionPicRepo.deleteById(ent.getOccasionPicId());
             }else{
@@ -358,12 +400,16 @@ public class OccasionSrv implements IOccasionSrv{
     public boolean hasAccessInsOccasionCost(Long occasionId){
         boolean retVal = false;
         try{
-            Occasion occasion = occasionRepo.getOne(occasionId);
+            Occasion occasion = occasionRepo.getReferenceById(occasionId);
             if((Objects.nonNull(occasion) && Objects.nonNull(occasion.getCreatorUserId()) && occasion.getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser()))){
                 retVal = true;
             }else if(Objects.nonNull(occasion) && Objects.nonNull(occasion.getOccasionUsers())){
                 for(OccasionUsers usr: occasion.getOccasionUsers()){
-                    if(Objects.nonNull(usr) && Objects.nonNull(usr.getUserId()) && usr.getUserId().equals(InfraSecurityUtils.getCurrentUser())){
+                    if(Objects.nonNull(usr) &&
+                       Objects.nonNull(usr.getUserId()) &&
+                       usr.getUserId().equals(InfraSecurityUtils.getCurrentUser()) &&
+                       usr.getStateRequest().equals(StateRequest.Accepted)
+                    ){
                         retVal = true;
                         break;
                     }

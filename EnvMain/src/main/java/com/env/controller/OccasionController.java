@@ -1,6 +1,7 @@
 package com.env.controller;
 
 import com.basedata.generalcode.CodeException;
+import com.env.basedata.StateRequest;
 import com.env.service.dto.*;
 import com.env.service.services.IItinerarySrv;
 import com.env.service.services.IOccasionSrv;
@@ -78,7 +79,6 @@ public class OccasionController {
     @PostMapping("/pic")
     public ResponseEntity<OutputAPIForm> saveOccasionPic(@RequestBody OccasionPicDto occasionPic){
         OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
         try{
             retVal = occasionSrv.saveOccasionPic(occasionPic);
         }catch (Exception e){
@@ -169,7 +169,22 @@ public class OccasionController {
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/user/save").toUriString());
         try{
+            occasionUsers.setStateRequest(StateRequest.Requested);
             retVal = occasionSrv.saveOccasionUsers(occasionUsers);
+        }catch (Exception e){
+            log.error("Error in save occasion user",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
+
+    @PostMapping("/user/state/exchange")
+    public ResponseEntity<OutputAPIForm> exchangeOccasionUserState(@RequestBody OccasionUsersDto occasionUsers){
+        OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
+        try{
+            retVal = occasionSrv.updateOccasionUser(occasionUsers);
         }catch (Exception e){
             log.error("Error in save occasion user",e);
             retVal.setSuccess(false);

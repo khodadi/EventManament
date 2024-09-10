@@ -13,6 +13,7 @@ public interface IOccasionSrv {
     OutputAPIForm deleteOccasionPic(OccasionPicDto dto);
     OutputAPIForm<ArrayList<OccasionCostDto>> listOccasionCost(CriOccasionDto criOccasion);
     OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto);
+    OutputAPIForm<OccasionUsersDto> updateOccasionUser(OccasionUsersDto dto);
     OutputAPIForm<OccasionCostDto> saveOccasionCost(OccasionCostDto dto);
     OutputAPIForm<OccasionCostDto> updateOccasionCost(OccasionCostDto dto);
     OutputAPIForm deleteOccasionCost(OccasionCostDto dto);
