@@ -43,6 +43,7 @@ public class OccasionCost extends ABaseEntity{
 
     public void updateEnt(OccasionCostDto dto){
         this.setOccasionCost(Objects.nonNull(dto.getOccasionCost()) ? dto.getOccasionCost(): this.getOccasionCost());
-        this.setUserId(Objects.nonNull(dto.getUserId()) ? dto.getUserId(): this.getUserId());
+//        this.setUserId(Objects.nonNull(dto.getUserId()) ? dto.getUserId(): this.getUserId());
+        this.setUpdaterUserId(InfraSecurityUtils.getCurrentUser());
     }
 }

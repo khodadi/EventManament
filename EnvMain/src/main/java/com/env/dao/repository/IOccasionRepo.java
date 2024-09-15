@@ -21,6 +21,16 @@ public interface IOccasionRepo extends JpaRepository<Occasion,Long> {
     List<Occasion> getOccasionByUserId(@Param("userId") Long userId, @Param("occasionId") Long occasionId, @Param("state") StateRequest state, Pageable pageable);
 
 
+    @Query(" select ent from Occasion ent inner join OccasionUsers usr on (ent.occasionId = usr.occasionId)  " +
+            "   where  (" +
+            "    (:occasionId is null or ent.occasionId = :occasionId) and (ent.creatorUserId = :userId)  or   " +   //pay attention to Occasion.creatorUserId
+            "          (usr.stateRequest = :state and  usr.userId = :userId)) or                              " +   //pay attention to Occasion User
+            "          (  ent.sharable = true )                                                               "     //pay attention to Occasion Sharable
+    )
+    List<Occasion> getOccasionByI(@Param("userId") Long userId, @Param("occasionId") Long occasionId, @Param("state") StateRequest state, Pageable pageable);
+
+
+
     @Query( " select ent from Occasion ent                                                                     " +
             "   where  ent.sharable = true and                                                                 " +
             "          (:occasionId is null or ent.occasionId = :occasionId)                                   " )

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api/v1/occasion")
 @RequiredArgsConstructor
-
 @Slf4j
 public class OccasionController {
 
@@ -76,94 +75,6 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("/pic")
-    public ResponseEntity<OutputAPIForm> saveOccasionPic(@RequestBody OccasionPicDto occasionPic){
-        OutputAPIForm retVal = new OutputAPIForm();
-        try{
-            retVal = occasionSrv.saveOccasionPic(occasionPic);
-        }catch (Exception e){
-            log.error("Error in save user",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
-    @PostMapping("/pic/delete")
-    public ResponseEntity deleteOccasionPic(@RequestBody OccasionPicDto occasionPic){
-        OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion").toUriString());
-        try{
-            retVal = occasionSrv.deleteOccasionPic(occasionPic);
-        }catch (Exception e){
-            log.error("Error in save cost occasion",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-    @PostMapping("/cost")
-    public ResponseEntity<OutputAPIForm> listOccasionCost(@RequestParam CriOccasionDto criOccasion){
-        OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/list").toUriString());
-        try{
-            retVal = occasionSrv.listOccasionCost(criOccasion);
-        }catch (Exception e){
-            log.error("Error in save cost occasion",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
-    @PostMapping("/cost/save")
-    public ResponseEntity<OutputAPIForm> saveOccasionCost(@RequestBody OccasionCostDto occasionCost){
-        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/save").toUriString());
-        try{
-            retVal = occasionSrv.saveOccasionCost(occasionCost);
-        }catch (Exception e){
-            log.error("Error in save cost occasion",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
-    @PutMapping("/cost")
-    public ResponseEntity<OutputAPIForm> updateOccasionCost(@RequestBody OccasionCostDto occasionCost){
-        OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/save").toUriString());
-        try{
-            retVal = occasionSrv.updateOccasionCost(occasionCost);
-        }catch (Exception e){
-            log.error("Error in save cost occasion",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
-    @DeleteMapping("/cost/delete")
-    public ResponseEntity deleteOccasionCost(@RequestBody OccasionCostDto occasionCost){
-        OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/cost/save").toUriString());
-        try{
-            retVal = occasionSrv.deleteOccasionCost(occasionCost);
-        }catch (Exception e){
-            log.error("Error in save cost occasion",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
     @PostMapping("/user/save")
     public ResponseEntity<OutputAPIForm> saveOccasionUser(@RequestBody OccasionUsersDto occasionUsers){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
@@ -208,4 +119,5 @@ public class OccasionController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.created(uri).body(retVal);
     }
+
 }

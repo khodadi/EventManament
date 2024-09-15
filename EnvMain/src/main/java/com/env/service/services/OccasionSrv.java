@@ -288,7 +288,7 @@ public class OccasionSrv implements IOccasionSrv{
         OutputAPIForm retVal = new OutputAPIForm();
         try{
             OccasionPic ent = occasionPicRepo.getReferenceById(dto.getOccasionPicId());
-            if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionPic(ent)){
+            if(Objects.nonNull(ent) && hasAccessInsOccasionCost(ent.getOccasionId())){
                 occasionPicRepo.deleteById(ent.getOccasionPicId());
             }else{
                 retVal.setSuccess(false);
@@ -305,17 +305,28 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm<ArrayList<OccasionCostDto>> listOccasionCost(CriOccasionDto criOccasion){
         OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm<>();
         ArrayList<OccasionCostDto> dtos = new ArrayList<>();
-        List<Occasion> occasions = occasionRepo.getOccasionByUserId(InfraSecurityUtils.getCurrentUser(),
-                                                                    criOccasion.getOccasionId(),
-                                                                    StateRequest.Accepted,
-                                                                    PageRequest.of(0, pageSize+1, Sort.by("startDate")));
-        if(Objects.nonNull(occasions) &&
-           occasions.size() == 1 &&
-           Objects.nonNull(occasions.get(0)) &&
-           Objects.nonNull(occasions.get(0).getOccasionCosts())){
-               for(OccasionCost ent:occasions.get(0).getOccasionCosts()){
-                   dtos.add(new OccasionCostDto(ent.getOccasionCostId(),ent.getOccasionCost(),ent.getUserId(),ent.getOccasionId(),ent.getDescription()));
-               }
+        if(hasAccessInsOccasionCost(criOccasion.getOccasionId())){
+            List<OccasionCost> occasionCosts = occasionCostRepo.getAllByOccasionId(criOccasion.getOccasionId(), PageRequest.of(0, pageSize+1, Sort.by("creationDate")));
+            if(Objects.nonNull(occasionCosts)){
+                for(OccasionCost ent:occasionCosts){
+                    dtos.add(new OccasionCostDto(ent.getOccasionCostId(),ent.getOccasionCost(),ent.getUserId(),ent.getOccasionId(),ent.getDescription()));
+                }
+            }
+        }
+        retVal.setData(dtos);
+        return retVal;
+    }
+
+    public OutputAPIForm<ArrayList<OccasionPicDto>> listOccasionPic(CriOccasionDto criOccasion){
+        OutputAPIForm<ArrayList<OccasionPicDto>> retVal = new OutputAPIForm<>();
+        ArrayList<OccasionPicDto> dtos = new ArrayList<>();
+        if(hasAccessInsOccasionCost(criOccasion.getOccasionId())){
+            List<OccasionPic> occasionPics = occasionPicRepo.getAllByOccasionId(criOccasion.getOccasionId(), PageRequest.of(0, pageSize+1, Sort.by("creationDate")));
+            if(Objects.nonNull(occasionPics)){
+                for(OccasionPic ent:occasionPics){
+                    dtos.add(new OccasionPicDto(ent.getOccasionPicId(),ent.getOccasionId(),ent.isSharable(), ent.getName(),ent.getPic().getPic(), ent.getPicId()));
+                }
+            }
         }
         retVal.setData(dtos);
         return retVal;
@@ -333,7 +344,6 @@ public class OccasionSrv implements IOccasionSrv{
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.ACCESS_DENIED);
             }
-
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
@@ -344,15 +354,14 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm<OccasionCostDto> updateOccasionCost(OccasionCostDto dto){
         OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm<>();
         try{
-            OccasionCost ent = occasionCostRepo.getOne(dto.getOccasionCostId());
-            if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionCost(ent)){
+            OccasionCost ent = occasionCostRepo.getReferenceById(dto.getOccasionCostId());
+            if(Objects.nonNull(ent) && hasAccessInsOccasionCost(ent.getOccasionId())){
                 ent.updateEnt(dto);
                 occasionCostRepo.save(ent);
             }else{
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.ACCESS_DENIED);
             }
-
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
@@ -363,9 +372,9 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm deleteOccasionCost(OccasionCostDto dto){
         OutputAPIForm retVal = new OutputAPIForm<>();
         try{
-            OccasionCost ent = occasionCostRepo.getOne(dto.getOccasionCostId());
-            if(Objects.nonNull(ent) && hasAccessDelUpdateOccasionCost(ent)){
-                occasionRepo.deleteById(dto.getOccasionCostId());
+            OccasionCost ent = occasionCostRepo.getReferenceById(dto.getOccasionCostId());
+            if(Objects.nonNull(ent) && hasAccessInsOccasionCost(ent.getOccasionId())){
+                occasionCostRepo.delete(ent);
             }else{
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.ACCESS_DENIED);
@@ -427,8 +436,8 @@ public class OccasionSrv implements IOccasionSrv{
             if(ent.getCreatorUserId() != null && ent.getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
                     ||
                     (Objects.nonNull(ent.getOccasion()) &&
-                            Objects.nonNull(ent.getOccasion().getCreatorUserId()) &&
-                            ent.getOccasion().getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
+                     Objects.nonNull(ent.getOccasion().getCreatorUserId()) &&
+                     ent.getOccasion().getCreatorUserId().equals(InfraSecurityUtils.getCurrentUser())
                     )
             ){
                 retVal = true;
@@ -439,7 +448,4 @@ public class OccasionSrv implements IOccasionSrv{
         return retVal;
 
     }
-
-
-
 }
