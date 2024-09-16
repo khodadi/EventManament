@@ -51,6 +51,7 @@ spring:
       max-file-size: 2MB
       max-request-size: 2MB
 
+imagePath:  file:/root/jarFiles/event/images/
 cors:
   allowed-origins:
     - http://172.24.66.76:8086

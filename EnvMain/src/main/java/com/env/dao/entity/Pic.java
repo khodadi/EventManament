@@ -21,8 +21,11 @@ public class Pic extends ABaseEntity{
     private byte[] pic;
     @Column(name = "PIC_NAME")
     private  String picName;
+    @Column(name = "PUBLIC")
+    private  boolean publicImage;
+
 
     public Pic(byte[] pic,String picName){
-        this(null,pic,picName);
+        this(null,pic,picName,true);
     }
 }

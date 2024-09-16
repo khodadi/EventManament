@@ -17,4 +17,8 @@ public class CriOccasionDto {
     private Long occasionId;
     private String occasionName;
     private SearchTypeEnum searchType;
+
+    public CriOccasionDto(Long occasionId) {
+        this.occasionId = occasionId;
+    }
 }

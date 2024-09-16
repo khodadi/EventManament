@@ -24,12 +24,11 @@ public class OccasionController {
 
     @Autowired
     private IOccasionSrv occasionSrv;
+
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
-    @Autowired
-    private IItinerarySrv iItinerarySrv;
 
-    @PostMapping("/save")
+    @PostMapping("")
     public ResponseEntity<OutputAPIForm> saveOccasion(@RequestBody BaseOccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
@@ -44,7 +43,7 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("/update")
+    @PutMapping("")
     public ResponseEntity<OutputAPIForm> updateOccasion(@RequestBody OccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/update").toUriString());
@@ -59,7 +58,7 @@ public class OccasionController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping(value = "", consumes="application/json",produces = "application/json")
+    @GetMapping(value = "")
     public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestBody CriOccasionDto criOccasion){
         log.info(" List Occasion ");
         OutputAPIForm retVal = new OutputAPIForm();
@@ -73,51 +72,6 @@ public class OccasionController {
         }
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
-    }
-
-    @PostMapping("/user/save")
-    public ResponseEntity<OutputAPIForm> saveOccasionUser(@RequestBody OccasionUsersDto occasionUsers){
-        OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/user/save").toUriString());
-        try{
-            occasionUsers.setStateRequest(StateRequest.Requested);
-            retVal = occasionSrv.saveOccasionUsers(occasionUsers);
-        }catch (Exception e){
-            log.error("Error in save occasion user",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
-    @PostMapping("/user/state/exchange")
-    public ResponseEntity<OutputAPIForm> exchangeOccasionUserState(@RequestBody OccasionUsersDto occasionUsers){
-        OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
-        try{
-            retVal = occasionSrv.updateOccasionUser(occasionUsers);
-        }catch (Exception e){
-            log.error("Error in save occasion user",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.ok().body(retVal);
-    }
-
-    @PostMapping("/itinerary/detail/save")
-    public ResponseEntity<OutputAPIForm> saveItineraryDetail(@RequestBody BaseItineraryDetailDto dto){
-        OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
-        try{
-            retVal = iItinerarySrv.saveItineraryDetail(dto);
-        }catch (Exception e){
-            log.error("Error in save user",e);
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
-        }
-        messageBundleSrv.createMsg(retVal);
-        return ResponseEntity.created(uri).body(retVal);
     }
 
 }

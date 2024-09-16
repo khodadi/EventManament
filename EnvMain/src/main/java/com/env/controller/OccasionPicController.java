@@ -9,10 +9,15 @@ import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -71,6 +76,19 @@ public class OccasionPicController {
         }
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
+    }
+
+    @GetMapping(value = "/showImage", produces = "image/jpg")
+    public ResponseEntity<byte[]> getImageAsResponseEntity(@RequestBody OccasionPicDto picDto) {
+        byte[] retVal;
+        try {
+            retVal = occasionSrv.getImage(picDto);
+        } catch (Exception e) {
+            retVal = null;
+            e.printStackTrace();
+        }
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(retVal,  HttpStatus.OK);
+        return responseEntity;
     }
 
 }

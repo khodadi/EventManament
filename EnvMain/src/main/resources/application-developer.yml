@@ -55,7 +55,7 @@ spring:
 #  client:
 #    service-url:
 #      defaultZone: http://localhost:8766/eureka # discovery service loc
-
+imagePath: file:./files/images/
 
 cors:
   allowed-origins:

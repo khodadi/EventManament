@@ -14,11 +14,18 @@ import com.utility.GeneralUtility;
 import com.utility.InfraSecurityUtils;
 import com.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -35,6 +42,11 @@ public class OccasionSrv implements IOccasionSrv{
     private final IFactory<ITabSrv,String> tabFactory;
 
     public final static int pageSize = 100;
+    @Autowired
+    private ApplicationContext ctx;
+
+    @Value("${imagePath:./files/images/}")
+    private String imagePath;
 
     public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo, IFactory tabFactory) {
         this.occasionRepo = occasionRepo;
@@ -320,7 +332,7 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm<ArrayList<OccasionPicDto>> listOccasionPic(CriOccasionDto criOccasion){
         OutputAPIForm<ArrayList<OccasionPicDto>> retVal = new OutputAPIForm<>();
         ArrayList<OccasionPicDto> dtos = new ArrayList<>();
-        if(hasAccessInsOccasionCost(criOccasion.getOccasionId())){
+        if(Objects.nonNull(criOccasion.getOccasionId()) && hasAccessInsOccasionCost(criOccasion.getOccasionId())){
             List<OccasionPic> occasionPics = occasionPicRepo.getAllByOccasionId(criOccasion.getOccasionId(), PageRequest.of(0, pageSize+1, Sort.by("creationDate")));
             if(Objects.nonNull(occasionPics)){
                 for(OccasionPic ent:occasionPics){
@@ -447,5 +459,43 @@ public class OccasionSrv implements IOccasionSrv{
         }
         return retVal;
 
+    }
+
+    public byte[] getImage(OccasionPicDto picDto){
+        byte[] retVal ;
+        Pic picEnt = picRepo.getReferenceById(picDto.getPicId());
+        if(Objects.nonNull(picEnt) && (picEnt.isPublicImage() || (!picEnt.isPublicImage() && hasAccessToImage(picDto)))){
+            retVal = picEnt.getPic();
+        }else{
+            retVal = getDefaultImage();
+        }
+        return retVal;
+    }
+
+    public boolean hasAccessToImage(OccasionPicDto picDto){
+        boolean retVal = false;
+        OutputAPIForm<ArrayList<OccasionPicDto>> pics= listOccasionPic(new CriOccasionDto(picDto.getOccasionId()));
+        if( Objects.nonNull(pics) && Objects.nonNull(pics.getData()) ){
+            for (OccasionPicDto pic:pics.getData()) {
+                if(pic.getPicId().equals(picDto.getPicId())){
+                    retVal = true;
+                    break;
+                }
+            }
+        }
+        return retVal;
+    }
+
+    public byte[] getDefaultImage(){
+        byte[] retVal ;
+        try {
+            InputStream in = new FileInputStream(ctx.getResource(imagePath + "DefaultImage.png").getFile());
+            retVal = IOUtils.toByteArray(in);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            retVal = null;
+        }
+        return retVal;
     }
 }
