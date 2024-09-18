@@ -34,7 +34,6 @@ public class OccasionUserController {
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> saveOccasionUser(@RequestBody OccasionUsersDto occasionUsers){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/user/save").toUriString());
         try{
             occasionUsers.setStateRequest(StateRequest.Requested);
             retVal = occasionSrv.saveOccasionUsers(occasionUsers);

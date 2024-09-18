@@ -2,22 +2,16 @@ package com.env.controller;
 
 import com.basedata.generalcode.CodeException;
 import com.env.service.dto.CriOccasionDto;
-import com.env.service.dto.OccasionCostDto;
 import com.env.service.dto.OccasionPicDto;
 import com.env.service.services.IOccasionSrv;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -31,8 +25,10 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @Slf4j
 public class OccasionPicController {
+
     @Autowired
     private IOccasionSrv occasionSrv;
+
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
 

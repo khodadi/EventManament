@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class OccasionSrv implements IOccasionSrv{
                     picRepo.save(pic);
                     Occasion occasion = new Occasion(dto,pic.getPicId());
                     occasionRepo.save(occasion);
-                    OccasionUsers occasionUser = new OccasionUsers(null,occasion.getCreatorUserId(),occasion.getOccasionId(),StateRequest.Accepted);
+                    OccasionUsers occasionUser = new OccasionUsers(null,occasion.getCreatorUserId(),occasion.getOccasionId(),StateRequest.Accepted,null,false);
                     occasionUsersRepo.save(occasionUser);
                     retVal.setData(new OccasionDto(occasion, saveDefaultTabs(occasionType.get(),dto,occasion.getOccasionId()),false));
                 }else{
@@ -220,8 +221,9 @@ public class OccasionSrv implements IOccasionSrv{
     public OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
         try{
-            if(isValidUserForEditOccasion(occasionUsersRepo.getByOccasionId(dto.getOccasionId()))){
-                OccasionUsers ent = new OccasionUsers(null,dto.getUserId(),dto.getOccasionId(), dto.getStateRequest());
+            if(hasAccessInsOccasionCost(dto.getOccasionId())){
+
+                OccasionUsers ent = new OccasionUsers(dto);
                 occasionUsersRepo.save(ent);
                 dto.setOccasionUserId(ent.getOccasionUserId());
                 dto.setStateRequest(ent.getStateRequest());
@@ -235,6 +237,12 @@ public class OccasionSrv implements IOccasionSrv{
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
         }
         return retVal;
+    }
+
+    private void checkMobileNumber(OccasionUsersDto dto){
+        if(Objects.nonNull(dto) && StringUtils.hasLength(dto.getMobileNumber())){
+
+        }
     }
 
     private boolean isValidUserForEditOccasion(List<OccasionUsers> occasionUsers){
@@ -463,7 +471,7 @@ public class OccasionSrv implements IOccasionSrv{
 
     public byte[] getImage(OccasionPicDto picDto){
         byte[] retVal ;
-        Pic picEnt = picRepo.getReferenceById(picDto.getPicId());
+        Pic picEnt = picRepo.getPicByPicId(picDto.getPicId());
         if(Objects.nonNull(picEnt) && (picEnt.isPublicImage() || (!picEnt.isPublicImage() && hasAccessToImage(picDto)))){
             retVal = picEnt.getPic();
         }else{

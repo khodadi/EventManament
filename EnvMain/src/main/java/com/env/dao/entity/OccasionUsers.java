@@ -1,6 +1,7 @@
 package com.env.dao.entity;
 
 import com.env.basedata.StateRequest;
+import com.env.service.dto.OccasionUsersDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +24,17 @@ public class OccasionUsers extends ABaseEntity{
     private Long occasionId;
     @Column(name = "STATE_REQUEST")
     private StateRequest stateRequest;
+    @Column(name = "MOBILE_NUMBER")
+    private String mobileNumber;
+    @Column(name = "SEND_SMS")
+    private boolean sendSms;
 
+    public OccasionUsers(OccasionUsersDto dto) {
+
+        this.userId = dto.getUserId();
+        this.occasionId = dto.getOccasionId();
+        this.stateRequest = dto.getStateRequest();
+        this.mobileNumber = dto.getMobileNumber();
+        this.sendSms = dto.isSendSMS();
+    }
 }

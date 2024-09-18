@@ -30,7 +30,6 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class GatewayLogger implements GlobalFilter, Ordered {
 
-
     private final ConfigGateway configGateway;
 
     public GatewayLogger(ConfigGateway configGateway) {
