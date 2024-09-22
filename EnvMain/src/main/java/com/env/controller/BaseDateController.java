@@ -41,8 +41,8 @@ public class BaseDateController {
         this.messageBundleSrv = messageBundleSrv;
     }
 
-    @PostMapping("/occasionType/list")
-    public ResponseEntity<OutputAPIForm> listOfOccasionType(){
+    @GetMapping("/occasionType")
+    public ResponseEntity<OutputAPIForm> listOccasionType(){
         OutputAPIForm<ArrayList<OccasionTypeDto>> retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasionType/list").toUriString());
         try{
@@ -56,10 +56,9 @@ public class BaseDateController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("/activity/list")
-    public ResponseEntity<OutputAPIForm> listOfActivity(){
+    @GetMapping("/activity")
+    public ResponseEntity<OutputAPIForm> listActivity(){
         OutputAPIForm<ArrayList<ActivityDto>> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/activity/List").toUriString());
         try{
             retVal = occasionBaseSrv.getAllActivity();
         }catch (Exception e){
@@ -71,10 +70,9 @@ public class BaseDateController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("/eventType/list")
-    public ResponseEntity<OutputAPIForm> listOfEventType(){
+    @GetMapping("/eventType")
+    public ResponseEntity<OutputAPIForm> listEventType(){
         OutputAPIForm<EventDto> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/eventType").toUriString());
         try{
             retVal = occasionBaseSrv.getAllEvent();
         }catch (Exception e){
@@ -86,10 +84,9 @@ public class BaseDateController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @PostMapping("/equipment/list")
-    public ResponseEntity<OutputAPIForm> listOfEquipment(){
+    @GetMapping("/equipment")
+    public ResponseEntity<OutputAPIForm> listEquipment(){
         OutputAPIForm<EquipmentDto> retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/equipment").toUriString());
         try{
             retVal = occasionBaseSrv.getAllEquipment();
         }catch (Exception e){
@@ -101,8 +98,8 @@ public class BaseDateController {
         return ResponseEntity.ok().body(retVal);
     }
 
-    @GetMapping("/length")
-    public ResponseEntity<OutputAPIForm> listOfBaseData(Locale locale){
+    @GetMapping("")
+    public ResponseEntity<OutputAPIForm> listOfBaseData(){
         OutputAPIForm<ArrayList<BaseData>> retVal = new OutputAPIForm();
         try{
             retVal = occasionBaseSrv.getBaseData();
@@ -114,7 +111,8 @@ public class BaseDateController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-    @PostMapping("occasionType/save")
+
+    @PostMapping("/occasionType")
     public ResponseEntity<OutputAPIForm> saveOccasionType(@RequestBody OccasionTypeDto occasionTypeDto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
@@ -127,7 +125,8 @@ public class BaseDateController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-    @PostMapping("activity/save")
+
+    @PostMapping("/activity")
     public ResponseEntity<OutputAPIForm> saveActivity(@RequestBody ActivityDto dto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
@@ -140,5 +139,4 @@ public class BaseDateController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
 }

@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -55,6 +53,12 @@ public class Occasion extends ABaseEntity{
     private Set<Itinerary> itineraries;
     @OneToMany(mappedBy = "occasionId",targetEntity = OccasionCost.class,fetch = FetchType.LAZY)
     private Set<OccasionCost> occasionCosts;
+    @Column(name = "SOURCE_ID")
+    private Long sourceId;
+    @OneToOne
+    @JoinColumn(name = "SOURCE_ID",insertable = false ,updatable=false)
+    private Place place;
+
 
     public Occasion(BaseOccasionDto dto,Long picId){
         this(null,
@@ -71,6 +75,8 @@ public class Occasion extends ABaseEntity{
                 dto.getLongitude(),
                 null,
                 null,
+                null,
+                dto.getSourceId(),
                 null);
     }
 }

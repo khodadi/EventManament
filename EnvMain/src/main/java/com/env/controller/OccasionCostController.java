@@ -1,6 +1,7 @@
 package com.env.controller;
 
 import com.basedata.generalcode.CodeException;
+import com.env.basedata.SearchTypeEnum;
 import com.env.service.dto.CriOccasionDto;
 import com.env.service.dto.OccasionCostDto;
 import com.env.service.services.IItinerarySrv;
@@ -34,10 +35,11 @@ public class OccasionCostController {
     private IMessageBundleSrv messageBundleSrv;
 
     @GetMapping("")
-    public ResponseEntity<OutputAPIForm> listOccasionCost(@RequestBody CriOccasionDto criOccasion){
+    public ResponseEntity<OutputAPIForm> listOccasionCost(@RequestParam(required = false) Long page,
+                                                          @RequestParam(required = false) Long occasionId){
         OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.listOccasionCost(criOccasion);
+            retVal = occasionSrv.listOccasionCost(new CriOccasionDto(page == null ?0:page.intValue(),occasionId,"",null));
         }catch (Exception e){
             log.error("Error in save cost occasion",e);
             retVal.setSuccess(false);
@@ -46,7 +48,6 @@ public class OccasionCostController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> saveOccasionCost(@RequestBody OccasionCostDto occasionCost){
         OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();

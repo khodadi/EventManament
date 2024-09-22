@@ -1,9 +1,10 @@
 package com.env.controller;
 
 import com.basedata.generalcode.CodeException;
-import com.env.basedata.StateRequest;
-import com.env.service.dto.*;
-import com.env.service.services.IItinerarySrv;
+import com.env.basedata.SearchTypeEnum;
+import com.env.service.dto.BaseOccasionDto;
+import com.env.service.dto.CriOccasionDto;
+import com.env.service.dto.OccasionDto;
 import com.env.service.services.IOccasionSrv;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
@@ -31,7 +32,6 @@ public class OccasionController {
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> saveOccasion(@RequestBody BaseOccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/save").toUriString());
         try{
             retVal = occasionSrv.saveOccasion(occasion);
         }catch (Exception e){
@@ -59,12 +59,13 @@ public class OccasionController {
     }
 
     @GetMapping(value = "")
-    public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestBody CriOccasionDto criOccasion){
+    public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestParam(required = false) Long page,
+                                                                              @RequestParam(required = false) Long occasionId,
+                                                                              @RequestParam(required = false)SearchTypeEnum searchType){
         log.info(" List Occasion ");
         OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion").toUriString());
         try{
-            retVal = occasionSrv.listOccasion(criOccasion);
+            retVal = occasionSrv.listOccasion(new CriOccasionDto(page == null ?0:page.intValue(),occasionId,"",searchType));
         }catch (Exception e){
             log.error("Error in save user",e);
             retVal.setSuccess(false);

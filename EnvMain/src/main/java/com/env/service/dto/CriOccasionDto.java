@@ -21,4 +21,8 @@ public class CriOccasionDto {
     public CriOccasionDto(Long occasionId) {
         this.occasionId = occasionId;
     }
+
+    public CriOccasionDto(int page) {
+        this.page = page;
+    }
 }

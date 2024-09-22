@@ -22,4 +22,6 @@ public class BaseOccasionDto {
     private byte[] pic;
     private float latitude;
     private float longitude;
+    private Long sourceId;
+    private PlaceDto placeDto;
 }

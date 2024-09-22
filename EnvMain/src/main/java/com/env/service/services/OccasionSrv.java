@@ -62,7 +62,6 @@ public class OccasionSrv implements IOccasionSrv{
 
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
         OutputAPIForm<OccasionDto> retVal = new OutputAPIForm<>();
-        OutputAPIForm<ArrayList<ItineraryDto>> defaultItinerary = new OutputAPIForm<>();
         try{
             retVal = validateBaseOccasionDto(dto);
             if(retVal.isSuccess()){
@@ -222,7 +221,6 @@ public class OccasionSrv implements IOccasionSrv{
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm<>();
         try{
             if(hasAccessInsOccasionCost(dto.getOccasionId())){
-
                 OccasionUsers ent = new OccasionUsers(dto);
                 occasionUsersRepo.save(ent);
                 dto.setOccasionUserId(ent.getOccasionUserId());
@@ -235,6 +233,22 @@ public class OccasionSrv implements IOccasionSrv{
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm<ArrayList<OccasionUsersDto>> listOccasionRequest(CriOccasionDto criOccasion){
+        OutputAPIForm<ArrayList<OccasionUsersDto>> retVal = new OutputAPIForm<>();
+        ArrayList<OccasionUsersDto> dto = new ArrayList<>();
+        try{
+            List<OccasionUsers> requestUsers = occasionUsersRepo.getByUserId(InfraSecurityUtils.getCurrentUser(),PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("creationDate")));
+            if(Objects.nonNull(requestUsers)){
+                requestUsers.forEach(requestUser -> dto.add(new OccasionUsersDto(requestUser)));
+            }
+            retVal.setData(dto);
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.ACCESS_DENIED);
         }
         return retVal;
     }

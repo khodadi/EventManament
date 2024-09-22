@@ -22,4 +22,9 @@ public class OccasionPicDto {
     private String name;
     private byte[] pic;
     private Long picId;
+
+    public OccasionPicDto(Long occasionId, Long picId) {
+        this.occasionId = occasionId;
+        this.picId = picId;
+    }
 }

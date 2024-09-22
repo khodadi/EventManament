@@ -3,9 +3,9 @@ server:
     context-path: /eventmanagment
 spring:
   profiles:
-    active: developer
-#    active: operation
-  #    active: test
+#    active: developer
+    active: operation
+#    active: test
 
   application:
     name: eventmanagment # current service name used for eureka registration

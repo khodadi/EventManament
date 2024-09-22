@@ -33,10 +33,11 @@ public class OccasionPicController {
     private IMessageBundleSrv messageBundleSrv;
 
     @GetMapping("")
-    public ResponseEntity<OutputAPIForm> listOccasionPic(@RequestBody CriOccasionDto criOccasion){
+    public ResponseEntity<OutputAPIForm> listOccasionPic(@RequestParam(required = false) Long page,
+                                                         @RequestParam(required = false) Long occasionId){
         OutputAPIForm<ArrayList<OccasionPicDto>> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.listOccasionPic(criOccasion);
+            retVal = occasionSrv.listOccasionPic(new CriOccasionDto(page == null ?0:page.intValue(),occasionId,"",null));
         }catch (Exception e){
             log.error("Error in save cost occasion",e);
             retVal.setSuccess(false);
@@ -75,10 +76,10 @@ public class OccasionPicController {
     }
 
     @GetMapping(value = "/showImage", produces = "image/jpg")
-    public ResponseEntity<byte[]> getImageAsResponseEntity(@RequestBody OccasionPicDto picDto) {
+    public ResponseEntity<byte[]> getImageAsResponseEntity(@RequestParam Long picNumber, @RequestParam(required = false) Long occasionNumber) {
         byte[] retVal;
         try {
-            retVal = occasionSrv.getImage(picDto);
+            retVal = occasionSrv.getImage(new OccasionPicDto(occasionNumber,picNumber));
         } catch (Exception e) {
             retVal = null;
             e.printStackTrace();
