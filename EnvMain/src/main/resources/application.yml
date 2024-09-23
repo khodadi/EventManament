@@ -3,10 +3,9 @@ server:
     context-path: /eventmanagment
 spring:
   profiles:
-#    active: developer
-    active: operation
+    active: developer
+#    active: operation
 #    active: test
-
   application:
     name: eventmanagment # current service name used for eureka registration
 
@@ -15,7 +14,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
-
 
 #---- eureka public config
 eureka:

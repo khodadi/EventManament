@@ -30,7 +30,7 @@ public class PlaceDto {
     private ArrayList<Long> picIds;
     private ArrayList<Long> placePicIds;
 
-    PlaceDto(Place ent){
+    public PlaceDto(Place ent){
         this(ent.getPlaceId(),
                 ent.getEventId(),
                 ent.getName(),
@@ -51,6 +51,8 @@ public class PlaceDto {
     public PlaceDto(Long placeId) {
         this.placeId = placeId;
     }
+
+
     public ArrayList<byte[]> getPics() {
         if(Objects.isNull(pics)){
             pics = new ArrayList<>();

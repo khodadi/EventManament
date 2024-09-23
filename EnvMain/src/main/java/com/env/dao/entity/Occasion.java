@@ -71,12 +71,12 @@ public class Occasion extends ABaseEntity{
                 dto.getSharable(),
                 picId,
                 null,
-                dto.getLatitude(),
-                dto.getLongitude(),
+                0F,
+                0F,
                 null,
                 null,
                 null,
-                dto.getSourceId(),
+                dto.getSourceDto().getPlaceId(),
                 null);
     }
 }

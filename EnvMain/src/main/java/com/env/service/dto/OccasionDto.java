@@ -24,7 +24,7 @@ public class OccasionDto extends BaseOccasionDto{
     private ArrayList<ComponentEventGeneralDto> tabs;
     private boolean editable;
 
-    public OccasionDto(Occasion ent,ArrayList<ComponentEventGeneralDto> tabs,boolean sendPic){
+    public OccasionDto(Occasion ent,PlaceDto placeDto,ArrayList<ComponentEventGeneralDto> tabs,boolean sendPic){
         super(ent.getOccasionName(),
                 ent.getOccasionTypeId(),
                 ent.getOccasionLengthType(),
@@ -32,8 +32,7 @@ public class OccasionDto extends BaseOccasionDto{
                 ent.getEndDate(),
                 ent.getSharable(),
                 sendPic?ent.getPic().getPic():null,
-                ent.getLatitude(),
-                ent.getLongitude());
+                placeDto);
         this.setCreationDate(ent.getCreationDate());
         this.setLastUpdate(ent.getLastUpdate());
         this.setOccasionId(ent.getOccasionId());
@@ -42,7 +41,7 @@ public class OccasionDto extends BaseOccasionDto{
         this.setTabs(tabs);
     }
     public OccasionDto(Occasion ent){
-        this(ent,null,false);
+        this(ent,new PlaceDto(ent.getPlace()),null,false);
     }
 
     public void updateEnt(Occasion ent){
@@ -53,7 +52,6 @@ public class OccasionDto extends BaseOccasionDto{
         ent.setStartDate(Objects.isNull(this.getStartDate())?ent.getStartDate():this.getStartDate());
         ent.setEndDate(Objects.isNull(this.getEndDate())?ent.getEndDate():this.getEndDate());
         ent.setSharable(Objects.isNull(this.getSharable())?ent.getSharable():this.getSharable());
-        ent.setLatitude(Objects.isNull(this.getLatitude())? ent.getLatitude() : this.getLatitude());
-        ent.setLongitude(Objects.isNull(this.getLongitude())?ent.getLongitude():this.getLongitude());
+        ent.setSourceId((Objects.isNull(this.getSourceDto()) && Objects.isNull(this.getSourceDto().getPlaceId()))?ent.getSourceId():this.getSourceDto().getPlaceId());
     }
 }

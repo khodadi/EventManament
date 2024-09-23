@@ -6,10 +6,8 @@ import com.env.dao.entity.*;
 import com.env.dao.repository.*;
 import com.env.service.dto.*;
 import com.env.service.services.tab.ITabSrv;
-import com.env.service.services.tab.TabFactory;
 import com.env.utility.Utility;
 import com.form.OutputAPIForm;
-import com.security.UserSecurity;
 import com.utility.GeneralUtility;
 import com.utility.InfraSecurityUtils;
 import com.utility.StringUtility;
@@ -41,6 +39,7 @@ public class OccasionSrv implements IOccasionSrv{
     private final IOccasionUsersRepo occasionUsersRepo;
     private final IOccasionCostRepo occasionCostRepo;
     private final IFactory<ITabSrv,String> tabFactory;
+    private final IPlaceSrv placeSrv;
 
     public final static int pageSize = 100;
     @Autowired
@@ -49,7 +48,7 @@ public class OccasionSrv implements IOccasionSrv{
     @Value("${imagePath:./files/images/}")
     private String imagePath;
 
-    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo, IFactory tabFactory) {
+    public OccasionSrv(IOccasionRepo occasionRepo, IPicRepo picRepo, IOccasionTypeRepo occasionTypeRepo, ItinerarySrv itinerarySrv, IOccasionPicRepo occasionPicRepo, IOccasionUsersRepo occasionUsersRepo, IOccasionCostRepo occasionCostRepo, IFactory tabFactory, IPlaceSrv placeSrv) {
         this.occasionRepo = occasionRepo;
         this.picRepo = picRepo;
         this.occasionTypeRepo = occasionTypeRepo;
@@ -58,6 +57,7 @@ public class OccasionSrv implements IOccasionSrv{
         this.occasionUsersRepo = occasionUsersRepo;
         this.occasionCostRepo = occasionCostRepo;
         this.tabFactory = tabFactory;
+        this.placeSrv = placeSrv;
     }
 
     public OutputAPIForm<OccasionDto> saveOccasion(BaseOccasionDto dto){
@@ -67,13 +67,20 @@ public class OccasionSrv implements IOccasionSrv{
             if(retVal.isSuccess()){
                 Optional<OccasionType> occasionType = occasionTypeRepo.findById(dto.getOccasionTypeId());
                 if(occasionType.isPresent()){
-                    Pic pic = new Pic(dto.getPic(), dto.getOccasionName());
-                    picRepo.save(pic);
-                    Occasion occasion = new Occasion(dto,pic.getPicId());
-                    occasionRepo.save(occasion);
-                    OccasionUsers occasionUser = new OccasionUsers(null,occasion.getCreatorUserId(),occasion.getOccasionId(),StateRequest.Accepted,null,false);
-                    occasionUsersRepo.save(occasionUser);
-                    retVal.setData(new OccasionDto(occasion, saveDefaultTabs(occasionType.get(),dto,occasion.getOccasionId()),false));
+                    OutputAPIForm<PlaceDto> outputPlaceDto = placeSrv.checkAndSavePlace(dto.getSourceDto());
+                    if(outputPlaceDto.isSuccess()){
+                        Pic pic = new Pic(dto.getPic(), dto.getOccasionName());
+                        picRepo.save(pic);
+                        dto.setSourceDto(outputPlaceDto.getData());
+                        Occasion occasion = new Occasion(dto,pic.getPicId());
+                        occasionRepo.save(occasion);
+                        OccasionUsers occasionUser = new OccasionUsers(null,occasion.getCreatorUserId(),occasion.getOccasionId(),StateRequest.Accepted,null,false);
+                        occasionUsersRepo.save(occasionUser);
+                        retVal.setData(new OccasionDto(occasion,outputPlaceDto.getData(), saveDefaultTabs(occasionType.get(),dto,occasion.getOccasionId()),false));
+                    }else{
+                        retVal.getErrors().addAll(outputPlaceDto.getErrors());
+                        retVal.setSuccess(false);
+                    }
                 }else{
                     retVal.setSuccess(false);
                     retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
@@ -90,15 +97,22 @@ public class OccasionSrv implements IOccasionSrv{
         OutputAPIForm<OccasionDto> retVal = new OutputAPIForm<>();
         Optional<Occasion> occasion = occasionRepo.getOccasionByUserIdForEdit(InfraSecurityUtils.getCurrentUser(),dto.getOccasionId(),StateRequest.Accepted);
         if(occasion.isPresent()){
-            if(Objects.nonNull(dto.getPic())){
-                picRepo.deleteById(occasion.get().getPicId());
-                Pic pic = new Pic(dto.getPic(),Objects.isNull(dto.getOccasionName()) ?occasion.get().getOccasionName():dto.getOccasionName());
-                picRepo.save(pic);
-                dto.setPicId(pic.getPicId());
+            OutputAPIForm<PlaceDto> outputPlaceDto = placeSrv.checkAndSavePlace(dto.getSourceDto());
+            if(outputPlaceDto.isSuccess()){
+                dto.setSourceDto(outputPlaceDto.getData());
+                if(Objects.nonNull(dto.getPic())){
+                    picRepo.deleteById(occasion.get().getPicId());
+                    Pic pic = new Pic(dto.getPic(),Objects.isNull(dto.getOccasionName()) ?occasion.get().getOccasionName():dto.getOccasionName());
+                    picRepo.save(pic);
+                    dto.setPicId(pic.getPicId());
+                }
+                dto.updateEnt(occasion.get());
+                occasionRepo.save(occasion.get());
+                retVal.setData(new OccasionDto(occasion.get(),outputPlaceDto.getData(),editDefaultTabs(occasion,dto),false));
+            }else{
+                retVal.getErrors().addAll(outputPlaceDto.getErrors());
+                retVal.setSuccess(false);
             }
-            dto.updateEnt(occasion.get());
-            occasionRepo.save(occasion.get());
-            retVal.setData(new OccasionDto(occasion.get(),editDefaultTabs(occasion,dto),false));
         }
 
         return retVal;
@@ -124,7 +138,7 @@ public class OccasionSrv implements IOccasionSrv{
         }
         if(Objects.nonNull(occasions)){
             for(int index= 0; index<=Math.min(occasions.size()-1,pageSize-1);index++){
-                occasionDto = new OccasionDto(occasions.get(index),getTabsEvents(occasions.get(index)),true);
+                occasionDto = new OccasionDto(occasions.get(index),new PlaceDto(occasions.get(index).getPlace()),getTabsEvents(occasions.get(index)),true);
                 occasionDto.setEditable(editableOccasion(occasions.get(index)));
                 occasionDtos.add(occasionDto);
             }

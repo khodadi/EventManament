@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseOccasionDto {
+
     private String occasionName;
     private Long occasionTypeId;
     private OccasionLengthTypeEnum occasionLengthType;
@@ -20,8 +21,6 @@ public class BaseOccasionDto {
     private Timestamp endDate;
     private Boolean sharable;
     private byte[] pic;
-    private float latitude;
-    private float longitude;
-    private Long sourceId;
-    private PlaceDto placeDto;
+    private PlaceDto sourceDto;
+    
 }

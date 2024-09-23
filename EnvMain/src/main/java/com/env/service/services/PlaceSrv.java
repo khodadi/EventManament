@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,6 +31,22 @@ public class PlaceSrv implements IPlaceSrv{
         this.placeRepo = placeRepo;
         this.picRepo = picRepo;
         this.placPicRepo = placPicRepo;
+    }
+
+    public OutputAPIForm<PlaceDto> checkAndSavePlace(PlaceDto dto){
+        OutputAPIForm<PlaceDto> retVal = new OutputAPIForm<>();
+        if(Objects.nonNull(dto.getPlaceId())){
+            Optional<Place> place = placeRepo.findById(dto.getPlaceId());
+            if(place.isPresent()){
+                retVal.setData(new PlaceDto(place.get()));
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
+            }
+        }else{
+            retVal = savePlace(dto);
+        }
+        return retVal;
     }
 
     public OutputAPIForm<PlaceDto> savePlace(PlaceDto dto){
@@ -74,7 +92,5 @@ public class PlaceSrv implements IPlaceSrv{
         }
         return retVal;
     }
-
-
 
 }
