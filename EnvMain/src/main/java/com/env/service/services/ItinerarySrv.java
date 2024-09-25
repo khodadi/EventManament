@@ -2,10 +2,7 @@ package com.env.service.services;
 
 import com.basedata.generalcode.CodeException;
 import com.env.dao.entity.*;
-import com.env.dao.repository.IItineraryDetailEquipmentRepo;
-import com.env.dao.repository.IItineraryDetailRepo;
-import com.env.dao.repository.IItineraryRepo;
-import com.env.dao.repository.IPlaceRepo;
+import com.env.dao.repository.*;
 import com.env.service.dto.*;
 import com.form.OutputAPIForm;
 import com.utility.DateUtils;
@@ -27,12 +24,16 @@ public class ItinerarySrv implements IItinerarySrv {
     private final IItineraryDetailRepo itineraryDetailRepo;
     private final IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo;
     private final IPlaceRepo placeRepo;
+    private final IOccasionSrv occasionSrv;
+    private final IOccasionRepo occasionRepo;
 
-    public ItinerarySrv(IItineraryRepo itineraryRepo, IItineraryDetailRepo itineraryDetailRepo, IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo, IPlaceRepo placeRepo) {
+    public ItinerarySrv(IItineraryRepo itineraryRepo, IItineraryDetailRepo itineraryDetailRepo, IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo, IPlaceRepo placeRepo, IOccasionSrv occasionSrv, IOccasionRepo occasionRepo) {
         this.itineraryRepo = itineraryRepo;
         this.itineraryDetailRepo = itineraryDetailRepo;
         this.itineraryDetailEquipmentRepo = itineraryDetailEquipmentRepo;
         this.placeRepo = placeRepo;
+        this.occasionSrv = occasionSrv;
+        this.occasionRepo = occasionRepo;
     }
     @Override
     public OutputAPIForm<ArrayList<ItineraryDto>> saveDefaultItinerary(BaseOccasionDto baseOccasionDto, Long occasionId) {
@@ -119,8 +120,8 @@ public class ItinerarySrv implements IItinerarySrv {
     public OutputAPIForm saveItineraryDetail(BaseItineraryDetailDto dto){
         OutputAPIForm<ItineraryDetailDto> retVal = new OutputAPIForm();
         try{
-            Place srcPlace = (dto!= null && dto.getSource() != null && dto.getSource().getPlaceId() != null) ? placeRepo.getReferenceById(dto.getSource().getPlaceId()):null;
-            Place decPlace = (dto!= null && dto.getSource() != null && dto.getDestination().getPlaceId() != null) ? placeRepo.getReferenceById(dto.getDestination().getPlaceId()): null;
+            Place srcPlace = (dto!= null && dto.getSourceId() != null) ? placeRepo.getReferenceById(dto.getSourceId()):null;
+            Place decPlace = (dto!= null && dto.getDestinationId() != null) ? placeRepo.getReferenceById(dto.getDestinationId()): null;
             if(Objects.nonNull(srcPlace)){
                 ItineraryDetail itineraryDetail = new ItineraryDetail(dto,srcPlace,decPlace);
                 ItineraryDetailEquipment itineraryDetailEquipment;
@@ -132,11 +133,11 @@ public class ItinerarySrv implements IItinerarySrv {
                     data.getItineraryEquipments().add(new ItineraryDetailEquipmentDto(itineraryDetailEquipment));
                 }
                 retVal.setData(data);
-
             }else{
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
             }
+
         }catch (Exception e){
             log.error(e.getMessage());
             retVal.setSuccess(false);
@@ -145,4 +146,90 @@ public class ItinerarySrv implements IItinerarySrv {
         return retVal;
     }
 
+    public OutputAPIForm updateItineraryDetail(BaseItineraryDetailDto dto){
+        OutputAPIForm retVal = validationItineraryDetail(dto);
+        try{
+            if(retVal.isSuccess()){
+                Optional<ItineraryDetail> itineraryDetail = itineraryDetailRepo.getItineraryDetailByOccasionAndId(dto.getItineraryDetailId(),dto.getItineraryId(),dto.getOccasionId());
+                if(itineraryDetail.isPresent()){
+                    itineraryDetail.get().update(dto);
+                    itineraryDetailRepo.save(itineraryDetail.get());
+                    updateItineraryDetailEquipments(dto);
+                }else{
+                    retVal.setSuccess(false);
+                    retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
+                }
+            }
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.UNDEFINED);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm deleteItineraryDetail(OccasionItineraryDetailDto dto){
+        OutputAPIForm retVal = validationOccasionItineraryDetail(dto);
+        try{
+            if(retVal.isSuccess()) {
+                Optional<ItineraryDetail> itineraryDetail = itineraryDetailRepo.getItineraryDetailByOccasionAndId(dto.getItineraryDetailDto(),dto.getOccasionId());
+                if(itineraryDetail.isPresent()){
+                    itineraryDetailRepo.delete(itineraryDetail.get());
+                }else{
+                    retVal.setSuccess(false);
+                    retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
+                }
+            }
+        }catch (Exception e){
+            log.error("Error In Delete Itinerary Detail",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.UNDEFINED);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm updateItineraryDetailEquipments(BaseItineraryDetailDto dto){
+        OutputAPIForm retVal = new OutputAPIForm();
+        if(Objects.nonNull(dto.getItineraryEquipments())){
+            ItineraryDetailEquipment itineraryDetailEquipment;
+            itineraryDetailEquipmentRepo.deleteByItineraryDetailId(dto.getItineraryDetailId());
+            for(Long equipId:dto.getItineraryEquipments()){
+                itineraryDetailEquipment = new ItineraryDetailEquipment(null,equipId,dto.getItineraryDetailId());
+                itineraryDetailEquipmentRepo.save(itineraryDetailEquipment);
+            }
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm validationOccasionItineraryDetail(OccasionItineraryDetailDto dto){
+
+        OutputAPIForm retVal = new OutputAPIForm();
+        try{
+            if(Objects.nonNull(dto) && Objects.nonNull(dto.getItineraryDetailDto()) && Objects.nonNull(dto.getItineraryDetailDto())) {
+                retVal = occasionSrv.hasAccessOccasion(dto.getOccasionId());
+            }else{
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.MANDATORY_FIELD);
+            }
+        }catch (Exception e){
+            log.error("Error In validation  Itinerary Detail",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.UNDEFINED);
+        }
+
+        return retVal;
+    }
+
+    public OutputAPIForm validationItineraryDetail(BaseItineraryDetailDto dto){
+        OutputAPIForm retVal = new OutputAPIForm();
+        if(Objects.nonNull(dto) &&
+           Objects.nonNull(dto.getItineraryDetailId()) &&
+           Objects.nonNull(dto.getItineraryId()) &&
+           Objects.nonNull(dto.getOccasionId())){
+            retVal = occasionSrv.hasAccessOccasion(dto.getOccasionId());
+        }else{
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.MANDATORY_FIELD);
+        }
+        return retVal;
+    }
 }

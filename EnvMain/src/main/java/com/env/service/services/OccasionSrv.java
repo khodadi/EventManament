@@ -454,7 +454,7 @@ public class OccasionSrv implements IOccasionSrv{
 
     }
 
-    public boolean hasAccessInsOccasionCost(Long occasionId){
+    private boolean hasAccessInsOccasionCost(Long occasionId){
         boolean retVal = false;
         try{
             Occasion occasion = occasionRepo.getReferenceById(occasionId);
@@ -474,6 +474,15 @@ public class OccasionSrv implements IOccasionSrv{
             }
         }catch (Exception e){
             log.error(e.getMessage());
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm hasAccessOccasion(Long occasionId){
+        OutputAPIForm retVal = new OutputAPIForm();
+        if(Objects.isNull(occasionId) || !hasAccessInsOccasionCost(occasionId)){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.ACCESS_DENIED);
         }
         return retVal;
     }

@@ -25,10 +25,8 @@ public class OccasionController {
 
     @Autowired
     private IOccasionSrv occasionSrv;
-
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
-
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> saveOccasion(@RequestBody BaseOccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
@@ -74,5 +72,4 @@ public class OccasionController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
 }

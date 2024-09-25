@@ -1,12 +1,16 @@
 package com.env.dao.entity;
 
-import com.env.service.dto.BaseItineraryDetailDto;
+import com.env.service.dto.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Objects;
+
 @Entity
 @Table(name = "ITINERARY_DETAIL",schema = "ENV_DATA")
 @Data
@@ -51,21 +55,38 @@ public class ItineraryDetail extends ABaseEntity{
     public ItineraryDetail(BaseItineraryDetailDto dto){
         this(null,
         dto.getItineraryId(),
-        dto.getSource().getPlaceId(),
+        dto.getSourceId(),
         null,
-        dto.getDestination() ==null ?null :dto.getDestination().getPlaceId(),
+        dto.getDestinationId(),
         null,
         dto.getStartTime(),
         dto.getEntTime(),
         dto.getTimeDistance(),
         dto.getWayDistance(),
         dto.getDescription(),
-        dto.getActivityType(),
+        dto.getActivityTypeId(),
         dto.getEventId());
     }
     public ItineraryDetail(BaseItineraryDetailDto dto,Place srcPlace,Place desPlace){
         this(dto);
         this.setSourcePlace(srcPlace);
         this.setDestinationPlace(desPlace);
+    }
+
+    public void update(BaseItineraryDetailDto dto){
+        try {
+            this.setSourcePlaceId( Objects.nonNull(dto.getSourceId()) ? dto.getSourceId():this.getSourcePlaceId());
+            this.setStartTime(Objects.nonNull(dto.getStartTime()) ? dto.getStartTime() : this.getStartTime());
+            this.setEndTime(Objects.nonNull(dto.getEntTime()) ? dto.getEntTime(): this.getEndTime() );
+            this.setTimeDistance(Objects.nonNull(dto.getTimeDistance()) ? dto.getTimeDistance(): this.getTimeDistance());
+            this.setWayDistance(Objects.nonNull(dto.getWayDistance()) ? dto.getWayDistance(): this.getWayDistance());
+            this.setActivityId(Objects.nonNull(dto.getActivityTypeId()) ?dto.getActivityTypeId(): this.getActivityId() );
+            this.setEventId(Objects.nonNull(dto.getEventId()) ? dto.getEventId() : this.getEventId());
+            this.setDescription(StringUtils.hasLength(dto.getDescription()) ?  dto.getDescription() : this.getDescription());
+            this.setDestinationPlaceId(Objects.nonNull(dto.getDestinationId())  ? dto.getDestinationId() : this.getDestinationPlaceId());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

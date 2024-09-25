@@ -18,6 +18,7 @@ public interface IOccasionSrv {
     OutputAPIForm<OccasionCostDto> saveOccasionCost(OccasionCostDto dto);
     OutputAPIForm<OccasionCostDto> updateOccasionCost(OccasionCostDto dto);
     OutputAPIForm deleteOccasionCost(OccasionCostDto dto);
+    OutputAPIForm hasAccessOccasion(Long occasionId);
     byte[] getImage(OccasionPicDto picDto);
 
 }

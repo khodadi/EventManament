@@ -3,8 +3,8 @@ server:
     context-path: /eventmanagment
 spring:
   profiles:
-    active: developer
-#    active: operation
+#    active: developer
+    active: operation
 #    active: test
   application:
     name: eventmanagment # current service name used for eureka registration
@@ -45,3 +45,7 @@ cors:
     - http://91.107.191.99:3001
 base_type:
   users: users
+
+limitation:
+  place:
+    numberImage: 5

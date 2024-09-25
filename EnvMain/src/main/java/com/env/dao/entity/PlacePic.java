@@ -19,4 +19,10 @@ public class PlacePic extends ABaseEntity{
     private Long placeId;
     @Column(name = "PIC_ID")
     private Long picId;
+    @Column(name = "PUBLIC")
+    private boolean publicImage;
+
+    public PlacePic(Long placePicId, Long placeId, Long picId) {
+        this(placePicId,placeId,picId,true);
+    }
 }

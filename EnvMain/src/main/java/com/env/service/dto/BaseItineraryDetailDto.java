@@ -13,17 +13,19 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseItineraryDetailDto {
-    private PlaceDto source;
+    private Long itineraryDetailId;
+    private Long sourceId;
+    private Long occasionId;
     private Long itineraryId;
     private ArrayList<Long> itineraryEquipments;
     private Timestamp startTime;
     private Timestamp entTime;
     private Long timeDistance;
     private Long wayDistance;
-    private Long activityType;
+    private Long activityTypeId;
     private Long eventId;
     private String description;
-    private PlaceDto destination;
+    private Long destinationId;
 
     public ArrayList<Long> getItineraryEquipments() {
         if(itineraryEquipments == null){

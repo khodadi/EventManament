@@ -17,7 +17,8 @@ public enum CodeException {
     INVALID_USERNAME(15),
     NOT_FIND_REFERENCE(16),
     INTERNAL_ERROR(17),
-    INVALID_IMAGE(18);
+    INVALID_IMAGE(18),
+    MAX_DATA(19);
 
     private int codeException;
     CodeException(int code) {

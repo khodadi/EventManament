@@ -6,19 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @Creator 9/2/2023
+ * @Creator 9/24/2024
  * @Project IntelliJ IDEA
  * @Author k.khodadi
  **/
+
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlacePicDto {
-    private Long placeId;
-    private String name;
-    private byte[] pic;
-    private Long placePicId;
-    private Long picId;
+public class OccasionItineraryDetailDto {
+    private Long occasionId;
+    private Long itineraryDetailDto;
 }

@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+
+import java.util.Objects;
+
 @Entity
 @Table(name = "PLACE",schema = "ENV_DATA")
 @Data
@@ -54,4 +58,17 @@ public class Place extends ABaseEntity{
                 dto.isPublicPlace());
     }
 
+    public void update(PlaceDto dto){
+        this.setEventId(Objects.nonNull(dto.getEventId()) ? dto.getEventId() :this.getEventId());
+        this.setName(StringUtils.hasLength(dto.getName()) ? dto.getName(): this.getName());
+        this.setNameFa(StringUtils.hasLength(dto.getNameFa()) ? dto.getNameFa(): this.getNameFa());
+        this.setDescription(StringUtils.hasLength(dto.getDescription()) ? dto.getDescription(): this.getDescription());
+        this.setPhone(StringUtils.hasLength(dto.getPhone()) ? dto.getPhone(): this.getPhone());
+        this.setScore(Objects.nonNull(dto.getScore()) ? dto.getScore() :this.getScore());
+        this.setCost(Objects.nonNull(dto.getCost()) ? dto.getCost() :this.getCost());
+        this.setLatitude(Objects.nonNull(dto.getLatitude()) ? dto.getLatitude() :this.getLatitude());
+        this.setLongitude(Objects.nonNull(dto.getLongitude()) ? dto.getLongitude() :this.getLongitude());
+        this.setFree(Objects.nonNull(dto.isFree()) ? dto.isFree() :this.getFree());
+        this.setPublicView(Objects.nonNull(dto.isPublicPlace()) ? dto.isPublicPlace() :this.getPublicView());
+    }
 }

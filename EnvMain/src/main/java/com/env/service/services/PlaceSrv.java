@@ -7,10 +7,14 @@ import com.env.dao.entity.PlacePic;
 import com.env.dao.repository.IPicRepo;
 import com.env.dao.repository.IPlacePicRepo;
 import com.env.dao.repository.IPlaceRepo;
+import com.env.service.dto.CriPlaceDto;
+import com.env.utility.Utility;
 import com.form.OutputAPIForm;
 import com.env.service.dto.PlaceDto;
 import com.env.service.dto.PlacePicDto;
+import com.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,8 @@ public class PlaceSrv implements IPlaceSrv{
     private final IPicRepo picRepo;
     private final IPlacePicRepo placPicRepo;
 
+    @Value("${limitation.place,numberImage:6}")
+    private Long MaxNumberImageOfPlace;
 
     public PlaceSrv(IPlaceRepo placeRepo, IPicRepo picRepo, IPlacePicRepo placPicRepo) {
         this.placeRepo = placeRepo;
@@ -54,23 +60,81 @@ public class PlaceSrv implements IPlaceSrv{
         Pic pic;
         PlacePic placePic;
         try{
-            Place place = new Place(dto);
-            placeRepo.save(place);
-            dto.setPlaceId(place.getPlaceId());
-            for(byte[] p:dto.getPics()){
-                pic = new Pic(p,dto.getName());
-                picRepo.save(pic);
-                dto.getPicIds().add(pic.getPicId());
-                placePic = new PlacePic(null,place.getPlaceId(),pic.getPicId());
-                placPicRepo.save(placePic);
-                dto.getPlacePicIds().add(placePic.getPlaceId());
+            retVal = validatePlace(dto);
+            if(retVal.isSuccess()){
+                Place place = new Place(dto);
+                placeRepo.save(place);
+                dto.setPlaceId(place.getPlaceId());
+                if(Objects.nonNull(dto.getPics())){
+                    for(byte[] p:dto.getPics()){
+                        pic = new Pic(p,dto.getName());
+                        picRepo.save(pic);
+                        dto.getPicIds().add(pic.getPicId());
+                        placePic = new PlacePic(null,place.getPlaceId(),pic.getPicId());
+                        placPicRepo.save(placePic);
+                        dto.getPlacePicIds().add(placePic.getPlaceId());
+                    }
+                }
+                dto.setPics(new ArrayList<>());
+                retVal.setData(dto);
             }
-            dto.setPics(new ArrayList<>());
-            retVal.setData(dto);
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
         }
+        return retVal;
+    }
+
+    public OutputAPIForm updatePlace(PlaceDto dto){
+        OutputAPIForm retVal = validateUpdatePlace(dto);
+        try{
+            if(retVal.isSuccess()){
+                Optional<Place> ent = placeRepo.findById(dto.getPlaceId());
+                if(ent.isPresent()){
+                    ent.get().update(dto);
+                    placeRepo.save(ent.get());
+                }
+            }
+        }catch (Exception e){
+            log.error("Error in Update Place ");
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm validatePlace(PlaceDto dto){
+        OutputAPIForm retVal = StringUtility.checkString(dto.getName(),false,2,20,true);
+        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getNameFa(),false,2,20,false):retVal;
+        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getDescription(),false,0,20,false): retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(dto.getLatitude()) : retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(dto.getLongitude()) : retVal;
+        retVal = retVal.isSuccess() ? validatePlacePic(dto.getPics()): retVal;
+        return retVal;
+    }
+
+    public OutputAPIForm validatePlacePic(ArrayList<byte[]> pics){
+        OutputAPIForm retVal = new OutputAPIForm();
+        if(Objects.nonNull(pics)){
+            if(pics.size() > MaxNumberImageOfPlace){
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.MAX_DATA);
+            }else{
+                for(byte[] p:pics){
+                    retVal = Utility.checkPic(p,false);
+                    if(!retVal.isSuccess()){
+                        break;
+                    }
+                }
+            }
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm validateUpdatePlace(PlaceDto dto){
+        OutputAPIForm retVal = Utility.checkNull(dto.getName()).isSuccess() ?  StringUtility.checkString(dto.getName(),true,2,20,true): new OutputAPIForm();
+        retVal = (retVal.isSuccess() && Utility.checkNull(dto.getName()).isSuccess()) ? StringUtility.checkString(dto.getNameFa(),true,2,20,false):retVal;
+        retVal = (retVal.isSuccess() && Utility.checkNull(dto.getDescription()).isSuccess()) ? StringUtility.checkString(dto.getDescription(),true,0,20,false): retVal;
         return retVal;
     }
 
@@ -79,13 +143,47 @@ public class PlaceSrv implements IPlaceSrv{
         Pic pic;
         PlacePic placePic;
         try{
-            pic = new Pic(dto.getPic(), dto.getName());
-            picRepo.save(pic);
-            dto.setPicId(pic.getPicId());
-            placePic = new PlacePic(null,dto.getPlaceId(),pic.getPicId());
-            placPicRepo.save(placePic);
-            dto.setPlacePicId(placePic.getPlaceId());
-            retVal.setData(dto);
+            retVal = validatePlacePic(dto);
+            if(retVal.isSuccess()){
+                pic = new Pic(dto.getPic(), dto.getName());
+                picRepo.save(pic);
+                dto.setPicId(pic.getPicId());
+                placePic = new PlacePic(null,dto.getPlaceId(),pic.getPicId());
+                placPicRepo.save(placePic);
+                dto.setPlacePicId(placePic.getPlaceId());
+                retVal.setData(dto);
+            }
+        }catch (Exception e){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm validatePlacePic(PlacePicDto dto){
+        OutputAPIForm retVal = Utility.checkNull(dto.getPlaceId());
+        retVal = retVal.isSuccess() ?Utility.checkPic(dto.getPic(), true):retVal;
+        if(retVal.isSuccess()){
+            long countImage = placPicRepo.countByPlaceId(dto.getPlaceId());
+            if(Objects.nonNull(countImage) && countImage >  MaxNumberImageOfPlace){
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.MAX_DATA);
+            }
+        }
+        return retVal;
+    }
+
+    public OutputAPIForm<ArrayList<PlaceDto>> listOfPlace(CriPlaceDto criPlaceDto){
+        OutputAPIForm<ArrayList<PlaceDto>> retVal = new OutputAPIForm<>();
+        try{
+            ArrayList<PlaceDto> data = new ArrayList<>();
+            ArrayList<Place> places = placeRepo.getPlaceByCri(criPlaceDto.getEventId(), criPlaceDto.getNameFa());
+            if(Objects.nonNull(places)){
+                for(Place place:places){
+                    data.add(new PlaceDto(place));
+                }
+                retVal.setData(data);
+            }
         }catch (Exception e){
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
