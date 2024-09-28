@@ -148,7 +148,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
         try{
             retVal = Utility.checkNull(dto);
             retVal = retVal.isSuccess() ? Utility.checkMandatoryOccasionTypeDto(dto):retVal;
-            retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionTypeName(),false,1,50,false):retVal;
+            retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getOccasionTypeName(),1,50,false):retVal;
             retVal = retVal.isSuccess() ? Utility.checkPic(dto.getPic(),true):retVal;
 
         }catch (Exception e){
@@ -190,6 +190,7 @@ public class OccasionBaseSrv  implements IOccasionBaseSrv{
         }
         return retVal;
     }
+
     public OutputAPIForm<EquipmentDto> getAllEquipment(){
         OutputAPIForm<EquipmentDto> retVal = new OutputAPIForm<>();
         try {

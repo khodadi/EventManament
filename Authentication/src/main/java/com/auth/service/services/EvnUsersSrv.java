@@ -128,10 +128,10 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     public OutputAPIForm validationUser(EnvUserSaveDto dto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
-            retVal = StringUtility.checkString(dto.getUserName(),false,4,20,true);
-            retVal = retVal.isSuccess()?StringUtility.checkString(dto.getPassword(),false,4,20,false):retVal;
-            retVal = retVal.isSuccess()?StringUtility.checkString(dto.getFirstName(),false,0,20,false):retVal;
-            retVal = retVal.isSuccess()?StringUtility.checkString(dto.getLastName(),false,0,20,false):retVal;
+            retVal = StringUtility.checkString(dto.getUserName(),4,20,true);
+            retVal = retVal.isSuccess()?StringUtility.checkString(dto.getPassword(),4,20,false):retVal;
+            retVal = retVal.isSuccess()?StringUtility.checkString(dto.getFirstName(),0,20,false):retVal;
+            retVal = retVal.isSuccess()?StringUtility.checkString(dto.getLastName(),0,20,false):retVal;
             if(retVal.isSuccess() && userRepo.findByUserName(dto.getUserName()) != null){
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.INVALID_USERNAME);

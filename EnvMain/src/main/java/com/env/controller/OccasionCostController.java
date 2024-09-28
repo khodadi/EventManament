@@ -1,10 +1,9 @@
 package com.env.controller;
 
 import com.basedata.generalcode.CodeException;
-import com.env.basedata.SearchTypeEnum;
 import com.env.service.dto.CriOccasionDto;
 import com.env.service.dto.OccasionCostDto;
-import com.env.service.services.IItinerarySrv;
+import com.env.service.services.IOccasionCostSrv;
 import com.env.service.services.IOccasionSrv;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
@@ -13,9 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +26,7 @@ import java.util.ArrayList;
 @Slf4j
 public class OccasionCostController {
     @Autowired
-    private IOccasionSrv occasionSrv;
+    private IOccasionCostSrv occasionCostSrv;
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
 
@@ -39,7 +35,7 @@ public class OccasionCostController {
                                                           @RequestParam(required = false) Long occasionId){
         OutputAPIForm<ArrayList<OccasionCostDto>> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.listOccasionCost(new CriOccasionDto(page == null ?0:page.intValue(),occasionId,"",null));
+            retVal = occasionCostSrv.listOccasionCost(new CriOccasionDto(page == null ?0:page.intValue(),occasionId,"",null));
         }catch (Exception e){
             log.error("Error in save cost occasion",e);
             retVal.setSuccess(false);
@@ -52,7 +48,7 @@ public class OccasionCostController {
     public ResponseEntity<OutputAPIForm> saveOccasionCost(@RequestBody OccasionCostDto occasionCost){
         OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.saveOccasionCost(occasionCost);
+            retVal = occasionCostSrv.saveOccasionCost(occasionCost);
         }catch (Exception e){
             log.error("Error in save cost occasion",e);
             retVal.setSuccess(false);
@@ -66,7 +62,7 @@ public class OccasionCostController {
     public ResponseEntity<OutputAPIForm> updateOccasionCost(@RequestBody OccasionCostDto occasionCost){
         OutputAPIForm<OccasionCostDto> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.updateOccasionCost(occasionCost);
+            retVal = occasionCostSrv.updateOccasionCost(occasionCost);
         }catch (Exception e){
             log.error("Error in save cost occasion",e);
             retVal.setSuccess(false);
@@ -80,7 +76,7 @@ public class OccasionCostController {
     public ResponseEntity deleteOccasionCost(@RequestBody OccasionCostDto occasionCost){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.deleteOccasionCost(occasionCost);
+            retVal = occasionCostSrv.deleteOccasionCost(occasionCost);
         }catch (Exception e){
             log.error("Error in save cost occasion",e);
             retVal.setSuccess(false);

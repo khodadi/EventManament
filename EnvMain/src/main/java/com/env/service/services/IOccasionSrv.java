@@ -11,14 +11,6 @@ public interface IOccasionSrv {
     OutputAPIForm<ArrayList<OccasionPicDto>> listOccasionPic(CriOccasionDto criOccasion);
     OutputAPIForm<OccasionPicDto> saveOccasionPic(OccasionPicDto dto);
     OutputAPIForm deleteOccasionPic(OccasionPicDto dto);
-    OutputAPIForm<ArrayList<OccasionCostDto>> listOccasionCost(CriOccasionDto criOccasion);
-    OutputAPIForm<OccasionUsersDto> saveOccasionUsers(OccasionUsersDto dto);
-    OutputAPIForm<ArrayList<OccasionUsersDto>> listOccasionRequest(CriOccasionDto criOccasionDto);
-    OutputAPIForm<OccasionUsersDto> updateOccasionUser(OccasionUsersDto dto);
-    OutputAPIForm<OccasionCostDto> saveOccasionCost(OccasionCostDto dto);
-    OutputAPIForm<OccasionCostDto> updateOccasionCost(OccasionCostDto dto);
-    OutputAPIForm deleteOccasionCost(OccasionCostDto dto);
-    OutputAPIForm hasAccessOccasion(Long occasionId);
     byte[] getImage(OccasionPicDto picDto);
 
 }

@@ -27,6 +27,7 @@ public class OccasionController {
     private IOccasionSrv occasionSrv;
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
+
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> saveOccasion(@RequestBody BaseOccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
@@ -44,7 +45,6 @@ public class OccasionController {
     @PutMapping("")
     public ResponseEntity<OutputAPIForm> updateOccasion(@RequestBody OccasionDto occasion){
         OutputAPIForm retVal = new OutputAPIForm();
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/occasion/update").toUriString());
         try{
             retVal = occasionSrv.editOccasion(occasion);
         }catch (Exception e){
@@ -59,7 +59,7 @@ public class OccasionController {
     @GetMapping(value = "")
     public ResponseEntity<OutputAPIForm<ArrayList<OccasionDto>>> listOccasion(@RequestParam(required = false) Long page,
                                                                               @RequestParam(required = false) Long occasionId,
-                                                                              @RequestParam(required = false)SearchTypeEnum searchType){
+                                                                              @RequestParam(required = false) SearchTypeEnum searchType){
         log.info(" List Occasion ");
         OutputAPIForm retVal = new OutputAPIForm();
         try{
@@ -72,4 +72,5 @@ public class OccasionController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
+
 }

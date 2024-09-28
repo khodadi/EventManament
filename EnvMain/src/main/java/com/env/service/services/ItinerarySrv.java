@@ -24,16 +24,15 @@ public class ItinerarySrv implements IItinerarySrv {
     private final IItineraryDetailRepo itineraryDetailRepo;
     private final IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo;
     private final IPlaceRepo placeRepo;
-    private final IOccasionSrv occasionSrv;
-    private final IOccasionRepo occasionRepo;
+    private final IOccasionUserSrv occasionUserSrv;
 
-    public ItinerarySrv(IItineraryRepo itineraryRepo, IItineraryDetailRepo itineraryDetailRepo, IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo, IPlaceRepo placeRepo, IOccasionSrv occasionSrv, IOccasionRepo occasionRepo) {
+
+    public ItinerarySrv(IItineraryRepo itineraryRepo, IItineraryDetailRepo itineraryDetailRepo, IItineraryDetailEquipmentRepo itineraryDetailEquipmentRepo, IPlaceRepo placeRepo, IOccasionSrv occasionSrv, IOccasionUserSrv occasionUserSrv) {
         this.itineraryRepo = itineraryRepo;
         this.itineraryDetailRepo = itineraryDetailRepo;
         this.itineraryDetailEquipmentRepo = itineraryDetailEquipmentRepo;
         this.placeRepo = placeRepo;
-        this.occasionSrv = occasionSrv;
-        this.occasionRepo = occasionRepo;
+        this.occasionUserSrv = occasionUserSrv;
     }
     @Override
     public OutputAPIForm<ArrayList<ItineraryDto>> saveDefaultItinerary(BaseOccasionDto baseOccasionDto, Long occasionId) {
@@ -205,7 +204,7 @@ public class ItinerarySrv implements IItinerarySrv {
         OutputAPIForm retVal = new OutputAPIForm();
         try{
             if(Objects.nonNull(dto) && Objects.nonNull(dto.getItineraryDetailDto()) && Objects.nonNull(dto.getItineraryDetailDto())) {
-                retVal = occasionSrv.hasAccessOccasion(dto.getOccasionId());
+                retVal = occasionUserSrv.hasAccessOccasion(dto.getOccasionId());
             }else{
                 retVal.setSuccess(false);
                 retVal.getErrors().add(CodeException.MANDATORY_FIELD);
@@ -225,11 +224,12 @@ public class ItinerarySrv implements IItinerarySrv {
            Objects.nonNull(dto.getItineraryDetailId()) &&
            Objects.nonNull(dto.getItineraryId()) &&
            Objects.nonNull(dto.getOccasionId())){
-            retVal = occasionSrv.hasAccessOccasion(dto.getOccasionId());
+            retVal = occasionUserSrv.hasAccessOccasion(dto.getOccasionId());
         }else{
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.MANDATORY_FIELD);
         }
         return retVal;
     }
+
 }

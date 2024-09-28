@@ -8,7 +8,6 @@ spring:
 #    active: test
   application:
     name: eventmanagment # current service name used for eureka registration
-
   devtools:
     add-properties: false
   mvc:

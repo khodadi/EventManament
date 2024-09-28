@@ -41,7 +41,6 @@ public class PlaceController {
         return ResponseEntity.ok().body(retVal);
     }
 
-
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> savePlace(@RequestBody PlaceDto dto){
         OutputAPIForm<PlaceDto> retVal = new OutputAPIForm();

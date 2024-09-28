@@ -20,12 +20,7 @@ public class Utility {
         retVal = retVal.isSuccess()? checkNull(dto.getEndDate()):retVal;
         retVal = retVal.isSuccess()? checkNull(dto.getSharable()):retVal;
         retVal = retVal.isSuccess()? checkNull(dto.getPic()):retVal;
-        if(Objects.nonNull(dto.getSourceDto()) && Objects.isNull(dto.getSourceDto().getPlaceId())){
-            retVal = retVal.isSuccess()? checkNull(dto.getSourceDto().getLongitude()):retVal;
-            retVal = retVal.isSuccess()? checkNull(dto.getSourceDto().getLatitude()):retVal;
-            retVal = retVal.isSuccess()? checkNull(dto.getSourceDto().getName()):retVal;
-            retVal = retVal.isSuccess()? checkNull(dto.getSourceDto().getNameFa()):retVal;
-        }
+        retVal = retVal.isSuccess()? checkNull(dto.getSourceId()):retVal;
         return retVal;
     }
 

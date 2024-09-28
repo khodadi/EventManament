@@ -104,9 +104,9 @@ public class PlaceSrv implements IPlaceSrv{
     }
 
     public OutputAPIForm validatePlace(PlaceDto dto){
-        OutputAPIForm retVal = StringUtility.checkString(dto.getName(),false,2,20,true);
-        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getNameFa(),false,2,20,false):retVal;
-        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getDescription(),false,0,20,false): retVal;
+        OutputAPIForm retVal = StringUtility.checkString(dto.getName(),2,20,true);
+        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getNameFa(),2,20,false):retVal;
+        retVal = retVal.isSuccess() ? StringUtility.checkString(dto.getDescription(),0,20,false): retVal;
         retVal = retVal.isSuccess() ? Utility.checkNull(dto.getLatitude()) : retVal;
         retVal = retVal.isSuccess() ? Utility.checkNull(dto.getLongitude()) : retVal;
         retVal = retVal.isSuccess() ? validatePlacePic(dto.getPics()): retVal;
@@ -132,9 +132,9 @@ public class PlaceSrv implements IPlaceSrv{
     }
 
     public OutputAPIForm validateUpdatePlace(PlaceDto dto){
-        OutputAPIForm retVal = Utility.checkNull(dto.getName()).isSuccess() ?  StringUtility.checkString(dto.getName(),true,2,20,true): new OutputAPIForm();
-        retVal = (retVal.isSuccess() && Utility.checkNull(dto.getName()).isSuccess()) ? StringUtility.checkString(dto.getNameFa(),true,2,20,false):retVal;
-        retVal = (retVal.isSuccess() && Utility.checkNull(dto.getDescription()).isSuccess()) ? StringUtility.checkString(dto.getDescription(),true,0,20,false): retVal;
+        OutputAPIForm retVal = Utility.checkNull(dto.getName()).isSuccess() ?  StringUtility.checkString(dto.getName(),2,20,true): new OutputAPIForm();
+        retVal = (retVal.isSuccess() && Utility.checkNull(dto.getName()).isSuccess()) ? StringUtility.checkString(dto.getNameFa(),2,20,false):retVal;
+        retVal = (retVal.isSuccess() && Utility.checkNull(dto.getDescription()).isSuccess()) ? StringUtility.checkString(dto.getDescription(),0,20,false): retVal;
         return retVal;
     }
 

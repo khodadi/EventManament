@@ -10,7 +10,13 @@ import org.springframework.util.StringUtils;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Objects;
-
+@NamedEntityGraph(
+        name = "loadAllAttributeItineraryDetail",
+        attributeNodes = {
+                @NamedAttributeNode("destinationPlace"),
+                @NamedAttributeNode("sourcePlace"),
+        }
+)
 @Entity
 @Table(name = "ITINERARY_DETAIL",schema = "ENV_DATA")
 @Data
@@ -27,12 +33,12 @@ public class ItineraryDetail extends ABaseEntity{
     private Long itineraryId;
     @Column(name = "SOURCE_PLACE_ID")
     private Long sourcePlaceId;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SOURCE_PLACE_ID",insertable = false ,updatable=false)
     private Place sourcePlace;
     @Column(name = "DESTINATION_PLACE_ID")
     private Long destinationPlaceId;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DESTINATION_PLACE_ID",insertable = false ,updatable=false)
     private Place destinationPlace;
     @Column(name = "START_TIME")

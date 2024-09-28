@@ -8,20 +8,25 @@ public class StringUtility extends StringUtils {
 
     public static final String enMatcher = "[a-zA-Z]+";
 
-    public static OutputAPIForm checkString(String str, boolean isNull, int minLength, int maxLength, boolean enLang){
-        OutputAPIForm retVal = checkString(str,isNull);
+    public static OutputAPIForm checkString(String str, int minLength, int maxLength, boolean enLang){
+        OutputAPIForm retVal = checkString(str);
         retVal = retVal.isSuccess()?checkString(str,minLength,maxLength):retVal;
         retVal = retVal.isSuccess()?checkLangString(str,enLang):retVal;
+        return retVal;
+    }
+    public static OutputAPIForm checkString(String str){
+        OutputAPIForm retVal = new OutputAPIForm<>();
+        if(!StringUtils.hasLength(str)){
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.MANDATORY_FIELD);
+        }
         return retVal;
     }
 
     public static OutputAPIForm checkString(String str,boolean isNull){
         OutputAPIForm retVal = new OutputAPIForm<>();
         if(!isNull){
-            if(str == null || str.trim().equals("")){
-                retVal.setSuccess(false);
-                retVal.getErrors().add(CodeException.MANDATORY_FIELD);
-            }
+           retVal = checkString(str);
         }
         return retVal;
     }

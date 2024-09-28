@@ -18,8 +18,8 @@ server:
     context-path: /authentication
 spring:
   profiles:
-    active: developer
-#    active: operation
+#    active: developer
+    active: operation
   #    active: test
   application:
     name: authentication # current service name used for eureka registration

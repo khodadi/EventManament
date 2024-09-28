@@ -5,6 +5,7 @@ import com.env.basedata.StateRequest;
 import com.env.service.dto.CriOccasionDto;
 import com.env.service.dto.OccasionUsersDto;
 import com.env.service.services.IOccasionSrv;
+import com.env.service.services.IOccasionUserSrv;
 import com.form.OutputAPIForm;
 import com.service.services.IMessageBundleSrv;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 @Slf4j
 public class OccasionUserController {
     @Autowired
-    private IOccasionSrv occasionSrv;
+    private IOccasionUserSrv occasionUserSrv;
     @Autowired
     private IMessageBundleSrv messageBundleSrv;
 
@@ -38,7 +39,7 @@ public class OccasionUserController {
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
         try{
             occasionUsers.setStateRequest(StateRequest.Requested);
-            retVal = occasionSrv.saveOccasionUsers(occasionUsers);
+            retVal = occasionUserSrv.saveOccasionUsers(occasionUsers);
         }catch (Exception e){
             log.error("Error in save occasion user",e);
             retVal.setSuccess(false);
@@ -52,7 +53,7 @@ public class OccasionUserController {
     public ResponseEntity<OutputAPIForm> exchangeOccasionUserState(@RequestBody OccasionUsersDto occasionUsers){
         OutputAPIForm<OccasionUsersDto> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.updateOccasionUser(occasionUsers);
+            retVal = occasionUserSrv.updateOccasionUser(occasionUsers);
         }catch (Exception e){
             log.error("Error in save occasion user",e);
             retVal.setSuccess(false);
@@ -66,7 +67,7 @@ public class OccasionUserController {
     public ResponseEntity<OutputAPIForm> listOccasionRequestUser(@RequestParam(required = false) Long page){
         OutputAPIForm<ArrayList<OccasionUsersDto>> retVal = new OutputAPIForm();
         try{
-            retVal = occasionSrv.listOccasionRequest(new CriOccasionDto( page == null ? 0: page.intValue()));
+            retVal = occasionUserSrv.listOccasionRequest(new CriOccasionDto( page == null ? 0: page.intValue()));
         }catch (Exception e){
             log.error("Error in save occasion user",e);
             retVal.setSuccess(false);
