@@ -1,1 +1,0 @@
-alter sequence env_data.seq_acivity rename to seq_activity;

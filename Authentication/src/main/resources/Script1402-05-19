@@ -1,8 +1,0 @@
-alter table env_auth.env_user_token
-    add datetime_expire_refresh timestamp;
-
-alter table env_auth.env_user_token
-    add refresh_token varchar(500);
-
-alter table env_data.occasion
-    alter column sharable type bool using sharable::bool;

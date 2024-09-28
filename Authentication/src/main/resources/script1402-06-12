@@ -1,2 +1,0 @@
-alter table env_data.occasion_users
-    add state_request integer;

@@ -1,1 +1,0 @@
-alter table env_data.activity rename column "activity_Id" to activity_id;
