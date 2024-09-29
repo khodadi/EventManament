@@ -25,20 +25,20 @@ public interface IOccasionRepo extends JpaRepository<Occasion,Long> {
     )
     List<Occasion> getOccasionByI(@Param("userId") Long userId, @Param("occasionId") Long occasionId, @Param("state") StateRequest state, Pageable pageable);
 
-    @Query(" select ent from Occasion ent " +
-            "    left join fetch OccasionUsers usr on (ent.occasionId = usr.occasionId)                                       " +
-            "    left join fetch OccasionCost cost on (ent.occasionId = cost.occasionId)                                      " +
-            "    left join fetch Itinerary itin    on (ent.occasionId = itin.occasionId)                                      " +
-            "    left join fetch ItineraryDetail itind    on (itin.itineraryId = itind.itineraryId)                           " +
-            "    left join fetch ItineraryDetailEquipment itinde on (itinde.itineraryDetailId = itind.itineraryDetailId)      " +
-            "    left join fetch Place sourcePlace on  (sourcePlace.placeId = itind.sourcePlaceId)                            " +
-            "    left join fetch Place destinationPlace on  (destinationPlace.placeId = itind.destinationPlaceId)             " +
-            "   where                                                                                                         " +
-            "     (:occasionId is null or ent.occasionId = :occasionId) and (                                                 " +
-            "         (ent.creatorUserId = :userId)  or                                                                       " +   //pay attention to Occasion.creatorUserId
-            "         (usr.stateRequest = :state and  usr.userId = :userId) or                                                " +   //pay attention to Occasion User
-            "         (ent.sharable = true )                                                                                  " +   //pay attention to Occasion Sharable
-            "                                                             )                                                   "
+@Query( " select ent from Occasion ent                                                                                 " +
+        "    left join fetch OccasionUsers usr on (ent.occasionId = usr.occasionId)                                    " +
+        "    left join fetch OccasionCost cost on (ent.occasionId = cost.occasionId)                                   " +
+        "    left join fetch Itinerary itin    on (ent.occasionId = itin.occasionId)                                   " +
+        "    left join fetch ItineraryDetail itind    on (itin.itineraryId = itind.itineraryId)                        " +
+        "    left join fetch ItineraryDetailEquipment itinde on (itinde.itineraryDetailId = itind.itineraryDetailId)   " +
+        "    left join fetch Place sourcePlace on  (sourcePlace.placeId = itind.sourcePlaceId)                         " +
+        "    left join fetch Place destinationPlace on  (destinationPlace.placeId = itind.destinationPlaceId)          " +
+        "   where                                                                                                      " +
+        "     (:occasionId is null or ent.occasionId = :occasionId) and (                                              " +
+        "         (ent.creatorUserId = :userId)  or                                                                    " +   //pay attention to Occasion.creatorUserId
+        "         (usr.stateRequest = :state and  usr.userId = :userId) or                                             " +   //pay attention to Occasion User
+        "         (ent.sharable = true )                                                                               " +   //pay attention to Occasion Sharable
+        "                                                             )                                                "
     )
     @EntityGraph(attributePaths = { "occasionUsers", "itineraries","occasionCosts"},type = EntityGraph.EntityGraphType.FETCH)
     List<Occasion> getOccasionByUserId(@Param("userId") Long userId, @Param("occasionId") Long occasionId, @Param("state") StateRequest state, Pageable pageable);

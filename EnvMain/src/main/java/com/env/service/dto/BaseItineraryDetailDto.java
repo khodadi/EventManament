@@ -1,5 +1,7 @@
 package com.env.service.dto;
 
+import com.env.utility.Utility;
+import com.form.OutputAPIForm;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +34,16 @@ public class BaseItineraryDetailDto {
             itineraryEquipments = new ArrayList<>();
         }
         return itineraryEquipments;
+    }
+
+    public OutputAPIForm checkMandatoryForInsert(){
+        OutputAPIForm retVal = Utility.checkNull(getOccasionId());
+        retVal = retVal.isSuccess() ? Utility.checkNull(getSourceId()) : retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(getItineraryId()) : retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(getStartTime()) : retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(getEntTime()) : retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(getActivityTypeId()) : retVal;
+        retVal = retVal.isSuccess() ? Utility.checkNull(getEventId()) : retVal;
+        return retVal;
     }
 }

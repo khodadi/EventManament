@@ -15,5 +15,6 @@ public class OutputAPIForm <T> extends ABaseForm {
         setErrors(new ArrayList<>());
         setSuccess(true);
         setMessage("");
+
     }
 }

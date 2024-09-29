@@ -28,10 +28,12 @@ public class PlaceController {
     private IPlaceSrv placeSrv;
 
     @GetMapping("")
-    public ResponseEntity<OutputAPIForm> ListPlace(@RequestParam String nameFa,@RequestParam Long eventId){
+    public ResponseEntity<OutputAPIForm> ListPlace(@RequestParam(required = false) String nameFa,
+                                                   @RequestParam(required = false) Long eventId,
+                                                   @RequestParam(required = false) Long page){
         OutputAPIForm<ArrayList<PlaceDto>> retVal = new OutputAPIForm();
         try{
-            retVal = placeSrv.listOfPlace(new CriPlaceDto(eventId,nameFa));
+            retVal = placeSrv.listOfPlace(new CriPlaceDto(page == null?0L:page,eventId,nameFa));
         }catch (Exception e){
             log.error("Error in save PLace",e);
             retVal.setSuccess(false);
@@ -40,7 +42,6 @@ public class PlaceController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
     @PostMapping("")
     public ResponseEntity<OutputAPIForm> savePlace(@RequestBody PlaceDto dto){
         OutputAPIForm<PlaceDto> retVal = new OutputAPIForm();
@@ -82,6 +83,5 @@ public class PlaceController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
 
 }

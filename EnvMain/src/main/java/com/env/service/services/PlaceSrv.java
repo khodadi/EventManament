@@ -12,9 +12,12 @@ import com.env.utility.Utility;
 import com.form.OutputAPIForm;
 import com.env.service.dto.PlaceDto;
 import com.env.service.dto.PlacePicDto;
+import com.utility.GeneralUtility;
 import com.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,10 @@ public class PlaceSrv implements IPlaceSrv{
 
     @Value("${limitation.place,numberImage:6}")
     private Long MaxNumberImageOfPlace;
+
+
+    @Value("${application.pageSize.maximum:10}")
+    public int pageSize;
 
     public PlaceSrv(IPlaceRepo placeRepo, IPicRepo picRepo, IPlacePicRepo placPicRepo) {
         this.placeRepo = placeRepo;
@@ -56,12 +63,11 @@ public class PlaceSrv implements IPlaceSrv{
     }
 
     public OutputAPIForm<PlaceDto> savePlace(PlaceDto dto){
-        OutputAPIForm<PlaceDto> retVal = new OutputAPIForm<>();
+        OutputAPIForm<PlaceDto> retVal = validatePlace(dto);
         Pic pic;
         PlacePic placePic;
-        try{
-            retVal = validatePlace(dto);
-            if(retVal.isSuccess()){
+        if(retVal.isSuccess()){
+            try{
                 Place place = new Place(dto);
                 placeRepo.save(place);
                 dto.setPlaceId(place.getPlaceId());
@@ -77,10 +83,10 @@ public class PlaceSrv implements IPlaceSrv{
                 }
                 dto.setPics(new ArrayList<>());
                 retVal.setData(dto);
+            }catch (Exception e){
+                retVal.setSuccess(false);
+                retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
             }
-        }catch (Exception e){
-            retVal.setSuccess(false);
-            retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
         }
         return retVal;
     }
@@ -177,14 +183,17 @@ public class PlaceSrv implements IPlaceSrv{
         OutputAPIForm<ArrayList<PlaceDto>> retVal = new OutputAPIForm<>();
         try{
             ArrayList<PlaceDto> data = new ArrayList<>();
-            ArrayList<Place> places = placeRepo.getPlaceByCri(criPlaceDto.getEventId(), criPlaceDto.getNameFa());
+            ArrayList<Place> places = placeRepo.getPlaceByCri(criPlaceDto.getEventId(), criPlaceDto.getNameFa(),
+                    PageRequest.of(criPlaceDto.getPage().intValue(), pageSize+1, Sort.by("creationDate")) );
             if(Objects.nonNull(places)){
+                retVal.setNextPage(GeneralUtility.checkNextPage(places,pageSize));
                 for(Place place:places){
                     data.add(new PlaceDto(place));
                 }
                 retVal.setData(data);
             }
         }catch (Exception e){
+            log.error("Error in query in Place",e);
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.DATA_BASE_EXCEPTION);
         }

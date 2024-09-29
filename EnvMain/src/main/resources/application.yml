@@ -3,8 +3,8 @@ server:
     context-path: /eventmanagment
 spring:
   profiles:
-#    active: developer
-    active: operation
+    active: developer
+#    active: operation
 #    active: test
   application:
     name: eventmanagment # current service name used for eureka registration
@@ -48,3 +48,6 @@ base_type:
 limitation:
   place:
     numberImage: 5
+application:
+  pageSize:
+    maximum: 4

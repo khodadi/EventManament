@@ -4,6 +4,7 @@ import com.basedata.generalcode.CodeException;
 import com.env.dao.entity.*;
 import com.env.dao.repository.*;
 import com.env.service.dto.*;
+import com.env.utility.Utility;
 import com.form.OutputAPIForm;
 import com.utility.DateUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class ItinerarySrv implements IItinerarySrv {
         this.placeRepo = placeRepo;
         this.occasionUserSrv = occasionUserSrv;
     }
-    @Override
+
     public OutputAPIForm<ArrayList<ItineraryDto>> saveDefaultItinerary(BaseOccasionDto baseOccasionDto, Long occasionId) {
         OutputAPIForm<ArrayList<ItineraryDto>> retVal = new OutputAPIForm<>();
         ArrayList<ItineraryDto> itineraries = new ArrayList<>();
@@ -117,13 +118,15 @@ public class ItinerarySrv implements IItinerarySrv {
     }
 
     public OutputAPIForm saveItineraryDetail(BaseItineraryDetailDto dto){
-        OutputAPIForm<ItineraryDetailDto> retVal = new OutputAPIForm();
+        OutputAPIForm<ItineraryDetailDto> retVal = dto != null ? dto.checkMandatoryForInsert():Utility.checkNull(dto);
         try{
-            Place srcPlace = (dto!= null && dto.getSourceId() != null) ? placeRepo.getReferenceById(dto.getSourceId()):null;
-            Place decPlace = (dto!= null && dto.getDestinationId() != null) ? placeRepo.getReferenceById(dto.getDestinationId()): null;
-            if(Objects.nonNull(srcPlace)){
+            ItineraryDetailEquipment itineraryDetailEquipment;
+            retVal = retVal.isSuccess() ?occasionUserSrv.hasAccessOccasion(dto.getOccasionId()): retVal;
+            Place srcPlace = retVal.isSuccess()?placeRepo.getReferenceById(dto.getSourceId()):null;
+            retVal = retVal.isSuccess() ?Utility.checkNull(srcPlace):retVal;
+            Place decPlace = (retVal.isSuccess() && dto!= null && dto.getDestinationId() != null) ? placeRepo.getReferenceById(dto.getDestinationId()): null;
+            if(retVal.isSuccess()){
                 ItineraryDetail itineraryDetail = new ItineraryDetail(dto,srcPlace,decPlace);
-                ItineraryDetailEquipment itineraryDetailEquipment;
                 itineraryDetailRepo.save(itineraryDetail);
                 ItineraryDetailDto data = new ItineraryDetailDto(itineraryDetail);
                 for(Long equipId:dto.getItineraryEquipments()){
@@ -132,11 +135,7 @@ public class ItinerarySrv implements IItinerarySrv {
                     data.getItineraryEquipments().add(new ItineraryDetailEquipmentDto(itineraryDetailEquipment));
                 }
                 retVal.setData(data);
-            }else{
-                retVal.setSuccess(false);
-                retVal.getErrors().add(CodeException.NOT_FIND_REFERENCE);
             }
-
         }catch (Exception e){
             log.error(e.getMessage());
             retVal.setSuccess(false);
@@ -170,7 +169,7 @@ public class ItinerarySrv implements IItinerarySrv {
         OutputAPIForm retVal = validationOccasionItineraryDetail(dto);
         try{
             if(retVal.isSuccess()) {
-                Optional<ItineraryDetail> itineraryDetail = itineraryDetailRepo.getItineraryDetailByOccasionAndId(dto.getItineraryDetailDto(),dto.getOccasionId());
+                Optional<ItineraryDetail> itineraryDetail = itineraryDetailRepo.getItineraryDetailByOccasionAndId(dto.getItineraryDetailId(),dto.getOccasionId());
                 if(itineraryDetail.isPresent()){
                     itineraryDetailRepo.delete(itineraryDetail.get());
                 }else{
@@ -203,7 +202,7 @@ public class ItinerarySrv implements IItinerarySrv {
 
         OutputAPIForm retVal = new OutputAPIForm();
         try{
-            if(Objects.nonNull(dto) && Objects.nonNull(dto.getItineraryDetailDto()) && Objects.nonNull(dto.getItineraryDetailDto())) {
+            if(Objects.nonNull(dto) && Objects.nonNull(dto.getItineraryDetailId()) && Objects.nonNull(dto.getItineraryDetailId())) {
                 retVal = occasionUserSrv.hasAccessOccasion(dto.getOccasionId());
             }else{
                 retVal.setSuccess(false);

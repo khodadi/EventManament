@@ -9,8 +9,10 @@ import com.env.dao.repository.IOccasionUsersRepo;
 import com.env.service.dto.CriOccasionDto;
 import com.env.service.dto.OccasionUsersDto;
 import com.form.OutputAPIForm;
+import com.utility.GeneralUtility;
 import com.utility.InfraSecurityUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,8 @@ public class OccasionUserSrv implements IOccasionUserSrv{
         this.occasionUsersRepo = occasionUsersRepo;
     }
 
-    public final static int pageSize = 100;
+    @Value("${application.pageSize.maximum:10}")
+    public int pageSize;
 
     private boolean hasAccessToOccasion(Long occasionId){
         boolean retVal = false;
@@ -97,6 +100,7 @@ public class OccasionUserSrv implements IOccasionUserSrv{
         try{
             List<OccasionUsers> requestUsers = occasionUsersRepo.getByUserId(InfraSecurityUtils.getCurrentUser(), PageRequest.of(criOccasion.getPage(), pageSize+1, Sort.by("creationDate")));
             if(Objects.nonNull(requestUsers)){
+                retVal.setNextPage(GeneralUtility.checkNextPage(requestUsers,pageSize));
                 requestUsers.forEach(requestUser -> dto.add(new OccasionUsersDto(requestUser)));
             }
             retVal.setData(dto);

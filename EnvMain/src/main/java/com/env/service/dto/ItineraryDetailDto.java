@@ -22,8 +22,8 @@ public class ItineraryDetailDto implements Comparable<ItineraryDetailDto>{
     private Timestamp entTime;
     private Long timeDistance;
     private Long wayDistance;
-    private ActivityDto activityType;
-    private EventDto eventId;
+    private Long activityTypeId;
+    private Long eventId;
     private String description;
     private PlaceDto destination;
     private Long occasionId;
@@ -36,8 +36,8 @@ public class ItineraryDetailDto implements Comparable<ItineraryDetailDto>{
              itineraryDetail.getEndTime(),
              itineraryDetail.getTimeDistance(),
              itineraryDetail.getWayDistance(),
-             new ActivityDto(itineraryDetail.getActivityId()),
-             new EventDto(itineraryDetail.getEventId()),
+             itineraryDetail.getActivityId(),
+             itineraryDetail.getEventId(),
              itineraryDetail.getDescription(),
              itineraryDetail.getDestinationPlace() ==null ? null: new PlaceDto(itineraryDetail.getDestinationPlace()),
              null);

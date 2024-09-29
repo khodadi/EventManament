@@ -44,6 +44,7 @@ public class OccasionDto extends BaseOccasionDto{
         this.setEditable(false);
         this.setTabs(tabs);
     }
+
     public OccasionDto(Occasion ent){
         this(ent,null,false);
     }
@@ -58,8 +59,6 @@ public class OccasionDto extends BaseOccasionDto{
         ent.setSharable(Objects.isNull(this.getSharable())?ent.getSharable():this.getSharable());
         ent.setSourceId(Objects.isNull(this.getSourceId()) ? ent.getSourceId():this.getSourceId());
     }
-
-
 
     public OutputAPIForm checkMandatoryForUpdate(){
         OutputAPIForm retVal = Utility.checkNull(getOccasionId());

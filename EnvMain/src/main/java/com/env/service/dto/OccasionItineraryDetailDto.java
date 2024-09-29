@@ -18,5 +18,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OccasionItineraryDetailDto {
     private Long occasionId;
-    private Long itineraryDetailDto;
+    private Long itineraryDetailId;
 }

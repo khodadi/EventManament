@@ -16,6 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CriPlaceDto {
+    private Long page;
     private Long eventId;
     private String name;
     private String nameFa;
@@ -25,8 +26,13 @@ public class CriPlaceDto {
     private Double latitude;
     private Double longitude;
 
-    public CriPlaceDto(Long eventId, String nameFa) {
+    public CriPlaceDto(Long page, Long eventId, String nameFa) {
+        this.page = page;
         this.eventId = eventId;
         this.nameFa = nameFa;
+    }
+
+    public CriPlaceDto(Long eventId, String nameFa) {
+        this(0L,eventId,nameFa);
     }
 }
