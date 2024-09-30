@@ -1,5 +1,6 @@
 package com.auth.service.services;
 
+import com.auth.service.dto.CriEnvUser;
 import com.auth.service.dto.EnvUserDto;
 import com.auth.service.dto.EnvUserSaveDto;
 import com.basedata.generalcode.CodeException;
@@ -9,8 +10,13 @@ import com.auth.dao.repository.IEnvUserTokenRepo;
 import com.auth.dao.repository.IUserRepo;
 import com.form.OutputAPIForm;
 import com.auth.security.UserSecurity;
+import com.utility.GeneralUtility;
+import com.utility.InfraSecurityUtils;
 import com.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,10 +24,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 @Transactional
@@ -30,6 +34,9 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
     private final IUserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final IEnvUserTokenRepo envUserTokenRepo;
+
+    @Value("${application.pageSize.maximum:10}")
+    public int pageSize;
 
     public EvnUsersSrv(IUserRepo userRepo, PasswordEncoder passwordEncoder, IEnvUserTokenRepo envUserTokenRepo) {
         this.userRepo = userRepo;
@@ -123,8 +130,6 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         return retVal;
     }
 
-
-
     public OutputAPIForm validationUser(EnvUserSaveDto dto){
         OutputAPIForm retVal = new OutputAPIForm();
         try{
@@ -164,5 +169,23 @@ public class EvnUsersSrv implements IEvnUsersSrv, UserDetailsService {
         return retVal;
     }
 
-
+    public OutputAPIForm<ArrayList<EnvUserDto>> listUsers(CriEnvUser cri){
+        OutputAPIForm<ArrayList<EnvUserDto>> retVal = new OutputAPIForm<>();
+        if(InfraSecurityUtils.checkLogin()){
+            List<EnvUsers> envUsers = userRepo.findByCriteria(StringUtility.hasLength(cri.getLastName())?cri.getLastName(): null,
+                    StringUtility.hasLength(cri.getMobileNumber())?cri.getMobileNumber(): null,
+                    StringUtility.hasLength(cri.getUserName())?cri.getUserName(): null,
+                    PageRequest.of(cri.getPage().intValue(), pageSize+1, Sort.by("creationDate")));
+            if(Objects.nonNull(envUsers)){
+                ArrayList<EnvUserDto> envUserDtos= new ArrayList<>();
+                retVal.setNextPage(GeneralUtility.checkNextPage(envUsers,pageSize));
+                for(EnvUsers ent:envUsers){
+                    envUserDtos.add(new EnvUserDto(ent.getFirstName(),ent.getLastName(), ent.getUserId()));
+                }
+                retVal.setData(envUserDtos);
+                return retVal;
+            }
+        }
+        return retVal;
+    }
 }

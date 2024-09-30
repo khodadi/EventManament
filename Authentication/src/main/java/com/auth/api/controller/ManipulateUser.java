@@ -1,5 +1,6 @@
 package com.auth.api.controller;
 
+import com.auth.service.dto.CriEnvUser;
 import com.form.OutputAPIForm;
 import com.basedata.generalcode.CodeException;
 import com.auth.service.dto.EnvUserSaveDto;
@@ -44,17 +45,21 @@ public class ManipulateUser {
     }
 
     @GetMapping("")
-    public ResponseEntity<OutputAPIForm> insertUser(@RequestBody EnvUserSaveDto user){
+    public ResponseEntity<OutputAPIForm> listUsers(@RequestParam(required = false) String lastName,
+                                                   @RequestParam(required = false) String mobileNumber,
+                                                   @RequestParam(required = false) String userName){
         OutputAPIForm retVal = new OutputAPIForm();
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         try{
-            retVal = iEvnUsersSrv.insertUser(user);
+            retVal = iEvnUsersSrv.listUsers(new CriEnvUser(0L,lastName,mobileNumber,userName));
         }catch (Exception e){
-            log.error("Error in save user",e);
+            log.error("Error in List user",e);
             retVal.setSuccess(false);
             retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
         }
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.created(uri).body(retVal);
     }
+
+
 }

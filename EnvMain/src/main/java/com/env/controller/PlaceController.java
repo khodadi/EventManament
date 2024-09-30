@@ -83,5 +83,17 @@ public class PlaceController {
         messageBundleSrv.createMsg(retVal);
         return ResponseEntity.ok().body(retVal);
     }
-
+    @DeleteMapping("/pic")
+    public ResponseEntity<OutputAPIForm> deletePlacePic(@RequestBody PlacePicDto dto){
+        OutputAPIForm<PlacePicDto> retVal = new OutputAPIForm();
+        try{
+            retVal = placeSrv.deletePlacePic(dto);
+        }catch (Exception e){
+            log.error("Error in save PLace Pic",e);
+            retVal.setSuccess(false);
+            retVal.getErrors().add(CodeException.SYSTEM_EXCEPTION);
+        }
+        messageBundleSrv.createMsg(retVal);
+        return ResponseEntity.ok().body(retVal);
+    }
 }

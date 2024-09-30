@@ -13,4 +13,5 @@ public interface IPlaceSrv {
     OutputAPIForm<PlaceDto> checkAndSavePlace(PlaceDto dto);
     OutputAPIForm updatePlace(PlaceDto dto);
     OutputAPIForm<ArrayList<PlaceDto>> listOfPlace(CriPlaceDto criPlaceDto);
+    OutputAPIForm deletePlacePic(PlacePicDto dto);
 }

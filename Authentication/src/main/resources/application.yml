@@ -64,4 +64,6 @@ locale:
 base_type:
   users: users
 
-
+application:
+  pageSize:
+    maximum: 4

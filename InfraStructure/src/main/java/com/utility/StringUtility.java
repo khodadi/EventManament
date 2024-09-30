@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 
 public class StringUtility extends StringUtils {
 
-    public static final String enMatcher = "[a-zA-Z]+";
+    public static final String enMatcher = "[a-z A-Z]+";
 
     public static OutputAPIForm checkString(String str, int minLength, int maxLength, boolean enLang){
         OutputAPIForm retVal = checkString(str);
